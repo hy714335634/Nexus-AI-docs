@@ -1,0 +1,677 @@
+module_info:
+  module_id: M06
+  name: API System
+  path: api/v2/
+  description: RESTful API系统，提供HTTP接口用于Agent管理、任务执行和系统配置
+  priority: P2
+  status: 活跃
+  created_date: '2026-02-05'
+  last_updated: '2026-02-05'
+code_statistics:
+  total_files: 37
+  total_lines: 15952
+  code_lines: 12389
+  comment_lines: 864
+  route_files: 0
+  service_files: 11
+  model_files: 0
+  total_routes: 91
+architecture:
+  pattern: Layered Architecture
+  framework: FastAPI
+  layers:
+    router:
+      description: API路由层，定义HTTP端点
+      files: []
+    service:
+      description: 服务层，实现业务逻辑
+      files:
+      - project_service.py
+      - task_service.py
+      - agent_service.py
+      - agent_deployment_service.py
+      - workflow_service.py
+      - agent_cli_workflow_service.py
+      - statistics_service.py
+      - session_service.py
+      - agent_runtime_service.py
+      - stage_service.py
+      - invocation_service.py
+    model:
+      description: 模型层，定义数据结构
+      files: []
+api_routes:
+- file: main.py
+  function: health_check
+  decorator: app.get
+- file: main.py
+  function: root
+  decorator: app.get
+- file: auth.py
+  function: login
+  decorator: router.post
+- file: auth.py
+  function: logout
+  decorator: router.post
+- file: auth.py
+  function: get_me
+  decorator: router.get
+- file: auth.py
+  function: check_auth
+  decorator: router.get
+- file: sessions.py
+  function: create_session
+  decorator: router.post
+- file: sessions.py
+  function: list_agent_sessions
+  decorator: router.get
+- file: sessions.py
+  function: get_session
+  decorator: router.get
+- file: sessions.py
+  function: list_messages
+  decorator: router.get
+- file: sessions.py
+  function: send_message
+  decorator: router.post
+- file: sessions.py
+  function: upload_files_to_session
+  decorator: router.post
+- file: sessions.py
+  function: stream_chat
+  decorator: router.post
+- file: sessions.py
+  function: delete_session
+  decorator: router.delete
+- file: tasks.py
+  function: get_task_status
+  decorator: router.get
+- file: config.py
+  function: list_config_files
+  decorator: router.get
+- file: config.py
+  function: get_config_file
+  decorator: router.get
+- file: config.py
+  function: update_config_file
+  decorator: router.put
+- file: config.py
+  function: validate_config
+  decorator: router.post
+- file: config.py
+  function: restore_config_backup
+  decorator: router.post
+- file: agents.py
+  function: list_agents
+  decorator: router.get
+- file: agents.py
+  function: get_agent
+  decorator: router.get
+- file: agents.py
+  function: get_agent_context
+  decorator: router.get
+- file: agents.py
+  function: get_agent_statistics
+  decorator: router.get
+- file: agents.py
+  function: check_agent_runtime_health
+  decorator: router.get
+- file: agents.py
+  function: invoke_agent
+  decorator: router.post
+- file: agents.py
+  function: update_agent_status
+  decorator: router.put
+- file: agents.py
+  function: delete_agent
+  decorator: router.delete
+- file: agentcore.py
+  function: stream_agentcore
+  decorator: router.post
+- file: agent_files.py
+  function: get_agent_files
+  decorator: router.get
+- file: agent_files.py
+  function: get_agent_code
+  decorator: router.get
+- file: agent_files.py
+  function: get_agent_prompt
+  decorator: router.get
+- file: agent_files.py
+  function: get_agent_tools
+  decorator: router.get
+- file: agent_files.py
+  function: save_agent_code
+  decorator: router.put
+- file: agent_files.py
+  function: save_agent_prompt
+  decorator: router.put
+- file: agent_files.py
+  function: save_agent_tool
+  decorator: router.put
+- file: workflows.py
+  function: create_agent_update
+  decorator: router.post
+- file: workflows.py
+  function: update_agent
+  decorator: router.post
+- file: workflows.py
+  function: create_tool_build
+  decorator: router.post
+- file: workflows.py
+  function: get_workflow_status
+  decorator: router.get
+- file: workflows.py
+  function: list_workflow_types
+  decorator: router.get
+- file: statistics.py
+  function: get_overview
+  decorator: router.get
+- file: statistics.py
+  function: get_build_statistics
+  decorator: router.get
+- file: statistics.py
+  function: get_invocation_statistics
+  decorator: router.get
+- file: statistics.py
+  function: get_agent_category_distribution
+  decorator: router.get
+- file: statistics.py
+  function: get_top_agents
+  decorator: router.get
+- file: statistics.py
+  function: get_recent_activities
+  decorator: router.get
+- file: statistics.py
+  function: get_system_health
+  decorator: router.get
+- file: workflow_control.py
+  function: pause_workflow
+  decorator: router.post
+- file: workflow_control.py
+  function: resume_workflow
+  decorator: router.post
+- file: workflow_control.py
+  function: stop_workflow
+  decorator: router.post
+- file: workflow_control.py
+  function: restart_workflow
+  decorator: router.post
+- file: workflow_control.py
+  function: get_workflow_status
+  decorator: router.get
+- file: workflow_control.py
+  function: get_stage_status
+  decorator: router.get
+- file: workflow_control.py
+  function: get_workflow_metrics
+  decorator: router.get
+- file: workflow_control.py
+  function: get_stage_output
+  decorator: router.get
+- file: workflow_control.py
+  function: get_multi_agent_progress
+  decorator: router.get
+- file: workflow_control.py
+  function: get_agent_progress
+  decorator: router.get
+- file: workflow_control.py
+  function: list_project_files
+  decorator: router.get
+- file: workflow_control.py
+  function: get_file_content_api
+  decorator: router.get
+- file: projects.py
+  function: create_project
+  decorator: router.post
+- file: projects.py
+  function: list_projects
+  decorator: router.get
+- file: projects.py
+  function: get_project
+  decorator: router.get
+- file: projects.py
+  function: get_build_dashboard
+  decorator: router.get
+- file: projects.py
+  function: list_project_stages
+  decorator: router.get
+- file: projects.py
+  function: control_project
+  decorator: router.post
+- file: projects.py
+  function: delete_project
+  decorator: router.delete
+- file: projects.py
+  function: list_project_files
+  decorator: router.get
+- file: projects.py
+  function: get_project_file
+  decorator: router.get
+- file: projects.py
+  function: get_workflow_report
+  decorator: router.get
+- file: projects.py
+  function: get_stage_document
+  decorator: router.get
+- file: projects.py
+  function: get_project_sync_status
+  decorator: router.get
+- file: projects.py
+  function: sync_project_from_s3
+  decorator: router.post
+- file: projects.py
+  function: sync_project_to_s3
+  decorator: router.post
+- file: projects.py
+  function: ensure_project_available
+  decorator: router.post
+- file: agent_tools.py
+  function: get_tool_categories
+  decorator: router.get
+- file: agent_tools.py
+  function: list_all_tools
+  decorator: router.get
+- file: agent_tools.py
+  function: get_tool_detail
+  decorator: router.get
+- file: agent_tools.py
+  function: test_tool
+  decorator: router.post
+- file: agent_tools.py
+  function: list_mcp_servers
+  decorator: router.get
+- file: agent_tools.py
+  function: get_mcp_server
+  decorator: router.get
+- file: agent_tools.py
+  function: update_mcp_server
+  decorator: router.put
+- file: agent_tools.py
+  function: create_mcp_server
+  decorator: router.post
+- file: agent_tools.py
+  function: delete_mcp_server
+  decorator: router.delete
+- file: agent_tools.py
+  function: enable_mcp_server
+  decorator: router.post
+- file: agent_tools.py
+  function: disable_mcp_server
+  decorator: router.post
+- file: agent_tools.py
+  function: test_mcp_connection
+  decorator: router.post
+- file: agent_tools.py
+  function: get_mcp_server_tools
+  decorator: router.get
+- file: agent_graph.py
+  function: get_agent_graph
+  decorator: router.get
+- file: agent_graph.py
+  function: get_node_details
+  decorator: router.get
+- file: agent_graph.py
+  function: get_graph_stats
+  decorator: router.get
+routes: []
+services:
+- file: project_service.py
+  path: api/v2/services/project_service.py
+  classes:
+  - name: ProjectService
+    docstring: 项目管理服务
+    methods:
+    - __init__
+    - _scan_local_projects
+    - _parse_local_project
+    - _get_stage_display_name
+    - _get_local_projects
+    - create_project
+    - _initialize_stages
+    - _generate_project_name
+    - get_project
+    - list_projects
+    - _determine_local_project_status
+    - get_build_dashboard
+    - _get_workflow_artifact_dir
+    - _load_local_project_metrics
+    - control_project
+    - restart_from_stage
+    - get_control_status
+    - get_aggregated_metrics
+    - delete_project
+  functions:
+  - name: _get_project_root
+    args: []
+    decorators: []
+    docstring: 获取项目根目录
+- file: task_service.py
+  path: api/v2/services/task_service.py
+  classes:
+  - name: TaskService
+    docstring: 任务管理服务
+    methods:
+    - __init__
+    - get_task
+    - update_task_status
+    - increment_retry_count
+  functions: []
+- file: agent_service.py
+  path: api/v2/services/agent_service.py
+  classes:
+  - name: AgentService
+    docstring: Agent 管理服务
+    methods:
+    - __init__
+    - _scan_local_agents
+    - _parse_project_config
+    - _parse_status_yaml
+    - _get_local_agents
+    - register_agent
+    - _ensure_required_fields
+    - get_agent
+    - _find_agent_by_project_id
+    - _merge_agentcore_info
+    - list_agents
+    - update_agent
+    - update_agent_status
+    - record_invocation
+    - delete_agent
+    - _delete_agent_sessions
+    - _cleanup_sqs_messages
+    - delete_agent_complete
+  functions:
+  - name: _get_project_root
+    args: []
+    decorators: []
+    docstring: 获取项目根目录
+- file: agent_deployment_service.py
+  path: api/v2/services/agent_deployment_service.py
+  classes:
+  - name: AgentDeploymentError
+    docstring: Raised when an agent deployment fails.
+    methods: []
+  - name: DeploymentResult
+    docstring: null
+    methods:
+    - to_dict
+  - name: AgentDeploymentService
+    docstring: High-level service to deploy generated agents to AgentCore.
+    methods:
+    - __init__
+    - deploy_to_agentcore
+    - _load_project_config
+    - _materialize_project_artifacts
+    - _extract_artifacts
+    - _match_agent_name
+    - _extract_prompt_name
+    - _ensure_local_package_installation
+    - _write_agent_script
+    - _write_prompt_file
+    - _write_tool_files
+    - _ensure_requirements_file
+    - _ensure_agent_record
+    - _update_agent_record_after_deploy
+    - _initialize_runtime
+    - _ensure_deployment_directory
+    - _archive_deployment_artifacts
+    - _cleanup_temp_artifacts_from_root
+    - _resolve_requirements_path
+    - _resolve_path
+    - _build_agent_id
+    - _build_image_tag
+    - _extract_runtime_arn
+    - _extract_agent_alias_id
+    - _extract_agent_alias_arn
+    - _extract_runtime_status
+    - _stringify_details
+    - _to_module_path
+    - _to_relative_path
+    - _register_agent_instance
+    - _extract_capabilities
+  - name: _ArtifactMetadata
+    docstring: null
+    methods: []
+  functions: []
+- file: workflow_service.py
+  path: api/v2/services/workflow_service.py
+  classes:
+  - name: WorkflowService
+    docstring: 统一的工作流管理服务
+    methods:
+    - __init__
+    - _now
+    - _generate_project_id
+    - _generate_task_id
+    - _get_workflow_stages
+    - _initialize_stages
+    - create_agent_update_project
+    - create_tool_build_project
+    - get_workflow_status
+  functions: []
+- file: agent_cli_workflow_service.py
+  path: api/v2/services/agent_cli_workflow_service.py
+  classes:
+  - name: AgentWorkflowOutput
+    docstring: run_build 方法返回的结构化数据
+    methods:
+    - to_dict
+  - name: AgentCLIBuildService
+    docstring: 运行现有的 CLI 工作流，提供 Python 友好的 API
+    methods:
+    - _ensure_environment
+    - run_build
+    - _json_safe
+  functions: []
+- file: statistics_service.py
+  path: api/v2/services/statistics_service.py
+  classes:
+  - name: StatisticsService
+    docstring: 统计服务
+    methods:
+    - __init__
+    - get_overview
+    - get_build_statistics
+    - get_invocation_statistics
+    - get_agent_category_distribution
+    - get_top_agents
+    - get_recent_activities
+    - _get_project_action
+    - _get_agent_action
+    - get_system_health
+  functions: []
+- file: session_service.py
+  path: api/v2/services/session_service.py
+  classes:
+  - name: SessionService
+    docstring: 会话管理服务
+    methods:
+    - __init__
+    - create_session
+    - get_session
+    - list_sessions
+    - add_message
+    - list_messages
+    - close_session
+    - delete_session
+    - update_session
+  functions:
+  - name: generate_ulid
+    args: []
+    decorators: []
+    docstring: 生成 ULID 格式的消息 ID（时间有序）
+- file: agent_runtime_service.py
+  path: api/v2/services/agent_runtime_service.py
+  classes: []
+  functions:
+  - name: _get_s3_session_manager
+    args:
+    - session_id
+    decorators: []
+    docstring: "获取或创建 S3SessionManager 实例\n\n使用 Strands 官方的 S3SessionManager 实现多轮对话持久化\n\
+      \n参数:\n    session_id: 会话 ID\n\n返回:\n    S3SessionManager 实例，如果未配置 S3 bucket\
+      \ 则返回 None"
+  - name: _decode_unicode_escapes
+    args:
+    - text
+    decorators: []
+    docstring: 解码 Unicode 转义序列
+  - name: _parse_stream_event
+    args:
+    - chunk
+    decorators: []
+    docstring: '解析流式事件
+
+
+      返回格式:
+
+      - {"type": "text", "content": "..."}
+
+      - {"type": "tool_use", "tool_name": "...", "tool_id": "..."}
+
+      - {"type": "tool_input", "content": "..."}
+
+      - {"type": "tool_end", "tool_name": "...", "t'
+  - name: invoke_agentcore_stream
+    args:
+    - runtime_arn
+    - session_id
+    - message
+    - runtime_alias
+    - runtime_region
+    - user_id
+    - files
+    decorators: []
+    docstring: "调用 AgentCore 运行时（流式）\n\n支持文本和多模态输入（图片、文件等）\n\nYields:\n    Dict with\
+      \ keys:\n    - event: \"message\" | \"metrics\" | \"error\" | \"done\"\n   \
+      \ - type: \"text\" | \"tool_use\" | \"tool_input\" | \"tool_end\" (for message\
+      \ eve"
+  - name: invoke_local_agent_stream
+    args:
+    - agent_id
+    - agent_path
+    - session_id
+    - message
+    - prompt_path
+    decorators: []
+    docstring: '调用本地 Agent（流式）
+
+
+      使用简化的事件处理逻辑：
+
+      - 只处理带 "data" 键的文本事件（避免与 contentBlockDelta 重复）
+
+      - 使用 tool_use_stream 事件处理工具调用
+
+      - 使用 message 事件处理工具结果
+
+      - 支持多轮对话（通过 S3SessionManager 持久化会话历史）
+
+      - 收集统计数据（Token 使用量、会话轮数、工具调用次数）
+
+
+      参'
+  - name: _create_agent_from_template
+    args:
+    - prompt_path
+    - session_manager
+    - agent_id_suffix
+    decorators: []
+    docstring: "从提示词模板创建 Agent（同步函数，用于线程池执行）\n\n参数:\n    prompt_path: 提示词模板路径\n  \
+      \  session_manager: 会话管理器实例（用于多轮对话）\n    agent_id_suffix: Agent ID 后缀，用于确保同一\
+      \ session 中 agent_id 唯一\n\n返回:\n    Agent 实例"
+  - name: clear_agent_cache_for_session
+    args:
+    - session_id
+    decorators: []
+    docstring: "清理指定会话的 Agent 实例缓存\n\n当会话关闭时调用此函数，释放内存资源\n\n参数:\n    session_id: 会话\
+      \ ID\n\n返回:\n    清理的缓存条目数量"
+  - name: _record_invocation_async
+    args:
+    - agent_id
+    - session_id
+    - input_tokens
+    - output_tokens
+    - conversation_turns
+    - duration_ms
+    - status
+    - tool_calls_count
+    - started_at
+    - completed_at
+    - error_message
+    decorators: []
+    docstring: "异步记录调用统计（不阻塞主流程）\n\n使用 asyncio.create_task() 调用此函数，确保统计记录不影响用户体验。\n\
+      即使记录失败也只记录日志，不抛出异常。\n\n参数:\n    agent_id: Agent ID\n    session_id: 会话 ID\n\
+      \    input_tokens: 输入 Token 数\n    output_tokens: 输出 Token 数\n    con"
+- file: stage_service.py
+  path: api/v2/services/stage_service.py
+  classes:
+  - name: StageServiceV2
+    docstring: "阶段管理服务 v2\n\n提供阶段状态管理、输出存储和指标记录功能。\n\nValidates:\n    - Requirement\
+      \ 2.1: 存储 agent 输出内容\n    - Requirement 2.2: 存储执行指标\n    - Requirement 2.3:\
+      \ 存储生成文件路径\n    - Requirement 2.4: 存储设计文档内容\n    - Requirement 2.7: 超"
+    methods:
+    - __init__
+    - _normalize_stage_name
+    - _now
+    - _check_content_size
+    - mark_stage_running
+    - mark_stage_completed
+    - _store_content_to_s3
+    - _update_project_aggregated_metrics
+    - mark_stage_failed
+    - _update_project_progress
+    - get_stage
+    - get_stage_output
+    - _load_content_from_s3
+    - list_stages
+    - calculate_progress
+    - get_stage_design_document
+    - list_generated_files
+  functions:
+  - name: mark_stage_running
+    args:
+    - project_id
+    - stage_name
+    decorators: []
+    docstring: 标记阶段为运行中（兼容旧接口）
+  - name: mark_stage_completed
+    args:
+    - project_id
+    - stage_name
+    - output_data
+    - doc_path
+    decorators: []
+    docstring: 标记阶段为完成（兼容旧接口）
+  - name: mark_stage_failed
+    args:
+    - project_id
+    - stage_name
+    - error_message
+    decorators: []
+    docstring: 标记阶段为失败（兼容旧接口）
+- file: invocation_service.py
+  path: api/v2/services/invocation_service.py
+  classes:
+  - name: InvocationService
+    docstring: 调用记录服务
+    methods:
+    - __init__
+    - _ensure_agent_exists_in_db
+    - record_invocation
+    - get_agent_statistics
+  functions: []
+models: []
+core_features:
+- RESTful API接口
+- Agent管理
+- 任务执行
+- 配置管理
+- 请求验证
+- 错误处理
+- API文档
+integration_points:
+  agent_factory: API调用Agent Factory创建Agent
+  worker_system: API提交任务到Worker队列
+  database: API访问数据库存储数据

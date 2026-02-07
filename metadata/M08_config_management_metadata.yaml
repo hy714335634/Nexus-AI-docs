@@ -1,0 +1,233 @@
+module_info:
+  module_id: M08
+  name: Configuration Management
+  path: nexus_utils/config_loader.py
+  description: 配置管理系统，负责加载、解析和管理系统配置，支持多环境和动态配置
+  priority: P0
+  status: 活跃
+  created_date: '2026-02-05'
+  last_updated: '2026-02-05'
+code_statistics:
+  total_lines: 466
+  code_lines: 358
+  comment_lines: 18
+  blank_lines: 90
+  functions_count: 1
+  classes_count: 1
+  avg_complexity: 1.0
+configuration_files:
+  config_directory: config/
+  total_files: 4
+  files:
+  - file: logging_config.yaml
+    path: config/logging_config.yaml
+    top_level_keys:
+    - enhanced_logging
+    - strands_hooks
+    size_bytes: 1381
+  - file: default_config.yaml
+    path: config/default_config.yaml
+    top_level_keys:
+    - default-config
+    size_bytes: 6141
+  - file: workflows.yaml
+    path: config/workflows.yaml
+    top_level_keys:
+    - version
+    - defaults
+    - agent_build
+    - agent_update
+    - tool_build
+    - magician
+    size_bytes: 11277
+  - file: nexus_ai_base_rule.yaml
+    path: config/nexus_ai_base_rule.yaml
+    top_level_keys:
+    - description
+    - workflows
+    size_bytes: 14429
+classes:
+- name: ConfigLoader
+  lineno: 17
+  bases: []
+  has_docstring: true
+  docstring: 配置加载器
+  methods_count: 23
+  methods:
+  - name: __init__
+    lineno: 20
+    args:
+    - self
+    - config_path
+    has_docstring: true
+  - name: _load_config
+    lineno: 31
+    args:
+    - self
+    has_docstring: true
+  - name: _configure_logging
+    lineno: 51
+    args:
+    - self
+    has_docstring: true
+  - name: get
+    lineno: 87
+    args:
+    - self
+    - key
+    - default
+    has_docstring: true
+  - name: get_section
+    lineno: 101
+    args:
+    - self
+    - section_name
+    - default
+    has_docstring: true
+  - name: get_nested
+    lineno: 115
+    args:
+    - self
+    has_docstring: true
+  - name: get_with_env_override
+    lineno: 141
+    args:
+    - self
+    - env_var_name
+    has_docstring: true
+  - name: get_aws_config
+    lineno: 179
+    args:
+    - self
+    has_docstring: true
+  - name: get_bedrock_config
+    lineno: 188
+    args:
+    - self
+    has_docstring: true
+  - name: get_strands_config
+    lineno: 197
+    args:
+    - self
+    has_docstring: true
+  - name: get_agentcore_config
+    lineno: 206
+    args:
+    - self
+    has_docstring: true
+  - name: get_nexus_ai_config
+    lineno: 215
+    args:
+    - self
+    has_docstring: true
+  - name: get_mcp_config
+    lineno: 233
+    args:
+    - self
+    has_docstring: true
+  - name: get_multimodal_parser_config
+    lineno: 242
+    args:
+    - self
+    has_docstring: true
+  - name: get_logging_config
+    lineno: 251
+    args:
+    - self
+    has_docstring: true
+  - name: get_workflow_version_config
+    lineno: 260
+    args:
+    - self
+    has_docstring: true
+  - name: get_workflow_config
+    lineno: 269
+    args:
+    - self
+    has_docstring: true
+  - name: get_workflow_stages
+    lineno: 306
+    args:
+    - self
+    has_docstring: true
+  - name: get_dynamodb_config
+    lineno: 316
+    args:
+    - self
+    has_docstring: true
+  - name: get_sqs_config
+    lineno: 356
+    args:
+    - self
+    has_docstring: true
+  - name: has_section
+    lineno: 391
+    args:
+    - self
+    - section_name
+    has_docstring: true
+  - name: list_sections
+    lineno: 404
+    args:
+    - self
+    has_docstring: true
+  - name: reload_config
+    lineno: 414
+    args:
+    - self
+    has_docstring: true
+functions:
+- name: get_config
+  lineno: 424
+  args: []
+  returns: ConfigLoader
+  has_docstring: true
+  docstring: "获取全局配置实例\n\nReturns:\n    ConfigLoader: 配置加载器实例"
+dependencies:
+  internal: []
+  external: []
+  total_count: 0
+dependents:
+  modules: []
+  count: 0
+core_features:
+- YAML配置文件加载
+- 多环境配置支持
+- 配置项访问接口
+- AWS配置管理
+- Bedrock模型配置
+- Strands框架配置
+- 路径配置管理
+- 默认值处理
+configuration_structure:
+  aws:
+    description: AWS服务配置
+    keys:
+    - bedrock_region_name
+    - aws_region_name
+    - aws_profile_name
+  bedrock:
+    description: Bedrock模型配置
+    keys:
+    - model_id
+    - lite_model_id
+    - pro_model_id
+  strands:
+    description: Strands框架配置
+    keys:
+    - template
+    - generated
+  multimodal_parser:
+    description: 多模态解析器配置
+    keys:
+    - aws
+    - file_limits
+environment_support:
+  development: 开发环境配置
+  production: 生产环境配置
+  testing: 测试环境配置
+integration_points:
+  agent_factory: 提供Agent创建所需的配置
+  mcp_manager: 提供MCP服务器配置
+  multimodal_processing: 提供文件处理配置
+  all_modules: 作为全局配置中心被所有模块使用

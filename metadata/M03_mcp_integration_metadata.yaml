@@ -1,0 +1,272 @@
+module_info:
+  module_id: M03
+  name: MCP Integration
+  path: nexus_utils/mcp_manager.py
+  description: MCP (Model Context Protocol) 集成系统，负责MCP服务器配置、客户端管理和工具集成
+  priority: P0
+  status: 活跃
+  created_date: '2026-02-05'
+  last_updated: '2026-02-05'
+code_statistics:
+  total_lines: 776
+  code_lines: 566
+  comment_lines: 51
+  blank_lines: 159
+  functions_count: 6
+  classes_count: 4
+  avg_complexity: 2.83
+mcp_configurations:
+  config_directory: mcp/
+  total_configs: 2
+  config_files:
+  - file: system_mcp_server.json
+    path: mcp/system_mcp_server.json
+    mcpServers:
+    - awslabs.core-mcp-server
+    - awslabs.aws-pricing-mcp-server
+    - awslabs.aws-api-mcp-server
+  - file: public_mcp_server.json
+    path: mcp/public_mcp_server.json
+    mcpServers:
+    - test-server
+    - disabled-server
+mcp_servers:
+- name: awslabs.core-mcp-server
+  command: uvx
+  args:
+  - awslabs.core-mcp-server@latest
+  env:
+    FASTMCP_LOG_LEVEL: ERROR
+  autoApprove: []
+  config_file: system_mcp_server.json
+- name: awslabs.aws-pricing-mcp-server
+  command: uvx
+  args:
+  - awslabs.aws-pricing-mcp-server@latest
+  env:
+    FASTMCP_LOG_LEVEL: ERROR
+    AWS_PROFILE: default
+    AWS_REGION: us-east-1
+  autoApprove: []
+  config_file: system_mcp_server.json
+- name: awslabs.aws-api-mcp-server
+  command: uvx
+  args:
+  - awslabs.aws-api-mcp-server@latest
+  env:
+    FASTMCP_LOG_LEVEL: ERROR
+    AWS_PROFILE: default
+    AWS_REGION: us-west-2
+  autoApprove: []
+  config_file: system_mcp_server.json
+- name: test-server
+  command: uvx
+  args:
+  - test-package@latest
+  env:
+    TEST_ENV: test_value
+  autoApprove:
+  - test-tool
+  config_file: public_mcp_server.json
+- name: disabled-server
+  command: uvx
+  args:
+  - disabled-package@latest
+  env: {}
+  autoApprove: []
+  config_file: public_mcp_server.json
+classes:
+- name: MCPServerConfig
+  lineno: 91
+  bases: []
+  has_docstring: true
+  docstring: "MCP服务器配置数据类\n\n表示单个MCP服务器的完整配置信息。\n\n属性:\n    name (str): 服务器名称，用作唯一标识符\n\
+    \    command (str): 启动服务器的命令（如 \"uvx\"）\n    args (List[str]): 命令参数列表（如 [\"package@latest\"\
+    ]）\n    env (Dict[str, str]): 环境变量字典\n    auto_app"
+  methods_count: 1
+  methods:
+  - name: is_enabled
+    lineno: 122
+    args:
+    - self
+    has_docstring: true
+- name: MCPClientFactory
+  lineno: 132
+  bases: []
+  has_docstring: true
+  docstring: "MCP客户端工厂类\n\n负责创建和验证MCP客户端实例。使用工厂模式来封装客户端创建的复杂性。\n\n主要功能：\n- 验证MCP服务器配置\n\
+    - 创建MCP客户端实例\n- 处理客户端创建过程中的错误\n\n使用示例:\n    config = MCPServerConfig(...)\n  \
+    \  client = await MCPClientFactory.create_client(config)"
+  methods_count: 3
+  methods:
+  - name: _validate_config
+    lineno: 149
+    args:
+    - config
+    has_docstring: true
+  - name: create_client
+    lineno: 185
+    args:
+    - config
+    has_docstring: true
+  - name: create_client_sync
+    lineno: 233
+    args:
+    - config
+    has_docstring: true
+- name: MCPManager
+  lineno: 277
+  bases: []
+  has_docstring: true
+  docstring: "MCP管理器类\n\n核心管理类，负责加载、管理和提供对MCP服务器配置的访问。\n\n主要功能：\n- 从JSON文件加载MCP服务器配置\n\
+    - 提供配置查询和访问接口\n- 创建MCP客户端实例\n- 支持配置热重载\n\n配置文件格式:\n    {\n        \"mcpServers\"\
+    : {\n            \"server-name\": {\n                \"command\": \"u"
+  methods_count: 10
+  methods:
+  - name: __init__
+    lineno: 313
+    args:
+    - self
+    - config_path
+    has_docstring: false
+  - name: load_configs
+    lineno: 318
+    args:
+    - self
+    has_docstring: true
+  - name: _load_single_config
+    lineno: 346
+    args:
+    - self
+    - config_file
+    has_docstring: true
+  - name: _parse_server_config
+    lineno: 378
+    args:
+    - self
+    - server_name
+    - server_config
+    has_docstring: true
+  - name: get_server_config
+    lineno: 419
+    args:
+    - self
+    - server_name
+    has_docstring: true
+  - name: get_all_servers
+    lineno: 431
+    args:
+    - self
+    has_docstring: true
+  - name: get_enabled_servers
+    lineno: 440
+    args:
+    - self
+    has_docstring: true
+  - name: reload_configs
+    lineno: 449
+    args:
+    - self
+    has_docstring: true
+  - name: create_client
+    lineno: 458
+    args:
+    - self
+    - server_name
+    has_docstring: true
+  - name: create_client_sync
+    lineno: 486
+    args:
+    - self
+    - server_name
+    has_docstring: true
+- name: MCPManagerRegistry
+  lineno: 511
+  bases: []
+  has_docstring: true
+  docstring: "MCPManager 注册表类\n\n管理多个MCPManager实例，为不同的配置路径提供单例模式支持。\n这确保了相同配置路径的管理器实例是唯一的，避免重复加载配置。\n\
+    \n使用示例:\n    # 获取默认实例\n    manager = MCPManagerRegistry.get_default_instance()\n\
+    \    \n    # 获取特定路径的实例\n    manager = MCPMan"
+  methods_count: 3
+  methods:
+  - name: get_instance
+    lineno: 528
+    args:
+    - cls
+    - config_path
+    has_docstring: true
+  - name: get_default_instance
+    lineno: 543
+    args:
+    - cls
+    has_docstring: true
+  - name: clear_instances
+    lineno: 553
+    args:
+    - cls
+    has_docstring: true
+functions:
+- name: get_mcp_manager
+  lineno: 563
+  args:
+  - config_path
+  returns: MCPManager
+  has_docstring: true
+  docstring: "获取 MCPManager 实例的便捷函数\n\n这是获取MCPManager实例的推荐方式，它通过注册表确保单例模式。\n\nArgs:\n\
+    \    config_path (str): 配置文件路径模式，默认为 './mcp/*.json'\n    \nReturns:\n    MCPManager:\
+    \ 管理器实例\n    \n示例:\n    # 使用默认路径\n    manager = get_mcp_man"
+- name: get_default_mcp_manager
+  lineno: 585
+  args: []
+  returns: MCPManager
+  has_docstring: true
+  docstring: "获取默认 MCPManager 实例的便捷函数\n\n这是最常用的获取管理器实例的方式，使用默认的配置文件路径。\n\nReturns:\n\
+    \    MCPManager: 使用默认配置的管理器实例\n    \n示例:\n    manager = get_default_mcp_manager()\n\
+    \    servers = manager.get_all_servers()"
+- name: demo_basic_usage
+  lineno: 601
+  args: []
+  returns: null
+  has_docstring: true
+  docstring: 演示基本使用方法
+- name: demo_client_creation
+  lineno: 638
+  args:
+  - manager
+  - enabled_servers
+  returns: null
+  has_docstring: true
+  docstring: 演示客户端创建功能
+- name: demo_error_handling
+  lineno: 666
+  args:
+  - manager
+  returns: null
+  has_docstring: true
+  docstring: 演示错误处理功能
+- name: demo_advanced_features
+  lineno: 698
+  args:
+  - manager
+  returns: null
+  has_docstring: true
+  docstring: 演示高级功能
+dependencies:
+  internal: []
+  external: []
+  total_count: 0
+dependents:
+  modules: []
+  count: 0
+core_features:
+- MCP服务器配置管理
+- MCP客户端创建和连接
+- 工具自动发现和注册
+- 多MCP服务器支持
+- 自动审批配置
+- 工具调用代理
+- 连接生命周期管理
+integration_points:
+  agent_factory: 为Agent提供MCP工具集成
+  prompt_manager: 从提示词模板获取MCP依赖
+  strands_framework: 与Strands工具系统集成

@@ -1,0 +1,4813 @@
+module_info:
+  module_id: M09
+  name: Tool System
+  path: tools/ 和 nexus_utils/workflow/
+  description: 工具系统，提供Agent可调用的工具函数，支持工具注册、发现和执行
+  priority: P0
+  status: 活跃
+  created_date: '2026-02-05'
+  last_updated: '2026-02-05'
+code_statistics:
+  total_files: 94
+  total_lines: 67163
+  code_lines: 51348
+  comment_lines: 4630
+  total_tool_functions: 539
+  total_categories: 3
+architecture:
+  pattern: Registry + Decorator Pattern
+  description: 使用装饰器模式标记工具函数，通过注册表管理工具的发现和调用
+  components:
+    system_tools: 系统级工具，提供基础功能
+    template_tools: 工具模板，用于生成新工具
+    generated_tools: 自动生成的工具
+    workflow: 工作流相关工具
+tool_categories:
+  template_tools:
+    file_count: 5
+    files:
+    - http_client.py
+    - web_search_tool.py
+    - data_converter.py
+    - research_tools.py
+    - text_processor.py
+    tool_functions: 21
+  system_tools:
+    file_count: 16
+    files:
+    - qcli_integration.py
+    - multimodal_content_parser.py
+    - prompt_template_provider.py
+    - tool_template_provider.py
+    - agent_template_provider.py
+    - project_information.py
+    - mcp_config_manager.py
+    - stage_tracker.py
+    - deployment_manager.py
+    - tool_validator.py
+    - agent_developer_team_members.py
+    - project_manager.py
+    - tool_project_manager.py
+    - prompt_version_manager.py
+    - version_manager.py
+    - tool_version_generator.py
+    tool_functions: 90
+  generated_tools:
+    file_count: 73
+    files:
+    - aws_pricing_tool.py
+    - courseware_generation_tools.py
+    - valuation_tools.py
+    - financial_analysis_tools.py
+    - report_generation_tools.py
+    - financial_data_fetcher.py
+    - multi_agent_as_tools.py
+    - dynamic_tools_from_tooluniverse.py
+    - create_knowledge_graph.py
+    - knowledge_graph_queries.py
+    - tools_embedding.py
+    - tools_embedding_search.py
+    - image_processor.py
+    - pptx_generator.py
+    - semantic_analyzer.py
+    - html_parser.py
+    - cache_manager.py
+    - layout_optimizer.py
+    - style_mapper.py
+    - batch_processor.py
+    - quality_controller.py
+    - medical_glossary_manager.py
+    - translation_engine.py
+    - docx_processor.py
+    - drug_feedback_tools.py
+    - engine_adapters.py
+    - environment_detector.py
+    - utils.py
+    - exceptions.py
+    - multi_search_engine.py
+    - result_formatter.py
+    - multimodal_content_parser.py
+    - comparison_tools.py
+    - aws_pricing_tools.py
+    - azure_pricing_tools.py
+    - scholar_search.py
+    - fda_support_tools.py
+    - fda_api_tools.py
+    - pmc_fulltext_retriever.py
+    - pmc_s3_connector.py
+    - review_writer.py
+    - literature_batch_processor.py
+    - ppt_converter.py
+    - markdown_formatter.py
+    - file_manager.py
+    - logo_design_tools.py
+    - test_browser_automation.py
+    - browser_viewer.py
+    - session_manager.py
+    - examples.py
+    - browser_automation_tools.py
+    - data_collector.py
+    - data_processor.py
+    - storage_tools.py
+    - newsletter_generator.py
+    - document_writer_tools.py
+    - document_structure_parser.py
+    - html_generator.py
+    - document_review_tools.py
+    - document_generation_tools.py
+    - pubmed_api_tool.py
+    - pubmed_api_integration.py
+    - tools_developer_doc.py
+    - aws_resource_collector_part2.py
+    - aws_resource_collector_part3.py
+    - nlp_processor.py
+    - aws_resource_collector.py
+    - neo4j_graph_manager.py
+    - report_generator.py
+    - health_checker.py
+    - aws_resource_collector_part1.py
+    - network_analyzer.py
+    - clinicaltrials_api_tools.py
+    tool_functions: 428
+system_tools:
+- file: qcli_integration.py
+  path: tools/system_tools/qcli_integration.py
+  tool_functions:
+  - name: inference_with_amazon_q
+    args:
+    - data
+    docstring: "与amazon Q CLI进行交互，使用Q CLI进行推理\n\nArgs:\n    data: 用户问题/需求\n\nReturns:\n\
+      \    Q CLI的响应结果"
+  classes: []
+  metrics:
+    total_lines: 46
+    code_lines: 35
+    comment_lines: 2
+- file: multimodal_content_parser.py
+  path: tools/system_tools/multimodal_content_parser.py
+  tool_functions:
+  - name: parse_multimodal_content
+    args:
+    - files
+    - context_description
+    - include_metadata
+    - processing_options
+    docstring: 'Parse multiple files of various types and generate structured Markdown
+      output.
+
+
+      This is the main function for processing multimodal content. It handles file
+      upload,
+
+      validation, processing through appr'
+  - name: get_supported_formats
+    args: []
+    docstring: "Get information about supported file formats and processing capabilities.\n\
+      \nReturns:\n    JSON string containing supported formats, file size limits,\
+      \ and processing capabilities"
+  - name: validate_files
+    args:
+    - files
+    docstring: "Validate files without processing them to check format support and\
+      \ size limits.\n\nArgs:\n    files: List of file dictionaries with 'filename',\
+      \ 'content', and 'size'\n\nReturns:\n    JSON string containing "
+  - name: get_processing_status
+    args: []
+    docstring: "Get current processing capabilities and system status.\n\nReturns:\n\
+      \    JSON string containing system status and processing capabilities"
+  - name: parse_multimodal_content_from_path
+    args:
+    - file_paths
+    - context_description
+    - include_metadata
+    - processing_options
+    docstring: 'Parse multiple files from various sources and generate structured
+      Markdown output.
+
+
+      This function supports three types of file paths:
+
+      1. Local file paths: /path/to/file.jpg, ./relative/path/file.docx
+
+      '
+  classes:
+  - name: MultimodalContentParserTool
+    docstring: 'System tool wrapper for multimodal content parsing functionality.
+
+
+      This class provides a clean interface for the Strands framework to interact
+
+      with the multimodal content parser system components.'
+    methods:
+    - __init__
+    - _init_services
+  metrics:
+    total_lines: 1007
+    code_lines: 771
+    comment_lines: 68
+- file: prompt_template_provider.py
+  path: tools/system_tools/agent_build_workflow/prompt_template_provider.py
+  tool_functions:
+  - name: list_prompt_templates
+    args:
+    - type
+    docstring: "列出所有可用的提示词模板\n\nReturns:\n    str: JSON格式的模板列表，包含每个模板的基本信息"
+  - name: get_prompt_template
+    args:
+    - template_name
+    docstring: "获取指定提示词模板的完整内容\n\nArgs:\n    template_name: 模板名称或相对路径（若无.yaml扩展名，则自动添加），如果为空则返回template.yaml\n\
+      \                  支持格式：\n                  - \"template\" (直接文件名)\n       \
+      \           - \"api_integration_agent\" (相对"
+  - name: get_template_metadata
+    args:
+    - template_name
+    docstring: "获取指定模板的元数据信息（不包含完整内容）\n\nArgs:\n    template_name: 模板名称或相对路径（不含.yaml扩展名）\n\
+      \                  支持格式：\n                  - \"template\" (直接文件名)\n       \
+      \           - \"test/template_requirements_analyzer\" (相对路径)\n\nR"
+  - name: get_prompt_template_info
+    args:
+    - template_name
+    docstring: "获取提示词模板的基本信息（不包含完整内容）\n\nArgs:\n    template_name: 模板名称或相对路径（若无.yaml扩展名，则自动添加），如果为空则返回template.yaml的信息\n\
+      \                  支持格式：\n                  - \"template\" (直接文件名)\n       \
+      \           - \"api_integration_"
+  - name: validate_prompt_template
+    args:
+    - template_name
+    docstring: "验证提示词模板文件的格式是否正确\n\nArgs:\n    template_name: 模板名称或相对路径（不含.yaml扩展名），如果为空则验证template.yaml\n\
+      \                  支持格式：\n                  - \"template\" (直接文件名)\n       \
+      \           - \"api_integration_agent\" (相对文件名)"
+  - name: validate_all_templates
+    args: []
+    docstring: "验证所有提示词模板文件的格式\n\nReturns:\n    str: JSON格式的所有模板验证结果"
+  - name: get_template_structure
+    args:
+    - template_name
+    docstring: "获取提示词模板的结构概览\n\nArgs:\n    template_name: 模板名称或相对路径（若无.yaml扩展名，则自动添加），如果为空则获取template.yaml的结构\n\
+      \                  支持格式：\n                  - \"template\" (直接文件名)\n       \
+      \           - \"api_integration_agent\" (相"
+  - name: search_templates_by_category
+    args:
+    - category
+    docstring: "根据分类搜索模板\n\nArgs:\n    category: 模板分类（如：assistant, analysis, generator等）\n\
+      \nReturns:\n    str: JSON格式的匹配模板列表"
+  classes: []
+  metrics:
+    total_lines: 941
+    code_lines: 712
+    comment_lines: 72
+- file: tool_template_provider.py
+  path: tools/system_tools/agent_build_workflow/tool_template_provider.py
+  tool_functions:
+  - name: list_all_tools
+    args: []
+    docstring: "列出所有可用的工具，包括模板工具、生成工具和内置工具\n\nReturns:\n    str: JSON格式的所有工具信息"
+  - name: get_builtin_tools
+    args: []
+    docstring: "获取所有内置工具信息\n\nReturns:\n    str: JSON格式的内置工具信息"
+  - name: get_template_tools
+    args: []
+    docstring: "获取所有模板工具信息\n\nReturns:\n    str: JSON格式的模板工具信息"
+  - name: get_generated_tools
+    args: []
+    docstring: "获取所有生成工具信息\n\nReturns:\n    str: JSON格式的生成工具信息"
+  - name: search_tools_by_name
+    args:
+    - tool_name
+    docstring: "根据工具名称搜索工具\n\nArgs:\n    tool_name: 要搜索的工具名称（支持部分匹配）\n\nReturns:\n\
+      \    str: JSON格式的匹配工具信息"
+  - name: search_tools_by_category
+    args:
+    - category
+    docstring: "根据分类搜索工具\n\nArgs:\n    category: 工具分类（如：File Operations, Web & Network等）\n\
+      \nReturns:\n    str: JSON格式的匹配工具信息"
+  - name: get_tool_details
+    args:
+    - tool_name
+    - tool_type
+    docstring: "获取特定工具的详细信息\n\nArgs:\n    tool_name: 工具名称\n    tool_type: 工具类型（builtin,\
+      \ template_tools, generated_tools, system_tools），可选\n\nReturns:\n    str: JSON格式的工具详细信息"
+  - name: get_tool_content
+    args:
+    - tool_name
+    - file_path
+    docstring: "获取工具的源代码内容\n\nArgs:\n    tool_name: 工具名称\n    file_path: 工具文件路径（可选，如果不提供则尝试自动查找）\n\
+      \nReturns:\n    str: 工具的源代码内容"
+  - name: validate_tool_file
+    args:
+    - file_path
+    docstring: "验证工具文件的格式和语法，提供详细的错误分类和具体原因\n\nArgs:\n    file_path: 工具文件路径\n\nReturns:\n\
+      \    str: JSON格式的验证结果，包含详细的错误分类和具体原因"
+  - name: get_available_categories
+    args: []
+    docstring: "获取所有可用的工具分类\n\nReturns:\n    str: JSON格式的分类列表"
+  classes: []
+  metrics:
+    total_lines: 849
+    code_lines: 660
+    comment_lines: 49
+- file: agent_template_provider.py
+  path: tools/system_tools/agent_build_workflow/agent_template_provider.py
+  tool_functions:
+  - name: get_all_templates
+    args: []
+    docstring: "获取所有可用的Agent模板信息\n\nReturns:\n    str: JSON格式的所有模板信息"
+  - name: search_templates_by_tags
+    args:
+    - tags
+    docstring: "根据标签搜索模板\n\nArgs:\n    tags (List[str]): 要搜索的标签列表\n    \nReturns:\n\
+      \    str: JSON格式的匹配模板信息"
+  - name: search_templates_by_description
+    args:
+    - keywords
+    docstring: "根据描述关键词搜索模板\n\nArgs:\n    keywords (List[str]): 要搜索的关键词列表\n    \n\
+      Returns:\n    str: JSON格式的匹配模板信息"
+  - name: get_template_by_id
+    args:
+    - template_id
+    docstring: "根据模板ID获取特定模板信息\n\nArgs:\n    template_id (str): 模板ID\n    \nReturns:\n\
+      \    str: JSON格式的模板信息"
+  - name: get_template_content
+    args:
+    - template_id
+    docstring: "获取模板文件的内容\n\nArgs:\n    template_id (str): 模板ID\n    \nReturns:\n\
+      \    str: 模板文件的内容"
+  - name: get_available_tags
+    args: []
+    docstring: "获取所有可用的标签\n\nReturns:\n    str: JSON格式的标签列表"
+  classes: []
+  metrics:
+    total_lines: 479
+    code_lines: 360
+    comment_lines: 24
+- file: project_information.py
+  path: tools/system_tools/agent_build_workflow/project_information.py
+  tool_functions:
+  - name: project_verify
+    args:
+    - project_name
+    docstring: "验证项目配置并生成配置参数\n\nArgs:\n    project_name: 项目名称\n    \nReturns:\n \
+      \   str: JSON格式的项目配置信息"
+  classes:
+  - name: ScriptInfo
+    docstring: 脚本信息数据结构
+    methods:
+    - __init__
+  - name: PromptInfo
+    docstring: 提示词信息数据结构
+    methods:
+    - __init__
+  - name: ToolInfo
+    docstring: 工具信息数据结构
+    methods:
+    - __init__
+  - name: ProjectConfig
+    docstring: 项目配置数据结构
+    methods:
+    - __init__
+  metrics:
+    total_lines: 465
+    code_lines: 349
+    comment_lines: 40
+- file: mcp_config_manager.py
+  path: tools/system_tools/agent_build_workflow/mcp_config_manager.py
+  tool_functions:
+  - name: get_all_mcp_servers
+    args: []
+    docstring: "获取所有MCP服务器配置信息\n\nReturns:\n    str: JSON格式的所有MCP服务器配置信息"
+  - name: get_enabled_mcp_servers
+    args: []
+    docstring: "获取所有启用的MCP服务器配置信息\n\nReturns:\n    str: JSON格式的启用的MCP服务器配置信息"
+  - name: get_mcp_server_by_name
+    args:
+    - server_name
+    docstring: "根据服务器名称获取特定MCP服务器配置信息\n\nArgs:\n    server_name (str): MCP服务器名称\n\
+      \    \nReturns:\n    str: JSON格式的MCP服务器配置信息"
+  - name: search_mcp_servers_by_command
+    args:
+    - command
+    docstring: "根据命令搜索MCP服务器\n\nArgs:\n    command (str): 要搜索的命令\n    \nReturns:\n\
+      \    str: JSON格式的匹配的MCP服务器配置信息"
+  - name: search_mcp_servers_by_args
+    args:
+    - keyword
+    docstring: "根据参数关键词搜索MCP服务器\n\nArgs:\n    keyword (str): 要搜索的参数关键词\n    \nReturns:\n\
+      \    str: JSON格式的匹配的MCP服务器配置信息"
+  - name: get_mcp_servers_with_auto_approve
+    args: []
+    docstring: "获取配置了自动批准工具的MCP服务器\n\nReturns:\n    str: JSON格式的配置了自动批准的MCP服务器信息"
+  - name: get_mcp_servers_with_env_vars
+    args: []
+    docstring: "获取配置了环境变量的MCP服务器\n\nReturns:\n    str: JSON格式的配置了环境变量的MCP服务器信息"
+  - name: get_mcp_server_statistics
+    args: []
+    docstring: "获取MCP服务器配置统计信息\n\nReturns:\n    str: JSON格式的MCP服务器统计信息"
+  - name: reload_mcp_configs
+    args: []
+    docstring: "重新加载MCP配置文件\n\nReturns:\n    str: 重新加载结果信息"
+  - name: validate_mcp_server_config
+    args:
+    - server_name
+    docstring: "验证指定MCP服务器的配置是否有效\n\nArgs:\n    server_name (str): MCP服务器名称\n    \n\
+      Returns:\n    str: JSON格式的验证结果"
+  classes: []
+  metrics:
+    total_lines: 411
+    code_lines: 297
+    comment_lines: 26
+- file: stage_tracker.py
+  path: tools/system_tools/agent_build_workflow/stage_tracker.py
+  tool_functions: []
+  classes:
+  - name: WorkflowPausedError
+    docstring: 工作流已暂停异常
+    methods: []
+  - name: WorkflowStoppedError
+    docstring: 工作流已停止异常
+    methods: []
+  metrics:
+    total_lines: 240
+    code_lines: 186
+    comment_lines: 1
+- file: deployment_manager.py
+  path: tools/system_tools/agent_build_workflow/deployment_manager.py
+  tool_functions:
+  - name: deploy_agent_to_agentcore
+    args:
+    - project_name
+    - agent_name
+    - agent_script_path
+    - project_id
+    - requirements_path
+    - region
+    docstring: 部署生成的Agent到Amazon Bedrock AgentCore并返回部署详情。
+  classes: []
+  metrics:
+    total_lines: 96
+    code_lines: 72
+    comment_lines: 1
+- file: tool_validator.py
+  path: tools/system_tools/agent_build_workflow/tool_validator.py
+  tool_functions:
+  - name: validate_tool_path
+    args:
+    - tool_path
+    docstring: "验证工具路径是否存在\n\nArgs:\n    tool_path: 工具路径，如 \"strands_tools/calculator\"\
+      \ 或 \"tools/system_tools/project_manager/get_project_status\"\n    \nReturns:\n\
+      \    str: JSON格式的验证结果"
+  - name: validate_tool_list
+    args:
+    - tool_paths
+    docstring: "批量验证工具路径列表\n\nArgs:\n    tool_paths: 工具路径列表\n    \nReturns:\n    str:\
+      \ JSON格式的批量验证结果"
+  - name: suggest_tool_alternatives
+    args:
+    - tool_path
+    docstring: "为无效的工具路径建议替代方案\n\nArgs:\n    tool_path: 无效的工具路径\n    \nReturns:\n\
+      \    str: JSON格式的建议结果"
+  - name: get_correct_tool_paths
+    args:
+    - project_name
+    docstring: "获取项目的正确工具路径格式\n\nArgs:\n    project_name: 项目名称\n    \nReturns:\n \
+      \   str: JSON格式的正确路径示例"
+  - name: verify_library_dependencies
+    args:
+    - library_name
+    - library_version
+    docstring: "验证 Python 库是否支持项目要求的 Python 版本\n\n从 pyproject.toml 中读取项目要求的 Python\
+      \ 版本，然后查询 PyPI API\n检查指定库是否支持该 Python 版本。\n\nArgs:\n    library_name: Python\
+      \ 库名称，如 \"requests\", \"pandas\" 等\n    library_version: 库的版本号，默认为 \"lat"
+  classes: []
+  metrics:
+    total_lines: 523
+    code_lines: 395
+    comment_lines: 51
+- file: agent_developer_team_members.py
+  path: tools/system_tools/agent_build_workflow/agent_developer_team_members.py
+  tool_functions:
+  - name: agent_code_developer
+    args:
+    - query
+    docstring: "invoke code developer agent to develop agent code, need to provide\
+      \ the agent name, agent design specification, prompt template and tool path\n\
+      Args:\n    query: A agent code development question\n\nReturns"
+  - name: agent_tool_developer
+    args:
+    - query
+    docstring: "invoke tool developer agent to develop tool code, need to provide\
+      \ the tool name, tool design specification\n\nArgs:\n    query: A tool code\
+      \ development question or design specification\n\nReturns:\n    A de"
+  - name: agent_prompt_engineer
+    args:
+    - query
+    docstring: "invoke prompt engineer agent to develop prompt template, need to provide\
+      \ the agent name, prompt template design specification, tool path\n\nArgs:\n\
+      \    query: A prompt template development question or des"
+  - name: agent_template_searcher
+    args:
+    - query
+    docstring: '智能模版搜索专家，通过自然语言需求分析和智能匹配算法，为agent提供精准的tools、agent、prompt模版推荐服务。
+
+
+      该工具能够：
+
+      1. 智能分析用户需求，提取核心功能、技术约束、业务场景等关键特征
+
+      2. 根据用户明确指定（如"工具模版"、"Agent模版"、"提示词模版"）或需求特点智能判断需要搜索的模版类型
+
+      3. 使用多种搜索策略进行模版匹配，包括语义相似度、功能匹配度、技术栈兼容'
+  classes: []
+  metrics:
+    total_lines: 119
+    code_lines: 93
+    comment_lines: 2
+- file: project_manager.py
+  path: tools/system_tools/agent_build_workflow/project_manager.py
+  tool_functions:
+  - name: project_init
+    args:
+    - project_name
+    docstring: "根据项目名称初始化项目目录结构\n\nArgs:\n    project_name (str): 项目名称，将作为目录名使用\n\
+      \    \nReturns:\n    str: 操作结果信息，包含创建的目录结构"
+  - name: update_project_config
+    args:
+    - project_name
+    - description
+    - version
+    docstring: "根据项目名称创建或更新项目配置文件\n\nArgs:\n    project_name (str): 项目名称\n    description\
+      \ (str, optional): 项目描述，如果不提供则使用默认描述\n    version (str, optional): 项目版本，如果不提供则使用默认版本\n\
+      \    \nReturns:\n    str: 操作结果信息"
+  - name: update_project_readme
+    args:
+    - project_name
+    - additional_content
+    docstring: "根据项目名称创建或更新项目README.md文件\n\nArgs:\n    project_name (str): 项目名称\n\
+      \    additional_content (str, optional): 额外要添加的内容\n    \nReturns:\n    str:\
+      \ 操作结果信息"
+  - name: update_project_status
+    args:
+    - project_name
+    - agent_name
+    - stage
+    - status
+    - doc_path
+    - agent_artifact_path
+    docstring: "更新项目状态文件中指定Agent的指定阶段状态\n\nArgs:\n    project_name (str): 项目名称（必须）\n\
+      \    agent_name (str): Agent名称（必须）\n    stage (str): 阶段名称（必须） - requirements_analyzer,\
+      \ system_architect, agent_designer, prompt_engineer, "
+  - name: get_project_status
+    args:
+    - project_name
+    - agent_name
+    docstring: "查询项目状态信息\n\nArgs:\n    project_name (str): 项目名称（必须）\n    agent_name\
+      \ (str, optional): Agent名称，如果不提供则返回指定项目完整status.yaml内容\n    \nReturns:\n   \
+      \ str: 查询结果信息，如果未指定agent_name则返回完整status.yaml内容，否则返回指定Agent的详细信息"
+  - name: get_agent_artifact_paths
+    args:
+    - project_name
+    - agent_name
+    - stage
+    docstring: "获取指定Agent的制品路径信息\n\nArgs:\n    project_name (str): 项目名称（必须）\n    agent_name\
+      \ (str): Agent名称（必须）\n    stage (str, optional): 阶段名称，如果不提供则返回所有支持制品路径的阶段信息\n\
+      \    \nReturns:\n    str: 制品路径信息"
+  - name: update_project_stage_content
+    args:
+    - project_name
+    - agent_name
+    - stage_name
+    - content
+    - agent_artifact_path
+    docstring: "将内容写入指定的项目阶段文件，自动添加项目和Agent上下文信息\n\nArgs:\n    project_name (str):\
+      \ 项目名称\n    agent_name (str): 正在开发的Agent名称\n    stage_name (str): 当前阶段名称\n \
+      \   content (str): 要写入的内容\n    agent_artifact_path (List[str], optio"
+  - name: update_agent_artifact_paths
+    args:
+    - project_name
+    - agent_name
+    - stage
+    - agent_artifact_path
+    - append_mode
+    docstring: "专门更新指定阶段的agent_artifact_path字段\n\nArgs:\n    project_name (str): 项目名称（必须）\n\
+      \    agent_name (str): Agent名称（必须）\n    stage (str): 阶段名称（必须） - prompt_engineer,\
+      \ tools_developer, agent_code_developer\n    agent_ar"
+  - name: append_agent_artifact_path
+    args:
+    - project_name
+    - agent_name
+    - stage
+    - file_path
+    docstring: "追加单个文件路径到指定阶段的agent_artifact_path字段\n\nArgs:\n    project_name (str):\
+      \ 项目名称（必须）\n    agent_name (str): Agent名称（必须）\n    stage (str): 阶段名称（必须） - prompt_engineer,\
+      \ tools_developer, agent_code_developer\n    fil"
+  - name: get_project_stage_content
+    args:
+    - project_name
+    - agent_name
+    - stage_name
+    docstring: "读取指定项目阶段文件的内容\n\nArgs:\n    project_name (str): 项目名称\n    agent_name\
+      \ (str): Agent名称\n    stage_name (str): 阶段名称\n    \nReturns:\n    str: 文件内容或错误信息"
+  - name: list_project_agents
+    args:
+    - project_name
+    docstring: "列出指定项目中的所有Agent目录\n\nArgs:\n    project_name (str): 项目名称\n    \nReturns:\n\
+      \    str: Agent列表信息"
+  - name: list_all_projects
+    args: []
+    docstring: "列出所有项目\n\nReturns:\n    str: 项目列表信息"
+  - name: get_project_context
+    args:
+    - project_name
+    - agent_name
+    docstring: "获取项目上下文信息，用于Agent输出时包含项目和Agent名称\n\nArgs:\n    project_name (str):\
+      \ 项目名称\n    agent_name (str, optional): Agent名称\n    \nReturns:\n    str: 项目上下文信息"
+  - name: get_project_from_stats
+    args:
+    - agent
+    docstring: Get user statistics from agent state.
+  - name: get_project_config
+    args:
+    - project_name
+    docstring: "获取指定项目的配置信息\n\nArgs:\n    project_name (str): 项目名称\n    \nReturns:\n\
+      \    str: JSON格式的项目配置信息"
+  - name: get_project_readme
+    args:
+    - project_name
+    docstring: "获取指定项目的README.md内容\n\nArgs:\n    project_name (str): 项目名称\n    \n\
+      Returns:\n    str: JSON格式的README内容和信息"
+  - name: list_project_tools
+    args:
+    - project_name
+    - detailed
+    docstring: "列出指定项目下的所有工具\n\nArgs:\n    project_name (str): 项目名称（必须）\n    detailed\
+      \ (bool): 是否返回详细信息，默认为False，只返回工具路径列表\n    \nReturns:\n    str: JSON格式的工具列表信息\n\
+      \    - 当detailed=False时：只返回工具路径列表\n    - 当detailed=True时：返回包含工具"
+  - name: generate_python_requirements
+    args:
+    - project_name
+    - content
+    docstring: "基于工具中使用的包，在项目文件夹中生成python requirements.txt 文件，内容为项目依赖的库\n\nArgs:\n\
+      \    project_name (str): 项目名称（必须）\n    content (str): 要写入的文件内容（必须）\n\nReturns:\n\
+      \    str: 操作结果信息"
+  - name: generate_content
+    args:
+    - type
+    - content
+    - project_name
+    - artifact_name
+    docstring: "根据类型生成内容文件到指定目录\n\nArgs:\n    type (Literal[\"agent\", \"prompt\"\
+      , \"tool\"]): 内容类型（必须），可以是 \"agent\"、\"prompt\" 或 \"tool\"\n    content (str):\
+      \ 要写入的文件内容（必须）\n    project_name (str): 项目名称（必须），同时用作目录名和文件名的基础\n    artifac"
+  classes: []
+  metrics:
+    total_lines: 2638
+    code_lines: 1910
+    comment_lines: 273
+- file: tool_project_manager.py
+  path: tools/system_tools/tool_build_workflow/tool_project_manager.py
+  tool_functions:
+  - name: initialize_tool_project
+    args:
+    - tool_name
+    - description
+    docstring: "初始化工具项目目录结构\n\nArgs:\n    tool_name: 工具项目名称，将作为目录名使用（格式：tool_build_xxxx）\n\
+      \    description: 工具项目描述\n    \nReturns:\n    str: 操作结果信息，包含创建的目录结构"
+  - name: get_tool_project_config
+    args:
+    - tool_name
+    docstring: "获取工具项目配置信息\n\nArgs:\n    tool_name: 工具项目名称\n    \nReturns:\n    str:\
+      \ JSON格式的配置信息"
+  - name: get_tool_project_status
+    args:
+    - tool_name
+    docstring: "获取工具项目状态信息\n\nArgs:\n    tool_name: 工具项目名称\n    \nReturns:\n    str:\
+      \ JSON格式的状态信息"
+  - name: update_tool_project_stage
+    args:
+    - tool_name
+    - stage_name
+    - status
+    - doc_path
+    - summary
+    docstring: "更新工具项目阶段状态\n\nArgs:\n    tool_name: 工具项目名称\n    stage_name: 阶段名称\n\
+      \    status: 阶段状态（True表示完成）\n    doc_path: 阶段文档路径\n    summary: 阶段总结\n    \n\
+      Returns:\n    str: 操作结果信息"
+  - name: write_tool_stage_document
+    args:
+    - tool_name
+    - stage_name
+    - content
+    docstring: "将阶段文档写入工具项目的 stages 目录\n\nArgs:\n    tool_name: 工具项目名称\n    stage_name:\
+      \ 阶段名称\n    content: 文档内容\n    \nReturns:\n    str: 操作结果信息"
+  - name: get_tool_stage_document
+    args:
+    - tool_name
+    - stage_name
+    docstring: "读取工具项目的阶段文档\n\nArgs:\n    tool_name: 工具项目名称\n    stage_name: 阶段名称\n\
+      \    \nReturns:\n    str: 文档内容或错误信息"
+  - name: register_tool
+    args:
+    - tool_name
+    - tool_function_name
+    - tool_file_path
+    - description
+    - parameters
+    docstring: "注册工具到工具项目\n\nArgs:\n    tool_name: 工具项目名称\n    tool_function_name:\
+      \ 工具函数名称\n    tool_file_path: 工具文件路径（相对于工具项目根目录）\n    description: 工具描述\n  \
+      \  parameters: 工具参数列表\n    \nReturns:\n    str: 操作结果信息"
+  - name: generate_tool_file
+    args:
+    - tool_name
+    - file_name
+    - content
+    docstring: "在工具项目目录中生成工具文件\n\nArgs:\n    tool_name: 工具项目名称\n    file_name: 文件名（例如：my_tool.py）\n\
+      \    content: 文件内容\n    \nReturns:\n    str: 操作结果信息"
+  - name: generate_tool_readme
+    args:
+    - tool_name
+    - readme_content
+    docstring: "生成工具项目的 README.md 文件\n\nArgs:\n    tool_name: 工具项目名称\n    readme_content:\
+      \ README 内容\n    \nReturns:\n    str: 操作结果信息"
+  classes: []
+  metrics:
+    total_lines: 630
+    code_lines: 465
+    comment_lines: 15
+- file: prompt_version_manager.py
+  path: tools/system_tools/agent_update_workflow/prompt_version_manager.py
+  tool_functions:
+  - name: read_prompt_versions
+    args:
+    - project_name
+    - agent_name
+    docstring: 读取指定 Agent 的提示词版本信息。
+  - name: append_prompt_version
+    args:
+    - project_name
+    - agent_name
+    - version_id
+    - version_payload
+    docstring: "在提示词 YAML 中追加新的版本节点。\n\nArgs:\n    project_name: 项目名称\n    agent_name:\
+      \ Agent 名称\n    version_id: 新的版本号，将写入 versions[].version\n    version_payload:\
+      \ JSON 字符串，描述版本字段（除 version 外的其他字段）"
+  classes:
+  - name: _LiteralDumper
+    docstring: 自定义YAML Dumper：字符串包含换行时使用'|'保持多行格式。
+    methods: []
+  metrics:
+    total_lines: 149
+    code_lines: 115
+    comment_lines: 1
+- file: version_manager.py
+  path: tools/system_tools/agent_update_workflow/version_manager.py
+  tool_functions:
+  - name: initialize_update_version
+    args:
+    - project_name
+    - user_request
+    - version_prefix
+    docstring: "初始化更新版本目录与 status.yaml 记录。\n\nArgs:\n    project_name: 项目名称\n    user_request:\
+      \ 用户更新请求概述\n    version_prefix: 版本号前缀，默认 v\n\nReturns:\n    JSON 字符串，包含 version_id、version_path、status_file\
+      \ 等信息"
+  - name: register_version_stage
+    args:
+    - project_name
+    - version_id
+    - stage_name
+    - status
+    - agent_name
+    - doc_path
+    - summary
+    - artifacts
+    docstring: "更新 status.yaml 中版本的阶段状态。\n\nArgs:\n    project_name: 项目名称\n    version_id:\
+      \ 正在更新的版本号\n    stage_name: 阶段名称（必须在允许列表中）\n    status: 阶段状态，例如 pending/in_progress/completed/blocked\n\
+      \    doc_path: 阶段输出的相对路径\n    sum"
+  - name: write_version_file
+    args:
+    - project_name
+    - version_id
+    - relative_path
+    - content
+    docstring: "将内容写入 projects/<project_name>/<version_id>/ 下指定相对路径。\n\nArgs:\n  \
+      \  project_name: 项目名称\n    version_id: 版本ID，需已初始化\n    relative_path: 相对于版本目录的文件路径，例如\
+      \ requirements_analysis.json\n    content: 要写入的文本内容"
+  - name: write_stage_document
+    args:
+    - project_name
+    - version_id
+    - stage_name
+    - content
+    - agent_name
+    - filename
+    docstring: "将阶段结构化内容写入版本目录，并返回文件路径。\n\nArgs:\n    project_name: 项目名称\n    version_id:\
+      \ 版本ID\n    stage_name: 阶段名称（可使用别名）\n    content: JSON 字符串或可序列化的文本\n    agent_name:\
+      \ 负责的Agent名称（用于记录status）\n    filename: 自定义文件名，默认 stag"
+  - name: get_stage_document
+    args:
+    - project_name
+    - version_id
+    - stage_name
+    - filename
+    docstring: 读取版本目录中指定阶段的JSON文件。
+  - name: append_change_log
+    args:
+    - project_name
+    - version_id
+    - title
+    - description
+    - stage
+    docstring: 为指定版本记录变更条目，并写入 change_log.yaml。
+  - name: finalize_update_version
+    args:
+    - project_name
+    - version_id
+    - summary
+    - status
+    - artifacts
+    docstring: 在更新流程结束时，更新版本状态并写入 summary.yaml。
+  classes: []
+  metrics:
+    total_lines: 593
+    code_lines: 502
+    comment_lines: 2
+- file: tool_version_generator.py
+  path: tools/system_tools/agent_update_workflow/tool_version_generator.py
+  tool_functions:
+  - name: create_versioned_tool
+    args:
+    - project_name
+    - version_id
+    - module_name
+    - content
+    docstring: "创建版本化工具脚本。\n\nArgs:\n    project_name: 项目名称\n    version_id: 新的版本目录\n\
+      \    module_name: 工具脚本文件名（不含扩展名）\n    content: 脚本文本内容（必须包含 @tool 装饰器）"
+  - name: list_version_tools
+    args:
+    - project_name
+    - version_id
+    docstring: 列出指定项目版本目录下的工具脚本。
+  classes: []
+  metrics:
+    total_lines: 140
+    code_lines: 112
+    comment_lines: 1
+template_tools:
+- file: http_client.py
+  path: tools/template_tools/network/http_client.py
+  tool_functions:
+  - name: api_client
+    args:
+    - url
+    - method
+    - headers
+    - data
+    - timeout
+    docstring: "API客户端工具\n\nArgs:\n    url (str): API端点URL\n    method (str): HTTP方法\
+      \ (GET, POST, PUT, DELETE)\n    headers (Dict[str, str]): 请求头\n    data (Dict[str,\
+      \ Any]): 请求数据\n    timeout (int): 超时时间（秒）\n    \nReturns:\n   "
+  - name: auth_manager
+    args:
+    - auth_type
+    - credentials
+    docstring: "认证管理工具\n\nArgs:\n    auth_type (str): 认证类型 (bearer, basic, api_key,\
+      \ oauth2)\n    credentials (Dict[str, str]): 认证凭据\n    \nReturns:\n    str:\
+      \ JSON格式的认证信息"
+  - name: data_sync
+    args:
+    - source_url
+    - target_url
+    - sync_type
+    - headers
+    docstring: "数据同步工具\n\nArgs:\n    source_url (str): 源数据URL\n    target_url (str):\
+      \ 目标数据URL\n    sync_type (str): 同步类型 (full, incremental)\n    headers (Dict[str,\
+      \ str]): 请求头\n    \nReturns:\n    str: JSON格式的同步结果"
+  - name: webhook_sender
+    args:
+    - webhook_url
+    - payload
+    - event_type
+    docstring: "Webhook发送工具\n\nArgs:\n    webhook_url (str): Webhook URL\n    payload\
+      \ (Dict[str, Any]): 发送的数据\n    event_type (str): 事件类型\n    \nReturns:\n    str:\
+      \ JSON格式的发送结果"
+  classes: []
+- file: web_search_tool.py
+  path: tools/template_tools/network/web_search_tool.py
+  tool_functions:
+  - name: web_search
+    args:
+    - query
+    - max_results
+    docstring: "Search the web for information using DuckDuckGo.\n\nArgs:\n    query:\
+      \ Search query for information\n    max_results: Maximum number of results to\
+      \ return (default: 5)\n    \nReturns:\n    Search results with "
+  - name: web_search_news
+    args:
+    - query
+    - max_results
+    docstring: "Search for recent news articles using DuckDuckGo.\n\nArgs:\n    query:\
+      \ Search query for news\n    max_results: Maximum number of results to return\
+      \ (default: 5)\n    \nReturns:\n    News search results with t"
+  - name: web_search_academic
+    args:
+    - query
+    - max_results
+    docstring: "Search for academic and scholarly content using targeted search terms.\n\
+      \nArgs:\n    query: Search query for academic content\n    max_results: Maximum\
+      \ number of results to return (default: 3)\n    \nReturn"
+  - name: multi_source_search
+    args:
+    - query
+    - include_news
+    - include_academic
+    docstring: "Perform comprehensive search across multiple sources.\n\nArgs:\n \
+      \   query: Search query\n    include_news: Whether to include news results\n\
+      \    include_academic: Whether to include academic results\n    \nRe"
+  classes: []
+- file: data_converter.py
+  path: tools/template_tools/common/data_converter.py
+  tool_functions:
+  - name: json_converter
+    args:
+    - data
+    - source_format
+    - target_format
+    docstring: "JSON数据转换工具\n\nArgs:\n    data (str): 要转换的数据\n    source_format (str):\
+      \ 源格式 (json, xml, csv, yaml)\n    target_format (str): 目标格式 (json, xml, csv,\
+      \ yaml)\n    \nReturns:\n    str: 转换后的数据"
+  - name: xml_converter
+    args:
+    - data
+    - source_format
+    - target_format
+    docstring: "XML数据转换工具\n\nArgs:\n    data (str): 要转换的数据\n    source_format (str):\
+      \ 源格式 (xml, json, csv)\n    target_format (str): 目标格式 (xml, json, csv)\n   \
+      \ \nReturns:\n    str: 转换后的数据"
+  - name: csv_converter
+    args:
+    - data
+    - source_format
+    - target_format
+    docstring: "CSV数据转换工具\n\nArgs:\n    data (str): 要转换的数据\n    source_format (str):\
+      \ 源格式 (csv, json, xml)\n    target_format (str): 目标格式 (csv, json, xml)\n   \
+      \ \nReturns:\n    str: 转换后的数据"
+  - name: data_validator
+    args:
+    - data
+    - format_type
+    - schema
+    docstring: "数据验证工具\n\nArgs:\n    data (str): 要验证的数据\n    format_type (str): 数据格式\
+      \ (json, xml, csv)\n    schema (Dict[str, Any]): 验证模式（可选）\n    \nReturns:\n\
+      \    str: JSON格式的验证结果"
+  classes: []
+- file: research_tools.py
+  path: tools/template_tools/common/research_tools.py
+  tool_functions:
+  - name: information_collector
+    args:
+    - topic
+    - sources
+    - max_results
+    docstring: "真实信息收集工具 - 只负责数据收集，不进行结论判断\n\nArgs:\n    topic (str): 研究主题\n    sources\
+      \ (List[str], optional): 指定信息源列表\n    max_results (int, optional): 最大结果数量，默认10\n\
+      \    \nReturns:\n    str: 收集到的原始数据，供Agent分析"
+  - name: web_search_enhanced
+    args:
+    - query
+    - search_type
+    - max_results
+    docstring: "增强的网络搜索工具 - 只负责数据收集，不进行结论判断\n\nArgs:\n    query (str): 搜索查询\n    search_type\
+      \ (str): 搜索类型 (general/academic/news/technical)\n    max_results (int): 最大结果数量\n\
+      \    \nReturns:\n    str: 搜索结果的结构化数据，供Agent分析"
+  - name: data_analyzer
+    args:
+    - data
+    - analysis_type
+    - dimensions
+    docstring: "数据分析工具 - 只进行数据整理和基础统计，不进行结论判断\n\nArgs:\n    data (str): 要分析的数据（JSON格式）\n\
+      \    analysis_type (str): 分析类型（basic/comprehensive/advanced）\n    dimensions\
+      \ (List[str], optional): 分析维度\n    \nReturns:\n    str: 数据整理和基"
+  - name: report_generator
+    args:
+    - research_data
+    - report_type
+    - format_type
+    docstring: "报告生成工具 - 只负责格式化，不进行结论判断\n\nArgs:\n    research_data (str): 研究数据（JSON格式）\n\
+      \    report_type (str): 报告类型（summary/comprehensive/detailed）\n    format_type\
+      \ (str): 格式类型（structured/markdown/html）\n    \nReturns:\n   "
+  - name: trend_predictor
+    args:
+    - historical_data
+    - prediction_period
+    - confidence_level
+    docstring: "趋势预测工具 - 只提供预测框架，不进行具体预测\n\nArgs:\n    historical_data (str): 历史数据（JSON格式）\n\
+      \    prediction_period (str): 预测周期（6_months/1_year/2_years/5_years）\n    confidence_level\
+      \ (float): 置信水平（0.8-0.99）\n    \nReturns:\n  "
+  classes: []
+- file: text_processor.py
+  path: tools/template_tools/common/text_processor.py
+  tool_functions:
+  - name: text_analyzer
+    args:
+    - text
+    - analysis_type
+    docstring: "文本分析工具\n\nArgs:\n    text (str): 要分析的文本内容\n    analysis_type (str):\
+      \ 分析类型 (basic, sentiment, keywords, summary)\n    \nReturns:\n    str: JSON格式的分析结果"
+  - name: format_converter
+    args:
+    - content
+    - source_format
+    - target_format
+    docstring: "格式转换工具\n\nArgs:\n    content (str): 要转换的内容\n    source_format (str):\
+      \ 源格式 (json, yaml, csv, text)\n    target_format (str): 目标格式 (json, yaml, csv,\
+      \ text)\n    \nReturns:\n    str: 转换后的内容"
+  - name: content_extractor
+    args:
+    - text
+    - extraction_type
+    docstring: "内容提取工具\n\nArgs:\n    text (str): 要提取内容的文本\n    extraction_type (str):\
+      \ 提取类型 (links, emails, phone_numbers, dates)\n    \nReturns:\n    str: JSON格式的提取结果"
+  - name: text_cleaner
+    args:
+    - text
+    - cleaning_options
+    docstring: "文本清理工具\n\nArgs:\n    text (str): 要清理的文本\n    cleaning_options (List[str]):\
+      \ 清理选项 (remove_extra_spaces, remove_special_chars, normalize_whitespace, lowercase)\n\
+      \    \nReturns:\n    str: 清理后的文本"
+  classes: []
+generated_tools:
+- file: aws_pricing_tool.py
+  path: tools/generated_tools/aws_pricing_agent/aws_pricing_tool.py
+  tool_functions:
+  - name: use_aws
+    args:
+    - region
+    - service_name
+    - operation_name
+    - parameters
+    - label
+    - profile_name
+    docstring: "Make a boto3 client call with the specified service, operation, and\
+      \ parameters. Boto3 operations are snake_case.\n\nArgs:\n    region (str): Region\
+      \ name for calling the operation on AWS boto3\n    service"
+  - name: get_aws_pricing
+    args:
+    - service_code
+    - region
+    - filters
+    - max_results
+    docstring: "Get AWS pricing information for a specific service in a region.\n\n\
+      Args:\n    service_code (str): AWS service code (ec2, ebs, s3, network, elb,\
+      \ rds, elasticache, opensearch)\n    region (str): AWS region "
+  - name: get_ec2_instance_pricing
+    args:
+    - region
+    - instance_type
+    - tenancy
+    - offering_class
+    - term_type
+    - filter_zero_prices
+    docstring: "Get EC2 instance pricing information.\n\nArgs:\n    region (str):\
+      \ AWS region code (e.g., us-east-1, eu-west-1, cn-north-1)\n    instance_type\
+      \ (str, optional): EC2 instance type (e.g., t3.micro, m5.large)\n"
+  - name: get_ec2_instance_pricing_detailed
+    args:
+    - region
+    - instance_type
+    - tenancy
+    - offering_class
+    - term_type
+    - purchase_option
+    - lease_contract_length
+    docstring: "Get detailed EC2 instance pricing information with more precise filtering.\n\
+      \nArgs:\n    region (str): AWS region code (e.g., us-east-1, eu-west-1, cn-north-1)\n\
+      \    instance_type (str, optional): EC2 inst"
+  - name: get_ebs_pricing
+    args:
+    - region
+    - volume_type
+    docstring: "Get EBS volume pricing information.\n\nArgs:\n    region (str): AWS\
+      \ region code (e.g., us-east-1, eu-west-1, cn-north-1)\n    volume_type (str,\
+      \ optional): EBS volume type (e.g., gp2, io1, st1)\n\nReturns:\n "
+  - name: get_s3_pricing
+    args:
+    - region
+    - storage_class
+    docstring: "Get S3 storage pricing information.\n\nArgs:\n    region (str): AWS\
+      \ region code (e.g., us-east-1, eu-west-1, cn-north-1)\n    storage_class (str,\
+      \ optional): S3 storage class (e.g., Standard, Standard-IA, "
+  - name: get_rds_pricing
+    args:
+    - region
+    - instance_type
+    - engine
+    docstring: "Get RDS instance pricing information.\n\nArgs:\n    region (str):\
+      \ AWS region code (e.g., us-east-1, eu-west-1, cn-north-1)\n    instance_type\
+      \ (str, optional): RDS instance type (e.g., db.t3.micro, db.m5.l"
+  - name: get_elasticache_pricing
+    args:
+    - region
+    - instance_type
+    - cache_engine
+    docstring: "Get ElastiCache pricing information.\n\nArgs:\n    region (str): AWS\
+      \ region code (e.g., us-east-1, eu-west-1, cn-north-1)\n    instance_type (str,\
+      \ optional): ElastiCache node type (e.g., cache.t3.micro, c"
+  - name: get_opensearch_pricing
+    args:
+    - region
+    - instance_type
+    docstring: "Get OpenSearch service pricing information.\n\nArgs:\n    region (str):\
+      \ AWS region code (e.g., us-east-1, eu-west-1, cn-north-1)\n    instance_type\
+      \ (str, optional): OpenSearch instance type (e.g., t3.smal"
+  - name: get_elb_pricing
+    args:
+    - region
+    - load_balancer_type
+    docstring: "Get Elastic Load Balancing (ELB) pricing information.\n\nArgs:\n \
+      \   region (str): AWS region code (e.g., us-east-1, eu-west-1, cn-north-1)\n\
+      \    load_balancer_type (str, optional): Load balancer type (e.g."
+  - name: get_network_pricing
+    args:
+    - region
+    - data_direction
+    docstring: "Get network data transfer pricing information.\n\nArgs:\n    region\
+      \ (str): AWS region code (e.g., us-east-1, eu-west-1, cn-north-1)\n    data_direction\
+      \ (str, optional): Data transfer direction (e.g., In, "
+  - name: get_available_instance_types
+    args:
+    - region
+    - service
+    docstring: "Get available instance types for a specific region and service.\n\n\
+      Args:\n    region (str): AWS region code (e.g., us-east-1, eu-west-1, cn-north-1)\n\
+      \    service (str, optional): AWS service (ec2, rds, el"
+  - name: recommend_instance_types
+    args:
+    - region
+    - vcpu_min
+    - memory_min
+    - service
+    - current_generation_only
+    docstring: "Recommend instance types based on minimum requirements.\n\nArgs:\n\
+      \    region (str): AWS region code (e.g., us-east-1, eu-west-1, cn-north-1)\n\
+      \    vcpu_min (int): Minimum number of vCPUs required\n    memor"
+- file: courseware_generation_tools.py
+  path: tools/generated_tools/html_courseware_generator/courseware_generation_tools.py
+  tool_functions:
+  - name: html_structure_generator
+    args:
+    - subject
+    - topic
+    - sections
+    - include_navigation
+    docstring: "生成HTML课件的基础结构\n\nArgs:\n    subject: 学科名称\n    topic: 课件主题\n    sections:\
+      \ 章节列表，每个章节包含title和content_type\n    include_navigation: 是否包含导航栏\n    \nReturns:\n\
+      \    str: JSON格式的HTML结构字符串"
+  - name: css_style_generator
+    args:
+    - theme
+    - color_scheme
+    - responsive
+    docstring: "生成CSS样式代码\n\nArgs:\n    theme: 主题样式，可选值：modern, classic, minimal\n\
+      \    color_scheme: 自定义色彩方案，包含primary, secondary, background, text等\n    responsive:\
+      \ 是否生成响应式样式\n    \nReturns:\n    str: JSON格式的CSS样式字符串"
+  - name: javascript_code_generator
+    args:
+    - interactive_elements
+    - include_analytics
+    docstring: "生成JavaScript交互代码\n\nArgs:\n    interactive_elements: 交互元素列表，每个元素包含type和config\n\
+      \    include_analytics: 是否包含学习分析代码\n    \nReturns:\n    str: JSON格式的JavaScript代码字符串"
+  - name: math_formula_renderer
+    args:
+    - formulas
+    - library
+    docstring: "生成数学公式渲染代码\n\nArgs:\n    formulas: 公式列表，每个公式包含id、latex和description\n\
+      \    library: 渲染库，可选值：mathjax, katex\n    \nReturns:\n    str: JSON格式的公式渲染HTML和配置"
+  - name: chemistry_equation_generator
+    args:
+    - equations
+    docstring: "生成化学方程式展示HTML\n\nArgs:\n    equations: 化学方程式列表，每个包含id、equation和description\n\
+      \    \nReturns:\n    str: JSON格式的化学方程式HTML"
+  - name: interactive_element_builder
+    args:
+    - element_type
+    - element_config
+    docstring: "构建交互元素HTML\n\nArgs:\n    element_type: 元素类型，可选值：quiz, input, drag_drop,\
+      \ chart\n    element_config: 元素配置\n    \nReturns:\n    str: JSON格式的交互元素HTML"
+  - name: code_validator
+    args:
+    - html_content
+    - check_xss
+    - check_syntax
+    docstring: "验证HTML、CSS、JavaScript代码\n\nArgs:\n    html_content: 完整的HTML内容\n  \
+      \  check_xss: 是否检查XSS安全问题\n    check_syntax: 是否检查语法错误\n    \nReturns:\n    str:\
+      \ JSON格式的验证结果"
+  - name: xss_scanner
+    args:
+    - html_content
+    - auto_fix
+    docstring: "扫描XSS安全漏洞\n\nArgs:\n    html_content: HTML内容\n    auto_fix: 是否自动修复安全问题\n\
+      \    \nReturns:\n    str: JSON格式的扫描结果"
+  - name: subject_template_selector
+    args:
+    - subject
+    docstring: "选择学科对应的模板配置\n\nArgs:\n    subject: 学科名称\n    \nReturns:\n    str:\
+      \ JSON格式的模板配置"
+  - name: physics_chart_generator
+    args:
+    - chart_config
+    docstring: "生成物理图表代码\n\nArgs:\n    chart_config: 图表配置，包含type、data、labels等\n  \
+      \  \nReturns:\n    str: JSON格式的图表HTML和配置"
+- file: valuation_tools.py
+  path: tools/generated_tools/stock_analysis_agent/valuation_tools.py
+  tool_functions:
+  - name: calculate_dcf_valuation
+    args:
+    - free_cash_flows
+    - discount_rate
+    - terminal_growth_rate
+    - shares_outstanding
+    docstring: "计算DCF（现金流折现）估值\n\n使用自由现金流折现模型计算公司的内在价值。\n\nArgs:\n    free_cash_flows\
+      \ (List[float]): 预测的未来自由现金流列表（通常5-10年）\n    discount_rate (float): 折现率（WACC），以小数表示，例如0.10表示10%\n\
+      \    terminal_growth_rate (float): 永续增长率，以小数"
+  - name: calculate_relative_valuation
+    args:
+    - target_metrics
+    - peer_metrics
+    - valuation_multiples
+    docstring: "计算相对估值\n\n使用市盈率(P/E)、市净率(P/B)、市销率(P/S)等相对估值指标进行估值。\n\nArgs:\n    target_metrics\
+      \ (Dict[str, float]): 目标公司的财务指标，例如 {\"eps\": 5.0, \"revenue\": 1000000}\n  \
+      \  peer_metrics (List[Dict[str, float]]): 可比公司的财务指标列表\n    "
+  - name: calculate_wacc
+    args:
+    - equity_weight
+    - debt_weight
+    - cost_of_equity
+    - cost_of_debt
+    - tax_rate
+    docstring: "计算加权平均资本成本（WACC）\n\nWACC用作DCF模型中的折现率。\n\nArgs:\n    equity_weight\
+      \ (float): 权益占比，以小数表示，例如0.7表示70%\n    debt_weight (float): 债务占比，以小数表示，例如0.3表示30%\n\
+      \    cost_of_equity (float): 权益成本，以小数表示，例如0.12表示12%\n    cost_o"
+  - name: calculate_capm
+    args:
+    - risk_free_rate
+    - beta
+    - market_return
+    docstring: "使用CAPM模型计算权益成本\n\nCAPM: Re = Rf + β * (Rm - Rf)\n\nArgs:\n    risk_free_rate\
+      \ (float): 无风险利率，以小数表示，例如0.03表示3%\n    beta (float): 贝塔系数，衡量股票相对于市场的波动性\n  \
+      \  market_return (float): 市场预期回报率，以小数表示，例如0.10表示10%\n\nRetur"
+  - name: calculate_ev_to_ebitda
+    args:
+    - enterprise_value
+    - ebitda
+    docstring: "计算EV/EBITDA倍数\n\nEV/EBITDA是一个重要的估值指标，常用于并购估值。\n\nArgs:\n    enterprise_value\
+      \ (float): 企业价值\n    ebitda (float): EBITDA（息税折旧摊销前利润）\n\nReturns:\n    str:\
+      \ JSON格式的EV/EBITDA计算结果"
+  - name: calculate_peg_ratio
+    args:
+    - pe_ratio
+    - earnings_growth_rate
+    docstring: "计算PEG比率\n\nPEG比率 = P/E / 盈利增长率，用于评估成长股的估值。\n\nArgs:\n    pe_ratio\
+      \ (float): 市盈率\n    earnings_growth_rate (float): 盈利增长率，以百分比表示，例如15表示15%\n\n\
+      Returns:\n    str: JSON格式的PEG比率计算结果"
+  - name: calculate_dividend_discount_model
+    args:
+    - dividends
+    - growth_rate
+    - required_return
+    docstring: "使用股利折现模型（DDM）计算股票内在价值\n\n适用于稳定派息的公司。使用Gordon增长模型。\n\nArgs:\n    dividends\
+      \ (List[float]): 历史股利列表\n    growth_rate (float): 股利增长率，以小数表示，例如0.05表示5%\n \
+      \   required_return (float): 要求回报率，以小数表示，例如0.10表示10%\n\nReturns"
+  - name: calculate_price_targets
+    args:
+    - current_price
+    - valuations
+    - confidence_level
+    docstring: "基于多种估值方法综合计算目标价格\n\n综合DCF、相对估值等多种方法得出的估值，计算目标价格区间。\n\nArgs:\n    current_price\
+      \ (float): 当前股价\n    valuations (Dict[str, float]): 不同估值方法得出的价值，例如 {\"dcf\"\
+      : 100, \"pe\": 95, \"pb\": 105}\n    confidence_level (str): "
+  - name: sensitivity_analysis
+    args:
+    - base_valuation
+    - variable_name
+    - variable_range
+    - impact_factor
+    docstring: "敏感性分析\n\n分析关键变量变化对估值的影响。\n\nArgs:\n    base_valuation (float): 基准估值\n\
+      \    variable_name (str): 变量名称，例如 \"discount_rate\", \"growth_rate\"\n    variable_range\
+      \ (List[float]): 变量取值范围\n    impact_factor (float): 影响系数，"
+- file: financial_analysis_tools.py
+  path: tools/generated_tools/stock_analysis_agent/financial_analysis_tools.py
+  tool_functions:
+  - name: calculate_financial_ratios
+    args:
+    - financial_data
+    - statement_type
+    docstring: "计算财务比率\n\n基于财务报表数据计算各类财务比率，包括盈利能力、偿债能力、运营效率等指标。\n\nArgs:\n    financial_data\
+      \ (str): JSON格式的财务报表数据\n    statement_type (str): 报表类型，可选值: \"income\", \"balance\"\
+      , \"cash\"\n\nReturns:\n    str: JSON格式的财务比率分析结果"
+  - name: analyze_profitability
+    args:
+    - financial_data
+    docstring: "分析盈利能力\n\n分析公司的盈利能力，包括毛利率、营业利润率、净利率等指标及其趋势。\n\nArgs:\n    financial_data\
+      \ (str): JSON格式的损益表数据\n\nReturns:\n    str: JSON格式的盈利能力分析结果"
+  - name: analyze_liquidity
+    args:
+    - balance_sheet
+    docstring: "分析流动性\n\n分析公司的短期偿债能力，包括流动比率、速动比率等指标。\n\nArgs:\n    balance_sheet (str):\
+      \ JSON格式的资产负债表数据\n\nReturns:\n    str: JSON格式的流动性分析结果"
+  - name: analyze_solvency
+    args:
+    - balance_sheet
+    docstring: "分析偿债能力\n\n分析公司的长期偿债能力，包括资产负债率、权益乘数等指标。\n\nArgs:\n    balance_sheet\
+      \ (str): JSON格式的资产负债表数据\n\nReturns:\n    str: JSON格式的偿债能力分析结果"
+  - name: analyze_efficiency
+    args:
+    - financial_data
+    - balance_sheet
+    docstring: "分析运营效率\n\n分析公司的运营效率，包括资产周转率、存货周转率等指标。\n\nArgs:\n    financial_data\
+      \ (str): JSON格式的损益表数据\n    balance_sheet (str): JSON格式的资产负债表数据\n\nReturns:\n\
+      \    str: JSON格式的运营效率分析结果"
+  - name: analyze_growth
+    args:
+    - financial_data
+    docstring: "分析增长性\n\n分析公司的增长趋势，包括营收增长率、利润增长率等指标。\n\nArgs:\n    financial_data\
+      \ (str): JSON格式的损益表数据\n\nReturns:\n    str: JSON格式的增长性分析结果"
+  - name: compare_peer_performance
+    args:
+    - symbol
+    - peers
+    - metrics
+    docstring: "同行业公司对比分析\n\n对比目标公司与同行业公司的关键财务指标。\n\nArgs:\n    symbol (str): 目标公司股票代码\n\
+      \    peers (List[str]): 同行业公司股票代码列表\n    metrics (List[str]): 要对比的指标列表，例如 [\"\
+      pe_ratio\", \"profit_margin\", \"roe\"]\n\nReturns:\n    str: JSON格式"
+- file: report_generation_tools.py
+  path: tools/generated_tools/stock_analysis_agent/report_generation_tools.py
+  tool_functions:
+  - name: generate_executive_summary
+    args:
+    - symbol
+    - analysis_data
+    docstring: "生成执行摘要\n\n基于完整的分析数据生成简明的执行摘要。\n\nArgs:\n    symbol (str): 股票代码\n \
+      \   analysis_data (Dict[str, Any]): 完整的分析数据，包括财务分析、估值等\n\nReturns:\n    str:\
+      \ JSON格式的执行摘要"
+  - name: generate_financial_analysis_report
+    args:
+    - symbol
+    - profitability
+    - liquidity
+    - solvency
+    - efficiency
+    - growth
+    docstring: "生成财务分析报告\n\n整合盈利能力、流动性、偿债能力、运营效率和增长性分析。\n\nArgs:\n    symbol (str):\
+      \ 股票代码\n    profitability (str): JSON格式的盈利能力分析结果\n    liquidity (str): JSON格式的流动性分析结果\n\
+      \    solvency (str): JSON格式的偿债能力分析结果\n    efficiency (str"
+  - name: generate_valuation_report
+    args:
+    - symbol
+    - dcf_result
+    - relative_valuation
+    - current_price
+    docstring: "生成估值分析报告\n\n整合DCF和相对估值分析结果。\n\nArgs:\n    symbol (str): 股票代码\n   \
+      \ dcf_result (str): JSON格式的DCF估值结果\n    relative_valuation (str): JSON格式的相对估值结果\n\
+      \    current_price (float): 当前股价\n\nReturns:\n    str: JSON格式的估值分析报"
+  - name: prepare_chart_data
+    args:
+    - data_type
+    - data
+    docstring: "准备图表数据\n\n将分析数据转换为适合图表展示的格式。\n\nArgs:\n    data_type (str): 数据类型，例如\
+      \ \"profitability\", \"liquidity\", \"growth\"\n    data (str): JSON格式的原始数据\n\
+      \nReturns:\n    str: JSON格式的图表数据"
+  - name: export_report
+    args:
+    - symbol
+    - report_data
+    - format_type
+    docstring: "导出分析报告\n\n将分析报告导出为指定格式的文件。\n\nArgs:\n    symbol (str): 股票代码\n    report_data\
+      \ (str): JSON格式的报告数据\n    format_type (str): 导出格式，可选值: \"json\", \"markdown\"\
+      , \"html\"\n\nReturns:\n    str: JSON格式的导出结果"
+  - name: generate_comparison_report
+    args:
+    - symbols
+    - metrics
+    - companies_data
+    docstring: "生成多公司对比报告\n\n对比多家公司的关键财务指标。\n\nArgs:\n    symbols (List[str]): 股票代码列表\n\
+      \    metrics (List[str]): 要对比的指标列表\n    companies_data (List[Dict[str, Any]]):\
+      \ 各公司的财务数据\n\nReturns:\n    str: JSON格式的对比报告"
+- file: financial_data_fetcher.py
+  path: tools/generated_tools/stock_analysis_agent/financial_data_fetcher.py
+  tool_functions:
+  - name: fetch_financial_statements
+    args:
+    - symbol
+    - statement_type
+    - period
+    docstring: "获取公司财务报表数据\n\n支持从多个API源获取财务报表数据，包括损益表、资产负债表和现金流量表。\n优先使用缓存数据，如果缓存不存在或已过期则从API获取。\n\
+      \nArgs:\n    symbol (str): 股票代码，例如 \"AAPL\" 或 \"600000.SS\"\n    statement_type\
+      \ (str): 报表类型，可选值: \"income\"(损益表), \"balance\"(资产负债表),"
+  - name: fetch_company_overview
+    args:
+    - symbol
+    docstring: "获取公司概览信息\n\n获取公司的基本信息，包括行业、市值、PE比率、股息率等关键指标。\n\nArgs:\n    symbol\
+      \ (str): 股票代码，例如 \"AAPL\" 或 \"TSLA\"\n\nReturns:\n    str: JSON格式的公司概览数据"
+  - name: fetch_earnings_data
+    args:
+    - symbol
+    docstring: "获取公司盈利数据\n\n获取公司的历史盈利数据，包括每股收益(EPS)和盈利预期。\n\nArgs:\n    symbol (str):\
+      \ 股票代码，例如 \"AAPL\"\n\nReturns:\n    str: JSON格式的盈利数据"
+  - name: fetch_analyst_estimates
+    args:
+    - symbol
+    docstring: "获取华尔街分析师预测数据\n\n获取券商分析师对公司未来盈利的预测数据。\n\nArgs:\n    symbol (str): 股票代码，例如\
+      \ \"AAPL\"\n\nReturns:\n    str: JSON格式的分析师预测数据"
+  - name: fetch_market_data
+    args:
+    - symbol
+    - interval
+    - range_period
+    docstring: "获取股票市场数据\n\n获取股票的历史价格数据，包括开盘价、收盘价、最高价、最低价和交易量。\n\nArgs:\n    symbol\
+      \ (str): 股票代码，例如 \"AAPL\"\n    interval (str): 数据间隔，可选值: \"1d\"(日), \"1wk\"\
+      (周), \"1mo\"(月)\n    range_period (str): 时间范围，可选值: \"1mo\", \"3mo\", \"6mo\"\
+      , \"1"
+  - name: validate_financial_data
+    args:
+    - data
+    docstring: "验证财务数据的完整性和有效性\n\n检查财务数据是否包含必需的字段，数值是否在合理范围内。\n\nArgs:\n    data (str):\
+      \ JSON格式的财务数据\n\nReturns:\n    str: JSON格式的验证结果"
+  - name: fetch_key_metrics
+    args:
+    - symbol
+    docstring: "获取公司关键财务指标\n\n提取和计算公司的关键财务指标，包括盈利能力、偿债能力、运营效率等指标。\n\nArgs:\n    symbol\
+      \ (str): 股票代码，例如 \"AAPL\"\n\nReturns:\n    str: JSON格式的关键财务指标"
+  - name: fetch_macro_economic_data
+    args:
+    - indicator
+    docstring: "获取宏观经济指标数据\n\n获取GDP、利率、通胀率等宏观经济指标。\n\nArgs:\n    indicator (str):\
+      \ 经济指标类型，可选值: \"GDP\", \"INFLATION\", \"INTEREST_RATE\", \"UNEMPLOYMENT\"\n\n\
+      Returns:\n    str: JSON格式的宏观经济数据"
+  - name: search_industry_trends
+    args:
+    - industry
+    - max_results
+    docstring: "搜索行业趋势信息\n\n使用网络搜索获取行业发展趋势和相关信息。需要配合http_request或SerpAPI工具使用。\n\n\
+      Args:\n    industry (str): 行业名称，例如 \"Technology\", \"Healthcare\"\n    max_results\
+      \ (int): 最大返回结果数，默认10\n\nReturns:\n    str: JSON格式的行业趋势信息"
+  - name: fetch_comparable_companies
+    args:
+    - symbol
+    - sector
+    docstring: "获取可比公司列表\n\n基于行业分类和业务相似度识别可比公司。\n\nArgs:\n    symbol (str): 目标股票代码\n\
+      \    sector (str): 行业类别，如果不提供则自动获取\n\nReturns:\n    str: JSON格式的可比公司列表"
+- file: multi_agent_as_tools.py
+  path: tools/generated_tools/stock_analysis_agent/multi_agent_as_tools.py
+  tool_functions:
+  - name: data_collector_agent_tool
+    args:
+    - content
+    - env
+    - version
+    - model_id
+    docstring: "数据采集Agent工具\n\n用于收集股票相关的财务数据、市场数据等信息。\n\nArgs:\n    content: 数据采集请求内容，例如：\"\
+      请收集AAPL公司最近一年的财务数据\"\n    env: 环境配置，默认为\"production\"\n    version: 版本，默认为\"\
+      latest\"\n    model_id: 模型ID，默认为\"default\"\n    \nReturns:\n    str"
+  - name: valuation_agent_tool
+    args:
+    - content
+    - env
+    - version
+    - model_id
+    docstring: "估值Agent工具\n\n用于执行DCF（现金流折现）估值分析。\n\nArgs:\n    content: 估值分析请求内容，例如：\"\
+      请对AAPL公司进行DCF估值分析\"\n    env: 环境配置，默认为\"production\"\n    version: 版本，默认为\"\
+      latest\"\n    model_id: 模型ID，默认为\"default\"\n    \nReturns:\n    str: 估值分析"
+  - name: prediction_agent_tool
+    args:
+    - content
+    - env
+    - version
+    - model_id
+    docstring: "预测Agent工具\n\n用于进行盈利预测和未来业绩预测。\n\nArgs:\n    content: 预测分析请求内容，例如：\"\
+      请预测AAPL公司未来3个季度的盈利情况\"\n    env: 环境配置，默认为\"production\"\n    version: 版本，默认为\"\
+      latest\"\n    model_id: 模型ID，默认为\"default\"\n    \nReturns:\n    str: 预测分析"
+  - name: risk_assessment_agent_tool
+    args:
+    - content
+    - env
+    - version
+    - model_id
+    docstring: "风险评估Agent工具\n\n用于评估股票投资的风险因素。\n\nArgs:\n    content: 风险评估请求内容，例如：\"\
+      请评估AAPL公司的投资风险\"\n    env: 环境配置，默认为\"production\"\n    version: 版本，默认为\"latest\"\
+      \n    model_id: 模型ID，默认为\"default\"\n    \nReturns:\n    str: 风险评估结果（字符串"
+  - name: benchmark_agent_tool
+    args:
+    - content
+    - env
+    - version
+    - model_id
+    docstring: "对比分析Agent工具\n\n用于进行股票与同行业或市场基准的对比分析。\n\nArgs:\n    content: 对比分析请求内容，例如：\"\
+      请将AAPL公司与同行业公司进行对比分析\"\n    env: 环境配置，默认为\"production\"\n    version: 版本，默认为\"\
+      latest\"\n    model_id: 模型ID，默认为\"default\"\n    \nReturns:\n    st"
+  - name: report_generator_agent_tool
+    args:
+    - content
+    - env
+    - version
+    - model_id
+    docstring: "报告生成Agent工具\n\n用于生成完整的股票分析报告。\n\nArgs:\n    content: 报告生成请求内容，例如：\"\
+      请生成AAPL公司的完整分析报告\"\n    env: 环境配置，默认为\"production\"\n    version: 版本，默认为\"latest\"\
+      \n    model_id: 模型ID，默认为\"default\"\n    \nReturns:\n    str: 分析报告（字符串"
+- file: dynamic_tools_from_tooluniverse.py
+  path: tools/generated_tools/tooluniverse/dynamic_tools_from_tooluniverse.py
+  tool_functions:
+  - name: run_dynamic_tools_from_tooluniverse
+    args:
+    - tool_name
+    - tool_arguments
+    docstring: "Run dynamic tools from tooluniverse\n\nArgs:\n    tool_name(str):\
+      \ The name of the tool to run\n    tool_arguments(dict): The arguments of the\
+      \ tool to run\n\nReturns:\n    dict: The result of the tool"
+  - name: get_tool_description
+    args:
+    - tool_name
+    docstring: "Get the description of a tool\n\nArgs:\n    tool_name(str): The name\
+      \ of the tool to get the description\n\nReturns:\n    str: The description of\
+      \ the tool"
+  - name: get_tool_parameters
+    args:
+    - tool_name
+    docstring: "Get the parameters of a tool\n\nArgs:\n    tool_name(str): The name\
+      \ of the tool to get the parameters\n\nReturns:\n    dict: The parameters of\
+      \ the tool"
+- file: create_knowledge_graph.py
+  path: tools/generated_tools/tooluniverse/neo4j/create_knowledge_graph.py
+  tool_functions: []
+- file: knowledge_graph_queries.py
+  path: tools/generated_tools/tooluniverse/neo4j/knowledge_graph_queries.py
+  tool_functions:
+  - name: get_tools_by_parameter
+    args:
+    - parameter_name
+    docstring: "Find all tools that use the specified parameter\n\nArgs:\n    parameter_name\
+      \ (str): Parameter name\n    \nReturns:\n    List[Dict]: List containing tool\
+      \ information, each dictionary contains:\n        - tool"
+  - name: get_parameters_by_tool
+    args:
+    - tool_name
+    docstring: "Get all parameter information for the specified tool\n\nArgs:\n  \
+      \  tool_name (str): Tool name\n    \nReturns:\n    Dict: Dictionary containing\
+      \ tool information and parameter list:\n        - tool_name (str):"
+  - name: get_parameter_path
+    args:
+    - source_parameters
+    - target_parameters
+    - max_depth
+    docstring: "Find path relationships connecting multiple parameters\n\nArgs:\n\
+      \    source_parameters (List[str]): List of source parameter names\n    target_parameters\
+      \ (List[str]): List of target parameter names\n    ma"
+  - name: get_tools_by_genre
+    args:
+    - genre_name
+    docstring: "Get all tools under the specified Genre\n\nArgs:\n    genre_name (str):\
+      \ Genre name (must be exact match from available genres)\n    \nReturns:\n \
+      \   List[Dict]: List of tools, each dictionary contains:\n     "
+  - name: get_all_genres
+    args: []
+    docstring: "Get all available Genre names\n\nReturns:\n    List[str]: List of\
+      \ all genre names sorted alphabetically"
+- file: tools_embedding.py
+  path: tools/generated_tools/tooluniverse/embedding/tools_embedding.py
+  tool_functions: []
+- file: tools_embedding_search.py
+  path: tools/generated_tools/tooluniverse/embedding/tools_embedding_search.py
+  tool_functions:
+  - name: search_from_s3vectors_by_embeddings
+    args:
+    - input_text
+    - limit
+    docstring: "Search for tools using semantic similarity in the S3 Vectors database.\n\
+      \nArgs:\n    input_text (str): The text question/query describing the desired\
+      \ functionality or tool requirements.\n    limit (int): "
+- file: image_processor.py
+  path: tools/generated_tools/html2pptx/image_processor.py
+  tool_functions:
+  - name: download_image
+    args:
+    - image_url
+    - output_path
+    - timeout
+    - headers
+    - cache_dir
+    docstring: "从URL下载图片到本地文件。\n\nArgs:\n    image_url (str): 图片URL\n    output_path\
+      \ (str, optional): 输出文件路径，如果不提供则使用临时文件\n    timeout (int): 下载超时时间（秒）\n    headers\
+      \ (Dict[str, str], optional): 请求头\n    cache_dir (str, optio"
+  - name: resize_image
+    args:
+    - image_path
+    - output_path
+    - width
+    - height
+    - maintain_aspect_ratio
+    - resize_method
+    - quality
+    docstring: "调整图片大小。\n\nArgs:\n    image_path (str): 输入图片路径\n    output_path (str,\
+      \ optional): 输出图片路径，如果不提供则覆盖原图片\n    width (int, optional): 目标宽度（像素）\n    height\
+      \ (int, optional): 目标高度（像素）\n    maintain_aspect_ratio (bool"
+  - name: optimize_image
+    args:
+    - image_path
+    - output_path
+    - quality
+    - format_conversion
+    - max_size_kb
+    docstring: "优化图片大小和质量。\n\nArgs:\n    image_path (str): 输入图片路径\n    output_path\
+      \ (str, optional): 输出图片路径，如果不提供则覆盖原图片\n    quality (int): 压缩质量（1-100）\n    format_conversion\
+      \ (str, optional): 转换格式，可选值: \"jpeg\", \"png\", \"webp\""
+  - name: crop_image
+    args:
+    - image_path
+    - output_path
+    - left
+    - top
+    - right
+    - bottom
+    - width
+    - height
+    - center_crop
+    docstring: "裁剪图片。\n\nArgs:\n    image_path (str): 输入图片路径\n    output_path (str,\
+      \ optional): 输出图片路径，如果不提供则覆盖原图片\n    left (int, optional): 左边界坐标\n    top (int,\
+      \ optional): 上边界坐标\n    right (int, optional): 右边界坐标\n    bottom"
+  - name: convert_image_format
+    args:
+    - image_path
+    - output_format
+    - output_path
+    - quality
+    docstring: "转换图片格式。\n\nArgs:\n    image_path (str): 输入图片路径\n    output_format\
+      \ (str): 输出格式，可选值: \"jpeg\", \"png\", \"webp\", \"gif\", \"bmp\", \"tiff\"\n\
+      \    output_path (str, optional): 输出图片路径，如果不提供则自动生成\n    quality (int): 压缩质量（1-"
+  - name: get_image_info
+    args:
+    - image_path
+    - include_exif
+    - include_base64
+    - base64_max_size_kb
+    docstring: "获取图片的详细信息。\n\nArgs:\n    image_path (str): 图片文件路径\n    include_exif\
+      \ (bool): 是否包含EXIF元数据\n    include_base64 (bool): 是否包含Base64编码的图片数据\n    base64_max_size_kb\
+      \ (int): 如果包含Base64数据，文件大小上限（KB）\n    \nReturns:\n   "
+  - name: enhance_image
+    args:
+    - image_path
+    - output_path
+    - brightness
+    - contrast
+    - sharpness
+    - color
+    - apply_filter
+    docstring: "增强图片质量。\n\nArgs:\n    image_path (str): 输入图片路径\n    output_path (str,\
+      \ optional): 输出图片路径，如果不提供则覆盖原图片\n    brightness (float): 亮度调整因子，1.0为原始亮度，大于1增加亮度，小于1降低亮度\n\
+      \    contrast (float): 对比度调整因子，1.0为原始对比度\n    shar"
+- file: pptx_generator.py
+  path: tools/generated_tools/html2pptx/pptx_generator.py
+  tool_functions:
+  - name: create_presentation
+    args:
+    - template_path
+    - title
+    - author
+    - output_path
+    docstring: "创建新的PowerPoint演示文稿，可选择使用模板。\n\nArgs:\n    template_path (str, optional):\
+      \ PowerPoint模板文件路径，如果不提供则创建空白演示文稿\n    title (str, optional): 演示文稿标题\n    author\
+      \ (str, optional): 演示文稿作者\n    output_path (str, optiona"
+  - name: add_slide
+    args:
+    - presentation_path
+    - layout_index
+    - title
+    - subtitle
+    - notes
+    - save_path
+    docstring: "向演示文稿添加新的幻灯片。\n\nArgs:\n    presentation_path (str): PowerPoint文件路径\n\
+      \    layout_index (int): 幻灯片布局索引，默认为0（标题幻灯片）\n    title (str, optional): 幻灯片标题\n\
+      \    subtitle (str, optional): 幻灯片副标题\n    notes (str, optio"
+  - name: add_text
+    args:
+    - presentation_path
+    - slide_index
+    - text
+    - position
+    - size
+    - formatting
+    - placeholder_index
+    - save_path
+    docstring: "向幻灯片添加文本。\n\nArgs:\n    presentation_path (str): PowerPoint文件路径\n\
+      \    slide_index (int): 幻灯片索引\n    text (str): 要添加的文本\n    position (Dict[str,\
+      \ float], optional): 文本框位置，格式: {\"left\": 值, \"top\": 值}，单位为英寸\n    si"
+  - name: add_image
+    args:
+    - presentation_path
+    - slide_index
+    - image_path
+    - position
+    - size
+    - placeholder_index
+    - save_path
+    docstring: "向幻灯片添加图片。\n\nArgs:\n    presentation_path (str): PowerPoint文件路径\n\
+      \    slide_index (int): 幻灯片索引\n    image_path (str): 图片文件路径\n    position (Dict[str,\
+      \ float], optional): 图片位置，格式: {\"left\": 值, \"top\": 值}，单位为英寸\n "
+  - name: add_table
+    args:
+    - presentation_path
+    - slide_index
+    - data
+    - position
+    - size
+    - formatting
+    - has_header
+    - save_path
+    docstring: "向幻灯片添加表格。\n\nArgs:\n    presentation_path (str): PowerPoint文件路径\n\
+      \    slide_index (int): 幻灯片索引\n    data (List[List[str]]): 表格数据，二维数组\n    position\
+      \ (Dict[str, float], optional): 表格位置，格式: {\"left\": 值, \"top\": 值"
+  - name: add_shape
+    args:
+    - presentation_path
+    - slide_index
+    - shape_type
+    - position
+    - size
+    - text
+    - formatting
+    - save_path
+    docstring: "向幻灯片添加形状。\n\nArgs:\n    presentation_path (str): PowerPoint文件路径\n\
+      \    slide_index (int): 幻灯片索引\n    shape_type (str): 形状类型，可选值: \"rectangle\"\
+      , \"oval\", \"rounded_rectangle\", \"diamond\", \"triangle\", \"arrow\"\n  \
+      \  p"
+  - name: get_presentation_info
+    args:
+    - presentation_path
+    - include_slides
+    - include_placeholders
+    docstring: "获取演示文稿的详细信息。\n\nArgs:\n    presentation_path (str): PowerPoint文件路径\n\
+      \    include_slides (bool): 是否包含幻灯片信息\n    include_placeholders (bool): 是否包含占位符信息\n\
+      \    \nReturns:\n    str: JSON格式的演示文稿信息"
+- file: semantic_analyzer.py
+  path: tools/generated_tools/html2pptx/semantic_analyzer.py
+  tool_functions:
+  - name: analyze_document_structure
+    args:
+    - html_content
+    - parser
+    - max_depth
+    docstring: "分析HTML文档的语义结构。\n\nArgs:\n    html_content (str): HTML文档内容或文件路径\n \
+      \   parser (str): 解析器类型，可选值: \"html.parser\", \"lxml\", \"html5lib\"\n    max_depth\
+      \ (int): 分析的最大深度\n    \nReturns:\n    str: JSON格式的文档结构分析结果"
+  - name: extract_key_content
+    args:
+    - html_content
+    - parser
+    - content_type
+    docstring: "从HTML文档中提取关键内容。\n\nArgs:\n    html_content (str): HTML文档内容或文件路径\n\
+      \    parser (str): 解析器类型，可选值: \"html.parser\", \"lxml\", \"html5lib\"\n    content_type\
+      \ (str): 内容类型，可选值: \"all\", \"headings\", \"paragraphs\", \"lists\", "
+  - name: identify_key_topics
+    args:
+    - html_content
+    - parser
+    - max_topics
+    docstring: "从HTML文档中识别关键主题。\n\nArgs:\n    html_content (str): HTML文档内容或文件路径\n\
+      \    parser (str): 解析器类型，可选值: \"html.parser\", \"lxml\", \"html5lib\"\n    max_topics\
+      \ (int): 最大主题数量\n    \nReturns:\n    str: JSON格式的关键主题"
+  - name: suggest_slide_structure
+    args:
+    - html_content
+    - parser
+    - max_slides
+    docstring: "根据HTML文档内容建议PPT幻灯片结构。\n\nArgs:\n    html_content (str): HTML文档内容或文件路径\n\
+      \    parser (str): 解析器类型，可选值: \"html.parser\", \"lxml\", \"html5lib\"\n    max_slides\
+      \ (int): 最大幻灯片数量\n    \nReturns:\n    str: JSON格式的幻灯片结构建议"
+  - name: analyze_content_importance
+    args:
+    - html_content
+    - parser
+    docstring: "分析HTML文档中内容的重要性。\n\nArgs:\n    html_content (str): HTML文档内容或文件路径\n\
+      \    parser (str): 解析器类型，可选值: \"html.parser\", \"lxml\", \"html5lib\"\n    \n\
+      Returns:\n    str: JSON格式的内容重要性分析结果"
+  - name: extract_hierarchical_structure
+    args:
+    - html_content
+    - parser
+    - max_depth
+    docstring: "提取HTML文档的层次结构。\n\nArgs:\n    html_content (str): HTML文档内容或文件路径\n \
+      \   parser (str): 解析器类型，可选值: \"html.parser\", \"lxml\", \"html5lib\"\n    max_depth\
+      \ (int): 最大深度\n    \nReturns:\n    str: JSON格式的层次结构"
+  - name: summarize_content
+    args:
+    - html_content
+    - parser
+    - max_length
+    docstring: "总结HTML文档内容。\n\nArgs:\n    html_content (str): HTML文档内容或文件路径\n    parser\
+      \ (str): 解析器类型，可选值: \"html.parser\", \"lxml\", \"html5lib\"\n    max_length\
+      \ (int): 摘要最大长度\n    \nReturns:\n    str: JSON格式的内容摘要"
+- file: html_parser.py
+  path: tools/generated_tools/html2pptx/html_parser.py
+  tool_functions:
+  - name: parse_html
+    args:
+    - html_content
+    - parser
+    - encoding
+    docstring: "解析HTML内容并返回文档结构信息。\n\nArgs:\n    html_content (str): HTML文档内容或文件路径\n\
+      \    parser (str): 解析器类型，可选值: \"html.parser\", \"lxml\", \"html5lib\"\n    encoding\
+      \ (str): 文档编码，默认为utf-8\n    \nReturns:\n    str: JSON格式的文档结构信息，包含"
+  - name: extract_elements
+    args:
+    - html_content
+    - selector
+    - parser
+    - extract_attributes
+    - limit
+    docstring: "使用CSS选择器从HTML中提取特定元素。\n\nArgs:\n    html_content (str): HTML文档内容或文件路径\n\
+      \    selector (str): CSS选择器表达式\n    parser (str): 解析器类型，可选值: \"html.parser\"\
+      , \"lxml\", \"html5lib\"\n    extract_attributes (List[str]): 要提取的"
+  - name: extract_text_content
+    args:
+    - html_content
+    - clean
+    - preserve_formatting
+    - parser
+    docstring: "从HTML中提取纯文本内容。\n\nArgs:\n    html_content (str): HTML文档内容或文件路径\n \
+      \   clean (bool): 是否清理文本（删除多余空格、换行等）\n    preserve_formatting (bool): 是否保留段落格式\n\
+      \    parser (str): 解析器类型，可选值: \"html.parser\", \"lxml\", \"html5lib\""
+  - name: extract_links
+    args:
+    - html_content
+    - base_url
+    - filter_external
+    - include_text
+    - parser
+    docstring: "从HTML中提取所有链接。\n\nArgs:\n    html_content (str): HTML文档内容或文件路径\n  \
+      \  base_url (str): 基础URL，用于转换相对链接为绝对链接\n    filter_external (bool): 是否只包含外部链接\n\
+      \    include_text (bool): 是否包含链接文本\n    parser (str): 解析器类型，可选值: "
+  - name: extract_tables
+    args:
+    - html_content
+    - parser
+    - include_headers
+    - max_tables
+    docstring: "从HTML中提取表格数据。\n\nArgs:\n    html_content (str): HTML文档内容或文件路径\n  \
+      \  parser (str): 解析器类型，可选值: \"html.parser\", \"lxml\", \"html5lib\"\n    include_headers\
+      \ (bool): 是否将第一行作为表头\n    max_tables (int): 最大提取表格数，0表示不限制\n  "
+  - name: extract_images
+    args:
+    - html_content
+    - base_url
+    - download
+    - output_dir
+    - parser
+    docstring: "从HTML中提取图片信息和链接。\n\nArgs:\n    html_content (str): HTML文档内容或文件路径\n\
+      \    base_url (str): 基础URL，用于转换相对链接为绝对链接\n    download (bool): 是否下载图片到本地\n \
+      \   output_dir (str): 图片下载目录\n    parser (str): 解析器类型，可选值: \"html.par"
+  - name: analyze_document_structure
+    args:
+    - html_content
+    - parser
+    - detailed
+    docstring: "分析HTML文档结构，提取层次结构和语义信息。\n\nArgs:\n    html_content (str): HTML文档内容或文件路径\n\
+      \    parser (str): 解析器类型，可选值: \"html.parser\", \"lxml\", \"html5lib\"\n    detailed\
+      \ (bool): 是否返回详细结构信息\n    \nReturns:\n    str: JSON格式的文档结构分析"
+- file: cache_manager.py
+  path: tools/generated_tools/html2pptx/cache_manager.py
+  tool_functions:
+  - name: initialize_cache
+    args:
+    - cache_dir
+    - max_size_mb
+    - expiration_days
+    - create_if_missing
+    docstring: "初始化缓存系统。\n\nArgs:\n    cache_dir (str, optional): 缓存目录路径，如果不提供则使用系统临时目录下的子目录\n\
+      \    max_size_mb (int): 缓存最大大小（MB）\n    expiration_days (int): 缓存项过期天数\n   \
+      \ create_if_missing (bool): 如果缓存目录不存在，是否创建\n    \nReturns"
+  - name: cache_item
+    args:
+    - key
+    - value
+    - cache_dir
+    - category
+    - expiration_hours
+    - serialize_method
+    docstring: "将项目存储到缓存中。\n\nArgs:\n    key (str): 缓存键\n    value (Any): 要缓存的值\n\
+      \    cache_dir (str, optional): 缓存目录路径，如果不提供则使用系统临时目录下的子目录\n    category (str):\
+      \ 缓存类别，可选值: \"data\", \"images\", \"html\", \"temp\"\n    expiration_hour"
+  - name: retrieve_cached_item
+    args:
+    - key
+    - cache_dir
+    - category
+    - default_value
+    docstring: "从缓存中检索项目。\n\nArgs:\n    key (str): 缓存键\n    cache_dir (str, optional):\
+      \ 缓存目录路径，如果不提供则使用系统临时目录下的子目录\n    category (str, optional): 缓存类别，如果不提供则搜索所有类别\n\
+      \    default_value (Any, optional): 如果项目不存在或已过期，返回的默认值\n    "
+  - name: delete_cached_item
+    args:
+    - key
+    - cache_dir
+    - category
+    docstring: "从缓存中删除项目。\n\nArgs:\n    key (str): 缓存键\n    cache_dir (str, optional):\
+      \ 缓存目录路径，如果不提供则使用系统临时目录下的子目录\n    category (str, optional): 缓存类别，如果不提供则搜索所有类别\n\
+      \    \nReturns:\n    str: JSON格式的删除结果"
+  - name: clear_cache
+    args:
+    - cache_dir
+    - category
+    - older_than_days
+    docstring: "清理缓存。\n\nArgs:\n    cache_dir (str, optional): 缓存目录路径，如果不提供则使用系统临时目录下的子目录\n\
+      \    category (str, optional): 要清理的缓存类别，如果不提供则清理所有类别\n    older_than_days (int,\
+      \ optional): 清理指定天数之前的缓存项目，如果不提供则清理所有项目\n    \nReturns:"
+  - name: get_cache_info
+    args:
+    - cache_dir
+    - include_items
+    docstring: "获取缓存系统信息。\n\nArgs:\n    cache_dir (str, optional): 缓存目录路径，如果不提供则使用系统临时目录下的子目录\n\
+      \    include_items (bool): 是否包含缓存项目列表\n    \nReturns:\n    str: JSON格式的缓存信息"
+  - name: cached_operation
+    args:
+    - operation_key
+    - operation_func_name
+    - operation_args
+    - cache_dir
+    - category
+    - expiration_hours
+    - force_refresh
+    docstring: "执行缓存操作，如果缓存存在且未过期则使用缓存，否则执行操作并缓存结果。\n\nArgs:\n    operation_key (str):\
+      \ 操作的唯一标识符\n    operation_func_name (str): 要执行的操作函数名称（字符串形式）\n    operation_args\
+      \ (Dict[str, Any]): 操作函数的参数\n    cache_dir (str, optional)"
+- file: layout_optimizer.py
+  path: tools/generated_tools/html2pptx/layout_optimizer.py
+  tool_functions:
+  - name: optimize_slide_layout
+    args:
+    - content_elements
+    - slide_size
+    - layout_type
+    - title_height
+    docstring: "优化幻灯片布局，计算内容元素的最佳位置和大小。\n\nArgs:\n    content_elements (List[Dict[str,\
+      \ Any]]): 内容元素列表，每个元素包含类型、内容和可选的原始大小\n    slide_size (Dict[str, float]): 幻灯片大小，包含宽度和高度（英寸）\n\
+      \    layout_type (str): 布局类型，可选值: \"auto\", \"ba"
+  - name: calculate_text_box_size
+    args:
+    - text
+    - font_size
+    - font_name
+    - width_constraint
+    - include_margins
+    docstring: "计算文本框所需的大小。\n\nArgs:\n    text (str): 要显示的文本\n    font_size (float):\
+      \ 字体大小（磅）\n    font_name (str): 字体名称\n    width_constraint (float, optional):\
+      \ 宽度约束（英寸），如果提供则计算所需高度\n    include_margins (bool): 是否包含内边距\n    "
+  - name: optimize_image_placement
+    args:
+    - images
+    - content_area
+    - layout_style
+    docstring: "优化图片放置位置。\n\nArgs:\n    images (List[Dict[str, Any]]): 图片列表，每个图片包含宽度、高度和可选的重要性\n\
+      \    content_area (Dict[str, float]): 可用内容区域，包含left、top、width和height（英寸）\n \
+      \   layout_style (str): 布局样式，可选值: \"grid\", \"cascade\","
+  - name: create_balanced_composition
+    args:
+    - elements
+    - slide_size
+    - composition_type
+    - title_height
+    docstring: "创建平衡的幻灯片构图。\n\nArgs:\n    elements (List[Dict[str, Any]]): 元素列表，每个元素包含类型、内容和重要性\n\
+      \    slide_size (Dict[str, float]): 幻灯片大小，包含宽度和高度（英寸）\n    composition_type\
+      \ (str): 构图类型，可选值: \"balanced\", \"focal\", \"rule_of_th"
+  - name: optimize_table_layout
+    args:
+    - table_data
+    - content_area
+    - auto_size
+    docstring: "优化表格布局。\n\nArgs:\n    table_data (Dict[str, Any]): 表格数据，包含标题、列数、行数和单元格内容\n\
+      \    content_area (Dict[str, float]): 可用内容区域，包含left、top、width和height（英寸）\n \
+      \   auto_size (bool): 是否自动调整列宽和行高\n    \nReturns:\n    str: J"
+  - name: suggest_content_distribution
+    args:
+    - content_elements
+    - max_slides
+    - content_density
+    docstring: "建议内容分布到多个幻灯片。\n\nArgs:\n    content_elements (List[Dict[str, Any]]):\
+      \ 内容元素列表\n    max_slides (int): 最大幻灯片数量\n    content_density (str): 内容密度，可选值:\
+      \ \"low\", \"medium\", \"high\"\n    \nReturns:\n    str: JSON格式的内容分布建议"
+  - name: optimize_visual_hierarchy
+    args:
+    - slide_elements
+    - slide_size
+    docstring: "优化幻灯片的视觉层次结构。\n\nArgs:\n    slide_elements (List[Dict[str, Any]]):\
+      \ 幻灯片元素列表，包含类型、内容和重要性\n    slide_size (Dict[str, float]): 幻灯片大小，包含宽度和高度（英寸）\n\
+      \    \nReturns:\n    str: JSON格式的视觉层次优化结果，包含元素大小、位置和样式建议"
+- file: style_mapper.py
+  path: tools/generated_tools/html2pptx/style_mapper.py
+  tool_functions:
+  - name: map_html_styles_to_ppt
+    args:
+    - html_styles
+    - element_type
+    - target_format
+    docstring: "将HTML样式映射到PPT样式。\n\nArgs:\n    html_styles (Dict[str, Any]): HTML元素的样式属性字典\n\
+      \    element_type (str): HTML元素类型，如\"p\", \"h1\", \"img\", \"table\"等\n    target_format\
+      \ (str): 目标格式，默认为\"pptx\"\n    \nReturns:\n    str: JSON"
+  - name: extract_html_styles
+    args:
+    - html_element
+    - include_computed
+    - include_inherited
+    docstring: "从HTML元素中提取样式信息。\n\nArgs:\n    html_element (Dict[str, Any]): HTML元素的字典表示，包含标签、属性和内联样式\n\
+      \    include_computed (bool): 是否包含计算样式\n    include_inherited (bool): 是否包含继承样式\n\
+      \    \nReturns:\n    str: JSON格式的样式信息"
+  - name: map_color_scheme
+    args:
+    - html_colors
+    - target_format
+    docstring: "将HTML颜色方案映射到PPT颜色方案。\n\nArgs:\n    html_colors (List[Dict[str, Any]]):\
+      \ HTML颜色列表，每个颜色包含名称、值和用途\n    target_format (str): 目标格式，默认为\"pptx\"\n    \n\
+      Returns:\n    str: JSON格式的PPT颜色方案"
+  - name: map_font_scheme
+    args:
+    - html_fonts
+    - target_format
+    docstring: "将HTML字体方案映射到PPT字体方案。\n\nArgs:\n    html_fonts (List[Dict[str, Any]]):\
+      \ HTML字体列表，每个字体包含名称、类型和用途\n    target_format (str): 目标格式，默认为\"pptx\"\n    \n\
+      Returns:\n    str: JSON格式的PPT字体方案"
+  - name: get_element_box_model
+    args:
+    - html_styles
+    - element_type
+    docstring: "获取HTML元素的盒模型信息。\n\nArgs:\n    html_styles (Dict[str, Any]): HTML元素的样式属性字典\n\
+      \    element_type (str): HTML元素类型\n    \nReturns:\n    str: JSON格式的盒模型信息"
+  - name: map_text_style_to_ppt
+    args:
+    - html_text_style
+    - ppt_defaults
+    docstring: "将HTML文本样式映射到PPT文本样式。\n\nArgs:\n    html_text_style (Dict[str, Any]):\
+      \ HTML文本样式属性\n    ppt_defaults (Dict[str, Any], optional): PPT默认样式属性\n    \n\
+      Returns:\n    str: JSON格式的PPT文本样式"
+  - name: analyze_document_theme
+    args:
+    - html_styles
+    docstring: "分析HTML文档的主题样式，提取配色方案和字体方案。\n\nArgs:\n    html_styles (List[Dict[str,\
+      \ Any]]): HTML元素样式列表\n    \nReturns:\n    str: JSON格式的文档主题分析结果"
+- file: batch_processor.py
+  path: tools/generated_tools/medical_document_translation_agent/batch_processor.py
+  tool_functions:
+  - name: create_batch_task
+    args:
+    - file_paths
+    - source_lang
+    - target_lang
+    - glossary_name
+    - domain
+    - task_name
+    - description
+    - priority
+    - cache_dir
+    docstring: "创建批量翻译任务\n\nArgs:\n    file_paths (List[str]): 要翻译的文档路径列表\n    source_lang\
+      \ (str): 源语言代码\n    target_lang (str): 目标语言代码\n    glossary_name (Optional[str]):\
+      \ 词库名称（可选）\n    domain (str): 医学领域\n    task_name (Opti"
+  - name: list_batch_tasks
+    args:
+    - status
+    - limit
+    - cache_dir
+    docstring: "列出批量翻译任务\n\nArgs:\n    status (Optional[str]): 任务状态过滤（pending, processing,\
+      \ completed, failed, cancelled）\n    limit (int): 返回的最大任务数量\n    cache_dir (Optional[str]):\
+      \ 缓存目录（可选）\n    \nReturns:\n    str: JSON格式的任"
+  - name: get_batch_task
+    args:
+    - task_id
+    - cache_dir
+    docstring: "获取批量翻译任务详情\n\nArgs:\n    task_id (str): 任务ID\n    cache_dir (Optional[str]):\
+      \ 缓存目录（可选）\n    \nReturns:\n    str: JSON格式的任务详情"
+  - name: start_batch_task
+    args:
+    - task_id
+    - cache_dir
+    docstring: "启动批量翻译任务\n\nArgs:\n    task_id (str): 任务ID\n    cache_dir (Optional[str]):\
+      \ 缓存目录（可选）\n    \nReturns:\n    str: JSON格式的启动结果"
+  - name: cancel_batch_task
+    args:
+    - task_id
+    - cache_dir
+    docstring: "取消批量翻译任务\n\nArgs:\n    task_id (str): 任务ID\n    cache_dir (Optional[str]):\
+      \ 缓存目录（可选）\n    \nReturns:\n    str: JSON格式的取消结果"
+  - name: get_batch_progress
+    args:
+    - task_id
+    - cache_dir
+    docstring: "获取批量翻译任务进度\n\nArgs:\n    task_id (str): 任务ID\n    cache_dir (Optional[str]):\
+      \ 缓存目录（可选）\n    \nReturns:\n    str: JSON格式的进度信息"
+  - name: generate_batch_report
+    args:
+    - task_id
+    - include_details
+    - cache_dir
+    docstring: "生成批量翻译任务报告\n\nArgs:\n    task_id (str): 任务ID\n    include_details\
+      \ (bool): 是否包含详细信息\n    cache_dir (Optional[str]): 缓存目录（可选）\n    \nReturns:\n\
+      \    str: JSON格式的报告"
+  - name: get_translation_history
+    args:
+    - limit
+    - status
+    - cache_dir
+    docstring: "获取翻译历史记录\n\nArgs:\n    limit (int): 返回的最大记录数量\n    status (Optional[str]):\
+      \ 任务状态过滤\n    cache_dir (Optional[str]): 缓存目录（可选）\n    \nReturns:\n    str:\
+      \ JSON格式的历史记录"
+  - name: get_result_files
+    args:
+    - task_id
+    - cache_dir
+    docstring: "获取批量翻译任务的结果文件\n\nArgs:\n    task_id (str): 任务ID\n    cache_dir (Optional[str]):\
+      \ 缓存目录（可选）\n    \nReturns:\n    str: JSON格式的结果文件列表"
+  - name: clean_batch_cache
+    args:
+    - days_old
+    - cache_dir
+    docstring: "清理批量翻译缓存\n\nArgs:\n    days_old (int): 清理指定天数以前的缓存\n    cache_dir\
+      \ (Optional[str]): 缓存目录（可选）\n    \nReturns:\n    str: JSON格式的清理结果"
+- file: quality_controller.py
+  path: tools/generated_tools/medical_document_translation_agent/quality_controller.py
+  tool_functions:
+  - name: check_terminology_consistency
+    args:
+    - source_text
+    - translated_text
+    - glossary_name
+    - source_lang
+    - target_lang
+    - cache_dir
+    docstring: "检查翻译中术语的一致性\n\nArgs:\n    source_text (str): 源文本\n    translated_text\
+      \ (str): 翻译文本\n    glossary_name (str): 词库名称\n    source_lang (str): 源语言代码\n\
+      \    target_lang (str): 目标语言代码\n    cache_dir (Optional[str]): 缓存"
+  - name: check_abbreviation_handling
+    args:
+    - source_text
+    - translated_text
+    - source_lang
+    - target_lang
+    - domain
+    - cache_dir
+    docstring: "检查翻译中对医学缩写的处理\n\nArgs:\n    source_text (str): 源文本\n    translated_text\
+      \ (str): 翻译文本\n    source_lang (str): 源语言代码\n    target_lang (str): 目标语言代码\n\
+      \    domain (str): 医学领域\n    cache_dir (Optional[str]): 缓存目录（可选"
+  - name: identify_uncertain_translations
+    args:
+    - source_text
+    - translated_text
+    - source_lang
+    - target_lang
+    - domain
+    - confidence_threshold
+    - cache_dir
+    docstring: "识别翻译中的不确定部分并提供备选方案\n\nArgs:\n    source_text (str): 源文本\n    translated_text\
+      \ (str): 翻译文本\n    source_lang (str): 源语言代码\n    target_lang (str): 目标语言代码\n\
+      \    domain (str): 医学领域\n    confidence_threshold (float):"
+  - name: generate_quality_report
+    args:
+    - source_text
+    - translated_text
+    - source_lang
+    - target_lang
+    - glossary_name
+    - domain
+    - cache_dir
+    docstring: "生成全面的翻译质量报告\n\nArgs:\n    source_text (str): 源文本\n    translated_text\
+      \ (str): 翻译文本\n    source_lang (str): 源语言代码\n    target_lang (str): 目标语言代码\n\
+      \    glossary_name (Optional[str]): 词库名称（可选）\n    domain (str): 医"
+  - name: compare_translations
+    args:
+    - source_text
+    - translation1
+    - translation2
+    - source_lang
+    - target_lang
+    - domain
+    - cache_dir
+    docstring: "比较两个翻译版本的质量\n\nArgs:\n    source_text (str): 源文本\n    translation1\
+      \ (str): 第一个翻译版本\n    translation2 (str): 第二个翻译版本\n    source_lang (str): 源语言代码\n\
+      \    target_lang (str): 目标语言代码\n    domain (str): 医学领域\n    cach"
+  - name: annotate_translation_issues
+    args:
+    - source_text
+    - translated_text
+    - source_lang
+    - target_lang
+    - glossary_name
+    - domain
+    - cache_dir
+    docstring: "为翻译文本添加问题标注\n\nArgs:\n    source_text (str): 源文本\n    translated_text\
+      \ (str): 翻译文本\n    source_lang (str): 源语言代码\n    target_lang (str): 目标语言代码\n\
+      \    glossary_name (Optional[str]): 词库名称（可选）\n    domain (str): 医"
+  - name: get_quality_report
+    args:
+    - report_id
+    - cache_dir
+    docstring: "获取已生成的质量报告\n\nArgs:\n    report_id (str): 报告ID\n    cache_dir (Optional[str]):\
+      \ 缓存目录（可选）\n    \nReturns:\n    str: JSON格式的质量报告"
+- file: medical_glossary_manager.py
+  path: tools/generated_tools/medical_document_translation_agent/medical_glossary_manager.py
+  tool_functions:
+  - name: import_glossary
+    args:
+    - file_path
+    - source_lang_column
+    - target_lang_column
+    - category_column
+    - glossary_name
+    - cache_dir
+    docstring: "导入医学词库文件（支持Excel、CSV、JSON格式）\n\nArgs:\n    file_path (str): 词库文件路径\n\
+      \    source_lang_column (str): 源语言列名\n    target_lang_column (str): 目标语言列名\n\
+      \    category_column (Optional[str]): 分类列名（可选）\n    glossary_name"
+  - name: list_glossaries
+    args:
+    - cache_dir
+    docstring: "列出所有可用的医学词库\n\nArgs:\n    cache_dir (Optional[str]): 缓存目录（可选）\n  \
+      \  \nReturns:\n    str: JSON格式的词库列表"
+  - name: search_term
+    args:
+    - term
+    - glossary_name
+    - is_source_lang
+    - exact_match
+    - max_results
+    - cache_dir
+    docstring: "在词库中搜索术语\n\nArgs:\n    term (str): 要搜索的术语\n    glossary_name (str):\
+      \ 词库名称\n    is_source_lang (bool): 是否在源语言中搜索，False表示在目标语言中搜索\n    exact_match\
+      \ (bool): 是否精确匹配\n    max_results (int): 最大结果数量\n    cache_dir (Op"
+  - name: add_term
+    args:
+    - source_term
+    - target_term
+    - glossary_name
+    - category
+    - confidence
+    - cache_dir
+    docstring: "向词库添加新术语\n\nArgs:\n    source_term (str): 源语言术语\n    target_term (str):\
+      \ 目标语言术语\n    glossary_name (str): 词库名称\n    category (str): 术语分类\n    confidence\
+      \ (float): 置信度（0.0-1.0）\n    cache_dir (Optional[str]): 缓存"
+  - name: delete_term
+    args:
+    - term_id
+    - glossary_name
+    - cache_dir
+    docstring: "从词库中删除术语\n\nArgs:\n    term_id (str): 术语ID\n    glossary_name (str):\
+      \ 词库名称\n    cache_dir (Optional[str]): 缓存目录（可选）\n    \nReturns:\n    str: JSON格式的操作结果"
+  - name: update_term
+    args:
+    - term_id
+    - glossary_name
+    - source_term
+    - target_term
+    - category
+    - confidence
+    - cache_dir
+    docstring: "更新词库中的术语\n\nArgs:\n    term_id (str): 术语ID\n    glossary_name (str):\
+      \ 词库名称\n    source_term (Optional[str]): 源语言术语（可选）\n    target_term (Optional[str]):\
+      \ 目标语言术语（可选）\n    category (Optional[str]): 术语分类（可选）\n    "
+  - name: export_glossary
+    args:
+    - glossary_name
+    - output_format
+    - output_path
+    - cache_dir
+    docstring: "导出词库到指定格式\n\nArgs:\n    glossary_name (str): 词库名称\n    output_format\
+      \ (str): 输出格式（json, csv, excel）\n    output_path (Optional[str]): 输出文件路径（可选，默认使用词库名称）\n\
+      \    cache_dir (Optional[str]): 缓存目录（可选）\n    \nReturns"
+  - name: create_glossary_version
+    args:
+    - glossary_name
+    - version_name
+    - cache_dir
+    docstring: "创建词库的版本快照\n\nArgs:\n    glossary_name (str): 词库名称\n    version_name\
+      \ (Optional[str]): 版本名称（可选，默认使用时间戳）\n    cache_dir (Optional[str]): 缓存目录（可选）\n\
+      \    \nReturns:\n    str: JSON格式的操作结果"
+  - name: list_glossary_versions
+    args:
+    - glossary_name
+    - cache_dir
+    docstring: "列出词库的所有版本\n\nArgs:\n    glossary_name (str): 词库名称\n    cache_dir (Optional[str]):\
+      \ 缓存目录（可选）\n    \nReturns:\n    str: JSON格式的版本列表"
+  - name: restore_glossary_version
+    args:
+    - glossary_name
+    - version_name
+    - cache_dir
+    docstring: "恢复词库到指定版本\n\nArgs:\n    glossary_name (str): 词库名称\n    version_name\
+      \ (str): 版本名称\n    cache_dir (Optional[str]): 缓存目录（可选）\n    \nReturns:\n   \
+      \ str: JSON格式的操作结果"
+  - name: match_terms
+    args:
+    - text
+    - glossary_name
+    - is_source_lang
+    - min_confidence
+    - cache_dir
+    docstring: "在文本中匹配词库术语\n\nArgs:\n    text (str): 要匹配的文本\n    glossary_name (str):\
+      \ 词库名称\n    is_source_lang (bool): 是否在源语言中匹配，False表示在目标语言中匹配\n    min_confidence\
+      \ (float): 最小置信度阈值\n    cache_dir (Optional[str]): 缓存目录（可选）\n"
+  - name: merge_glossaries
+    args:
+    - glossary_names
+    - output_name
+    - conflict_strategy
+    - cache_dir
+    docstring: "合并多个词库\n\nArgs:\n    glossary_names (List[str]): 要合并的词库名称列表\n    output_name\
+      \ (str): 输出词库名称\n    conflict_strategy (str): 冲突处理策略（newer, higher_confidence,\
+      \ keep_first）\n    cache_dir (Optional[str]): 缓存目录（可选）"
+  - name: get_glossary_statistics
+    args:
+    - glossary_name
+    - cache_dir
+    docstring: "获取词库的统计信息\n\nArgs:\n    glossary_name (str): 词库名称\n    cache_dir (Optional[str]):\
+      \ 缓存目录（可选）\n    \nReturns:\n    str: JSON格式的统计信息"
+- file: translation_engine.py
+  path: tools/generated_tools/medical_document_translation_agent/translation_engine.py
+  tool_functions:
+  - name: translate_text
+    args:
+    - text
+    - source_lang
+    - target_lang
+    - glossary_name
+    - domain
+    - use_ai
+    - context
+    - cache_dir
+    docstring: "翻译单个文本，支持词库和AI翻译\n\nArgs:\n    text (str): 要翻译的文本\n    source_lang\
+      \ (str): 源语言代码（如'en', 'zh'）\n    target_lang (str): 目标语言代码（如'zh', 'en'）\n  \
+      \  glossary_name (Optional[str]): 词库名称（可选）\n    domain (str): 医学领域（默"
+  - name: translate_batch
+    args:
+    - texts
+    - source_lang
+    - target_lang
+    - glossary_name
+    - domain
+    - use_ai
+    - context
+    - cache_dir
+    docstring: "批量翻译多个文本\n\nArgs:\n    texts (List[str]): 要翻译的文本列表\n    source_lang\
+      \ (str): 源语言代码（如'en', 'zh'）\n    target_lang (str): 目标语言代码（如'zh', 'en'）\n  \
+      \  glossary_name (Optional[str]): 词库名称（可选）\n    domain (str): 医学领域（"
+  - name: translate_with_context
+    args:
+    - text
+    - source_lang
+    - target_lang
+    - context_before
+    - context_after
+    - glossary_name
+    - domain
+    - use_ai
+    - cache_dir
+    docstring: "使用上下文进行翻译，提高翻译准确性\n\nArgs:\n    text (str): 要翻译的文本\n    source_lang\
+      \ (str): 源语言代码（如'en', 'zh'）\n    target_lang (str): 目标语言代码（如'zh', 'en'）\n  \
+      \  context_before (Optional[str]): 前置上下文（可选）\n    context_after (Op"
+  - name: translate_with_domain_adaptation
+    args:
+    - text
+    - source_lang
+    - target_lang
+    - primary_domain
+    - secondary_domain
+    - glossary_name
+    - use_ai
+    - cache_dir
+    docstring: "使用领域适应进行翻译，适用于跨医学领域的文本\n\nArgs:\n    text (str): 要翻译的文本\n    source_lang\
+      \ (str): 源语言代码（如'en', 'zh'）\n    target_lang (str): 目标语言代码（如'zh', 'en'）\n  \
+      \  primary_domain (str): 主要医学领域\n    secondary_domain (Optiona"
+  - name: translate_abbreviations
+    args:
+    - text
+    - source_lang
+    - target_lang
+    - expand_abbreviations
+    - glossary_name
+    - domain
+    - use_ai
+    - cache_dir
+    docstring: "处理医学缩写的翻译\n\nArgs:\n    text (str): 要翻译的文本\n    source_lang (str):\
+      \ 源语言代码（如'en', 'zh'）\n    target_lang (str): 目标语言代码（如'zh', 'en'）\n    expand_abbreviations\
+      \ (bool): 是否展开缩写（默认为True）\n    glossary_name (Optiona"
+  - name: get_supported_languages
+    args: []
+    docstring: "获取支持的语言列表\n\nReturns:\n    str: JSON格式的支持语言列表"
+  - name: get_supported_domains
+    args: []
+    docstring: "获取支持的医学领域列表\n\nReturns:\n    str: JSON格式的支持医学领域列表"
+  - name: clear_translation_cache
+    args:
+    - cache_key
+    - older_than_days
+    - cache_dir
+    docstring: "清除翻译缓存\n\nArgs:\n    cache_key (Optional[str]): 特定缓存键（可选）\n    older_than_days\
+      \ (Optional[int]): 清除指定天数以前的缓存（可选）\n    cache_dir (Optional[str]): 缓存目录（可选）\n\
+      \    \nReturns:\n    str: JSON格式的操作结果"
+- file: docx_processor.py
+  path: tools/generated_tools/medical_document_translation_agent/docx_processor.py
+  tool_functions:
+  - name: read_docx
+    args:
+    - file_path
+    - return_format
+    - extract_images
+    docstring: "读取和解析.docx文件，提取文档结构和内容\n\nArgs:\n    file_path (str): Word文档的路径\n\
+      \    return_format (str): 返回格式，可选值: \"json\", \"text\"\n    extract_images (bool):\
+      \ 是否提取图片（以base64编码返回）\n    \nReturns:\n    str: 文档内容的JSON或文本表示"
+  - name: create_docx
+    args:
+    - content
+    - output_path
+    docstring: "根据提供的内容创建Word文档\n\nArgs:\n    content (Dict[str, Any]): 文档内容的结构化表示（JSON格式）\n\
+      \    output_path (str): 输出文档的保存路径\n    \nReturns:\n    str: 操作结果信息"
+  - name: modify_docx
+    args:
+    - file_path
+    - modifications
+    - output_path
+    docstring: "修改现有Word文档\n\nArgs:\n    file_path (str): 要修改的Word文档路径\n    modifications\
+      \ (Dict[str, Any]): 要应用的修改\n    output_path (str): 修改后文档的保存路径\n    \nReturns:\n\
+      \    str: 操作结果信息"
+  - name: merge_docx
+    args:
+    - file_paths
+    - output_path
+    docstring: "合并多个Word文档\n\nArgs:\n    file_paths (List[str]): 要合并的Word文档路径列表\n\
+      \    output_path (str): 合并后文档的保存路径\n    \nReturns:\n    str: 操作结果信息"
+  - name: extract_docx_structure
+    args:
+    - file_path
+    docstring: "提取Word文档的结构信息（标题层次、目录等）\n\nArgs:\n    file_path (str): Word文档的路径\n\
+      \    \nReturns:\n    str: JSON格式的文档结构信息"
+  - name: create_docx_from_text
+    args:
+    - content
+    - output_path
+    - title
+    docstring: "从文本内容创建Word文档（简化版本）\n\nArgs:\n    content (str): 文档内容文本\n    output_path\
+      \ (str): 输出文档的保存路径\n    title (str): 文档标题\n    \nReturns:\n    str: 操作结果信息"
+  - name: compare_docx
+    args:
+    - file_path1
+    - file_path2
+    docstring: "比较两个Word文档的内容和格式差异\n\nArgs:\n    file_path1 (str): 第一个Word文档的路径\n\
+      \    file_path2 (str): 第二个Word文档的路径\n    \nReturns:\n    str: JSON格式的比较结果"
+- file: drug_feedback_tools.py
+  path: tools/generated_tools/drug_feedback_collector/drug_feedback_tools.py
+  tool_functions:
+  - name: validate_drug_name
+    args:
+    - drug_name
+    docstring: "验证和标准化药物名称\n\nArgs:\n    drug_name (str): 用户输入的药物名称\n    \nReturns:\n\
+      \    str: JSON格式的验证结果，包含标准化名称和变体"
+  - name: search_drug_feedback
+    args:
+    - drug_name
+    - search_keywords
+    - max_results_per_keyword
+    docstring: "使用DuckDuckGo搜索药物反馈信息\n\nArgs:\n    drug_name (str): 药物名称\n    search_keywords\
+      \ (List[str]): 搜索关键词列表，默认为[\"评价\", \"副作用\", \"体验\", \"反馈\"]\n    max_results_per_keyword\
+      \ (int): 每个关键词的最大结果数\n    \nReturns:\n    str: JSON格式"
+  - name: extract_webpage_content
+    args:
+    - url
+    - max_content_length
+    - timeout
+    docstring: "抓取网页内容并提取正文\n\nArgs:\n    url (str): 网页URL\n    max_content_length\
+      \ (int): 最大内容长度（字节）\n    timeout (int): 请求超时时间（秒）\n    \nReturns:\n    str:\
+      \ JSON格式的抓取结果"
+  - name: batch_extract_webpages
+    args:
+    - urls
+    - max_content_length
+    - timeout
+    - max_concurrent
+    docstring: "批量抓取多个网页内容\n\nArgs:\n    urls (List[str]): 网页URL列表\n    max_content_length\
+      \ (int): 每个网页的最大内容长度\n    timeout (int): 请求超时时间\n    max_concurrent (int): 最大并发数（当前版本顺序执行）\n\
+      \    \nReturns:\n    str: JSON格式的批量抓取结果"
+  - name: analyze_feedback_with_claude
+    args:
+    - content
+    - drug_name
+    - analysis_type
+    docstring: "使用Claude模型分析药物反馈内容\n\nArgs:\n    content (str): 要分析的文本内容\n    drug_name\
+      \ (str): 药物名称\n    analysis_type (str): 分析类型（basic/comprehensive/detailed）\n\
+      \    \nReturns:\n    str: JSON格式的分析结果"
+  - name: batch_analyze_feedback
+    args:
+    - contents
+    - drug_name
+    docstring: "批量分析多个反馈内容\n\nArgs:\n    contents (List[Dict[str, str]]): 内容列表，每个元素包含url和content\n\
+      \    drug_name (str): 药物名称\n    \nReturns:\n    str: JSON格式的批量分析结果"
+  - name: generate_feedback_report
+    args:
+    - drug_name
+    - analyzed_feedbacks
+    - include_sources
+    docstring: "生成药物反馈报告\n\nArgs:\n    drug_name (str): 药物名称\n    analyzed_feedbacks\
+      \ (List[Dict]): 已分析的反馈列表\n    include_sources (bool): 是否包含来源信息\n    \nReturns:\n\
+      \    str: JSON格式的反馈报告"
+  - name: check_cache
+    args:
+    - drug_name
+    - cache_type
+    - max_age_days
+    docstring: "检查缓存是否存在且有效\n\nArgs:\n    drug_name (str): 药物名称\n    cache_type (str):\
+      \ 缓存类型（search_results/report）\n    max_age_days (int): 最大缓存天数\n    \nReturns:\n\
+      \    str: JSON格式的缓存检查结果"
+  - name: save_to_cache
+    args:
+    - drug_name
+    - data
+    - cache_type
+    docstring: "保存数据到缓存\n\nArgs:\n    drug_name (str): 药物名称\n    data (Dict): 要缓存的数据\n\
+      \    cache_type (str): 缓存类型（search_results/report）\n    \nReturns:\n    str:\
+      \ JSON格式的保存结果"
+  - name: clear_cache
+    args:
+    - drug_name
+    - older_than_days
+    docstring: "清理缓存\n\nArgs:\n    drug_name (str): 特定药物名称，如果不提供则清理所有缓存\n    older_than_days\
+      \ (int): 清理指定天数之前的缓存\n    \nReturns:\n    str: JSON格式的清理结果"
+  - name: get_cache_statistics
+    args: []
+    docstring: "获取缓存统计信息\n\nReturns:\n    str: JSON格式的缓存统计"
+- file: engine_adapters.py
+  path: tools/generated_tools/tool_build_multi_search_engine/engine_adapters.py
+  tool_functions: []
+- file: environment_detector.py
+  path: tools/generated_tools/tool_build_multi_search_engine/environment_detector.py
+  tool_functions: []
+- file: utils.py
+  path: tools/generated_tools/tool_build_multi_search_engine/utils.py
+  tool_functions: []
+- file: exceptions.py
+  path: tools/generated_tools/tool_build_multi_search_engine/exceptions.py
+  tool_functions: []
+- file: multi_search_engine.py
+  path: tools/generated_tools/tool_build_multi_search_engine/multi_search_engine.py
+  tool_functions:
+  - name: search
+    args:
+    - query
+    - engine
+    - num_results
+    - language
+    - region
+    - timeout
+    - format
+    - include_metadata
+    docstring: "统一的搜索接口，支持多个搜索引擎，自动适配网络环境\n\nArgs:\n    query: 搜索关键词或查询语句\n    engine:\
+      \ 指定搜索引擎（baidu/sogou/so360/google/bing/duckduckgo/auto），默认为auto自动选择\n    num_results:\
+      \ 返回的搜索结果数量，范围1-20，默认为10\n    language: 搜索结果语言偏好（zh-C"
+  - name: check_engine_health
+    args:
+    - engines
+    - check_timeout
+    docstring: "检查搜索引擎的可用性和响应时间\n\nArgs:\n    engines: 需要检查的搜索引擎列表，JSON数组字符串格式（如：'[\"\
+      baidu\", \"google\"]'），为空时检查所有支持的引擎\n    check_timeout: 每个引擎的检查超时时间（秒），默认为5\n\
+      \    \nReturns:\n    str: JSON字符串，包含各搜索引擎健康状态"
+  - name: filter_and_sort_results
+    args:
+    - results_json
+    - filter_keywords
+    - exclude_keywords
+    - sort_by
+    - deduplicate
+    docstring: "对搜索结果进行过滤和自定义排序\n\nArgs:\n    results_json: 待处理的搜索结果JSON字符串（来自search函数的返回值）\n\
+      \    filter_keywords: 过滤关键词列表，JSON数组字符串格式（如：'[\"AI\", \"机器学习\"]'），只返回包含这些关键词的结果\n\
+      \    exclude_keywords: 排除关键词列表，JSON数组字符串格式，过滤掉包含这些关键词"
+- file: result_formatter.py
+  path: tools/generated_tools/tool_build_multi_search_engine/result_formatter.py
+  tool_functions: []
+- file: multimodal_content_parser.py
+  path: tools/generated_tools/Nexus-AI-QA-Assistant/multimodal_content_parser.py
+  tool_functions:
+  - name: parse_markdown_content
+    args:
+    - content
+    - extract_structure
+    - extract_code_blocks
+    - extract_links
+    docstring: 'Parse Markdown content and extract structured information.
+
+
+      This tool analyzes Markdown documents and extracts:
+
+      - Document structure (headings hierarchy)
+
+      - Code blocks with language tags
+
+      - Links and r'
+  - name: parse_yaml_content
+    args:
+    - content
+    - validate_structure
+    - extract_keys
+    docstring: 'Parse YAML content and extract structured configuration.
+
+
+      This tool analyzes YAML configuration files and extracts:
+
+      - Complete configuration structure
+
+      - Specific key values
+
+      - Nested structure informat'
+  - name: parse_json_content
+    args:
+    - content
+    - validate_structure
+    - extract_paths
+    - pretty_print
+    docstring: 'Parse JSON content and extract structured data.
+
+
+      This tool analyzes JSON documents and extracts:
+
+      - Complete JSON structure
+
+      - Specific path values using JSONPath-like notation
+
+      - Schema information
+
+      - Da'
+  - name: parse_python_code
+    args:
+    - content
+    - extract_functions
+    - extract_classes
+    - extract_imports
+    - extract_docstrings
+    - include_source
+    docstring: 'Parse Python code and extract code structure information.
+
+
+      This tool analyzes Python source code and extracts:
+
+      - Function definitions with signatures and docstrings
+
+      - Class definitions with methods
+
+      - '
+  - name: parse_file_content
+    args:
+    - file_path
+    - file_type
+    - parse_options
+    docstring: 'Parse file content with automatic type detection.
+
+
+      This tool automatically detects file type and applies appropriate parsing:
+
+      - Markdown files: Extract structure, code blocks, links
+
+      - YAML files: Pars'
+  - name: extract_code_structure
+    args:
+    - content
+    - language
+    - include_comments
+    - include_complexity
+    docstring: 'Extract code structure from source code with language-specific analysis.
+
+
+      This tool provides deep code analysis including:
+
+      - Function and class extraction
+
+      - Parameter and return type analysis
+
+      - Docstr'
+  - name: chunk_large_content
+    args:
+    - content
+    - chunk_size
+    - overlap
+    - preserve_structure
+    docstring: 'Split large content into manageable chunks with optional overlap.
+
+
+      This tool intelligently splits large documents while:
+
+      - Preserving semantic boundaries (paragraphs, sections)
+
+      - Maintaining context w'
+  - name: extract_key_content
+    args:
+    - content
+    - content_type
+    - extraction_rules
+    docstring: 'Extract key content from documents based on importance and relevance.
+
+
+      This tool intelligently extracts the most important content:
+
+      - Headings and section titles
+
+      - Key paragraphs and summaries
+
+      - Impor'
+- file: comparison_tools.py
+  path: tools/generated_tools/multi_cloud_pricing_comparison_agent/comparison_tools.py
+  tool_functions:
+  - name: map_aws_to_azure_services
+    args:
+    - service_type
+    docstring: "建立AWS和Azure服务的映射关系\n\nArgs:\n    service_type: 服务类型关键字（ec2、ebs、s3、rds、elasticache、opensearch、elb、network）\n\
+      \    \nReturns:\n    JSON格式的映射信息，包含aws_service、azure_service、description"
+  - name: map_regions
+    args:
+    - location
+    docstring: "将地理位置映射到AWS和Azure区域代码\n\nArgs:\n    location: 地理位置描述（如\"美国东部\"、\"\
+      新加坡\"、\"东京\"）\n    \nReturns:\n    JSON格式的区域映射信息，包含aws_region、azure_region"
+  - name: compare_pricing_across_clouds
+    args:
+    - aws_price_data
+    - azure_price_data
+    docstring: "对比AWS和Azure的价格差异\n\nArgs:\n    aws_price_data: AWS价格数据（JSON字符串）\n\
+      \    azure_price_data: Azure价格数据（JSON字符串）\n    \nReturns:\n    JSON格式的对比结果，包含price_difference、percentage_difference、cheaper_cloud"
+  - name: calculate_annual_cost
+    args:
+    - items
+    - discount_percentage
+    docstring: "计算年度总成本\n\nArgs:\n    items: 价格项目列表（JSON字符串），每个项目包含annual_price和quantity\n\
+      \    discount_percentage: 折扣百分比（0-100）\n    \nReturns:\n    JSON格式的成本计算结果，包含subtotal、discount、total"
+  - name: format_pricing_data
+    args:
+    - price
+    - currency
+    - decimal_places
+    docstring: "格式化价格数据为易读格式\n\nArgs:\n    price: 价格数值\n    currency: 货币代码\n    decimal_places:\
+      \ 小数位数\n    \nReturns:\n    格式化后的价格字符串（如\"$1,234.56\"）"
+  - name: generate_excel_report
+    args:
+    - report_data
+    - output_path
+    docstring: "生成包含三个Sheet的Excel报告\n\nArgs:\n    report_data: 报告数据（JSON字符串），包含aws_items、azure_items、comparison_items\n\
+      \    output_path: 输出文件路径，如果为None则自动生成\n    \nReturns:\n    JSON格式的生成结果，包含file_path、success"
+- file: aws_pricing_tools.py
+  path: tools/generated_tools/multi_cloud_pricing_comparison_agent/aws_pricing_tools.py
+  tool_functions:
+  - name: get_aws_ec2_pricing
+    args:
+    - instance_type
+    - region
+    - operating_system
+    - tenancy
+    - term_type
+    docstring: "查询AWS EC2实例价格\n\nArgs:\n    instance_type: 实例类型（如t3.micro、m5.large）\n\
+      \    region: AWS区域（如us-east-1、ap-southeast-1）\n    operating_system: 操作系统（Linux、Windows、RHEL、SUSE）\n\
+      \    tenancy: 租户类型（Shared、Dedicated、Hos"
+  - name: get_aws_ebs_pricing
+    args:
+    - volume_type
+    - region
+    docstring: "查询AWS EBS存储价格\n\nArgs:\n    volume_type: 卷类型（gp2、gp3、io1、io2、st1、sc1、standard）\n\
+      \    region: AWS区域\n    \nReturns:\n    JSON格式的价格信息，包含gb_month_price（USD/GB-月）"
+  - name: get_aws_s3_pricing
+    args:
+    - storage_class
+    - region
+    docstring: "查询AWS S3对象存储价格\n\nArgs:\n    storage_class: 存储类别（Standard、Standard-IA、OneZone-IA、Glacier、Glacier\
+      \ Deep Archive）\n    region: AWS区域\n    \nReturns:\n    JSON格式的价格信息，包含gb_month_price（USD/GB-月）"
+  - name: get_aws_rds_pricing
+    args:
+    - instance_type
+    - database_engine
+    - region
+    - deployment_option
+    docstring: "查询AWS RDS数据库价格\n\nArgs:\n    instance_type: 实例类型（如db.t3.micro、db.m5.large）\n\
+      \    database_engine: 数据库引擎（MySQL、PostgreSQL、MariaDB、Oracle、SQL Server）\n  \
+      \  region: AWS区域\n    deployment_option: 部署选项（Single-AZ、M"
+  - name: get_aws_elasticache_pricing
+    args:
+    - instance_type
+    - cache_engine
+    - region
+    docstring: "查询AWS ElastiCache缓存服务价格\n\nArgs:\n    instance_type: 实例类型（如cache.t3.micro、cache.m5.large）\n\
+      \    cache_engine: 缓存引擎（Redis、Memcached）\n    region: AWS区域\n    \nReturns:\n\
+      \    JSON格式的价格信息，包含hourly_price、monthly_pr"
+  - name: get_aws_opensearch_pricing
+    args:
+    - instance_type
+    - region
+    docstring: "查询AWS OpenSearch服务价格\n\nArgs:\n    instance_type: 实例类型（如t3.small.search、m5.large.search）\n\
+      \    region: AWS区域\n    \nReturns:\n    JSON格式的价格信息，包含hourly_price、monthly_price、annual_price"
+  - name: get_aws_elb_pricing
+    args:
+    - load_balancer_type
+    - region
+    docstring: "查询AWS ELB负载均衡器价格\n\nArgs:\n    load_balancer_type: 负载均衡器类型（ALB、NLB、CLB、GWLB）\n\
+      \    region: AWS区域\n    \nReturns:\n    JSON格式的价格信息，包含hourly_price、lcu_hour_price（ALB/NLB）"
+  - name: get_aws_network_pricing
+    args:
+    - transfer_type
+    - region
+    docstring: "查询AWS网络数据传输价格\n\nArgs:\n    transfer_type: 传输类型（DataTransfer-Out-Bytes、DataTransfer-In-Bytes、InterRegion-Out、InterRegion-In）\n\
+      \    region: AWS区域\n    \nReturns:\n    JSON格式的价格信息，包含gb_price（USD/GB）"
+  - name: recommend_aws_instances
+    args:
+    - vcpu
+    - memory_gb
+    - environment
+    - region
+    docstring: "根据vCPU和内存需求推荐AWS实例类型\n\nArgs:\n    vcpu: vCPU核心数\n    memory_gb: 内存大小（GB）\n\
+      \    environment: 环境类型（production、development、test）\n    region: AWS区域\n   \
+      \ \nReturns:\n    JSON格式的推荐结果，包含recommended_instances列表，每个实例包"
+- file: azure_pricing_tools.py
+  path: tools/generated_tools/multi_cloud_pricing_comparison_agent/azure_pricing_tools.py
+  tool_functions:
+  - name: get_azure_vm_pricing
+    args:
+    - vm_size
+    - region
+    - os_type
+    docstring: "查询Azure Virtual Machines价格\n\nArgs:\n    vm_size: VM大小（如Standard_B2s、Standard_D4s_v3）\n\
+      \    region: Azure区域（如eastus、westeurope）\n    os_type: 操作系统类型（Linux、Windows）\n\
+      \    \nReturns:\n    JSON格式的价格信息，包含hourly_pri"
+  - name: get_azure_disk_pricing
+    args:
+    - disk_type
+    - region
+    docstring: "查询Azure Managed Disks价格\n\nArgs:\n    disk_type: 磁盘类型（Premium SSD、Standard\
+      \ SSD、Standard HDD）\n    region: Azure区域\n    \nReturns:\n    JSON格式的价格信息，包含gb_month_price"
+  - name: get_azure_blob_pricing
+    args:
+    - access_tier
+    - region
+    docstring: "查询Azure Blob Storage价格\n\nArgs:\n    access_tier: 访问层（Hot、Cool、Archive）\n\
+      \    region: Azure区域\n    \nReturns:\n    JSON格式的价格信息，包含gb_month_price"
+  - name: get_azure_sql_pricing
+    args:
+    - service_tier
+    - compute_tier
+    - region
+    docstring: "查询Azure SQL Database价格\n\nArgs:\n    service_tier: 服务层级（Basic、Standard、Premium、GeneralPurpose、BusinessCritical）\n\
+      \    compute_tier: 计算层级（如S0、S1、P1、Gen5 2 vCore）\n    region: Azure区域\n    \n\
+      Returns:\n    JSON格式"
+  - name: get_azure_redis_pricing
+    args:
+    - cache_size
+    - region
+    docstring: "查询Azure Cache for Redis价格\n\nArgs:\n    cache_size: 缓存大小（如C0、C1、P1）\n\
+      \    region: Azure区域\n    \nReturns:\n    JSON格式的价格信息，包含hourly_price、monthly_price、annual_price"
+  - name: get_azure_search_pricing
+    args:
+    - service_tier
+    - region
+    docstring: "查询Azure Cognitive Search价格\n\nArgs:\n    service_tier: 服务层级（Free、Basic、Standard、Storage\
+      \ Optimized）\n    region: Azure区域\n    \nReturns:\n    JSON格式的价格信息，包含hourly_price、monthly_price、annual_price"
+  - name: get_azure_gateway_pricing
+    args:
+    - gateway_type
+    - region
+    docstring: "查询Azure Application Gateway/Load Balancer价格\n\nArgs:\n    gateway_type:\
+      \ 网关类型（Application Gateway、Load Balancer）\n    region: Azure区域\n    \nReturns:\n\
+      \    JSON格式的价格信息，包含hourly_price、monthly_price、annual_price"
+  - name: get_azure_bandwidth_pricing
+    args:
+    - transfer_type
+    - region
+    docstring: "查询Azure带宽价格\n\nArgs:\n    transfer_type: 传输类型（Outbound、Inbound）\n\
+      \    region: Azure区域\n    \nReturns:\n    JSON格式的价格信息，包含gb_price"
+  - name: recommend_azure_instances
+    args:
+    - vcpu
+    - memory_gb
+    - environment
+    - region
+    docstring: "根据vCPU和内存需求推荐Azure实例类型\n\nArgs:\n    vcpu: vCPU核心数\n    memory_gb:\
+      \ 内存大小（GB）\n    environment: 环境类型（production、development、test）\n    region:\
+      \ Azure区域\n    \nReturns:\n    JSON格式的推荐结果，包含recommended_instances列表"
+- file: scholar_search.py
+  path: tools/generated_tools/tool_build_scholar_search/scholar_search.py
+  tool_functions:
+  - name: search_google_scholar
+    args:
+    - keywords
+    - top_n
+    - sort_by
+    - start_year
+    - end_year
+    docstring: "根据关键字在Google Scholar上进行搜索并返回学术文献信息\n\nArgs:\n    keywords (str): 搜索关键字或短语，多个关键字可以用空格分隔\n\
+      \    top_n (int): 返回结果的数量限制，默认为10\n    sort_by (str, optional): 结果排序方式，可选值：relevance（相关度）或date（日期）\n\
+      \    start_year (int"
+- file: fda_support_tools.py
+  path: tools/generated_tools/fda_data_query_agent/fda_support_tools.py
+  tool_functions:
+  - name: cache_query_result
+    args:
+    - query_type
+    - query_params
+    - result_data
+    - cache_dir
+    - expiration_hours
+    docstring: "缓存FDA查询结果\n\nArgs:\n    query_type (str): 查询类型（drugs/devices/food/adverse_events/recalls/comprehensive）\n\
+      \    query_params (Dict[str, Any]): 查询参数\n    result_data (str): 查询结果（JSON字符串）\n\
+      \    cache_dir (str): 缓"
+  - name: get_cached_result
+    args:
+    - query_type
+    - query_params
+    - cache_dir
+    - allow_expired
+    - max_expired_days
+    docstring: "从缓存中获取FDA查询结果\n\nArgs:\n    query_type (str): 查询类型（drugs/devices/food/adverse_events/recalls/comprehensive）\n\
+      \    query_params (Dict[str, Any]): 查询参数\n    cache_dir (str): 缓存目录，默认使用.cache/fda_data_query_age"
+  - name: clear_cache
+    args:
+    - cache_dir
+    - query_type
+    - older_than_hours
+    docstring: "清理缓存数据\n\nArgs:\n    cache_dir (str): 缓存目录，默认使用.cache/fda_data_query_agent\n\
+      \    query_type (Optional[str]): 要清理的查询类型，如果不提供则清理所有类型\n    older_than_hours\
+      \ (Optional[int]): 清理超过指定小时数的缓存，如果不提供则清理所有缓存\n    \nRetur"
+  - name: get_cache_stats
+    args:
+    - cache_dir
+    docstring: "获取缓存统计信息\n\nArgs:\n    cache_dir (str): 缓存目录，默认使用.cache/fda_data_query_agent\n\
+      \    \nReturns:\n    str: JSON格式的缓存统计信息\n    \nExample:\n    >>> result = get_cache_stats()\n\
+      \    >>> data = json.loads(result)\n    >>"
+  - name: parse_fda_drug_data
+    args:
+    - raw_data
+    docstring: "解析FDA药物数据，提取关键字段\n\nArgs:\n    raw_data (str): 原始FDA药物数据（JSON字符串）\n\
+      \    \nReturns:\n    str: JSON格式的解析后数据，包含结构化的关键字段\n    \nExample:\n    >>> result\
+      \ = parse_fda_drug_data(query_result)\n    >>> data = json.loads"
+  - name: parse_fda_device_data
+    args:
+    - raw_data
+    docstring: "解析FDA医疗设备数据，提取关键字段\n\nArgs:\n    raw_data (str): 原始FDA设备数据（JSON字符串）\n\
+      \    \nReturns:\n    str: JSON格式的解析后数据，包含结构化的关键字段"
+  - name: validate_search_parameters
+    args:
+    - search_term
+    - search_field
+    - query_type
+    - limit
+    docstring: "验证FDA查询参数的有效性\n\nArgs:\n    search_term (str): 搜索词\n    search_field\
+      \ (str): 搜索字段\n    query_type (str): 查询类型（drugs/devices/food/adverse_events/recalls）\n\
+      \    limit (int): 结果数量限制\n    \nReturns:\n    str: JSON格式"
+  - name: generate_query_suggestions
+    args:
+    - failed_query
+    - query_type
+    - error_message
+    docstring: "为失败的查询生成改进建议\n\nArgs:\n    failed_query (str): 失败的查询词\n    query_type\
+      \ (str): 查询类型\n    error_message (Optional[str]): 错误信息\n    \nReturns:\n   \
+      \ str: JSON格式的查询建议\n    \nExample:\n    >>> result = generate_query_s"
+  - name: format_fda_response
+    args:
+    - raw_data
+    - format_type
+    - include_source
+    docstring: "格式化FDA查询响应，使其更易读\n\nArgs:\n    raw_data (str): 原始FDA查询结果（JSON字符串）\n\
+      \    format_type (str): 格式类型，可选值:\n        - summary: 摘要格式（默认）\n        - detailed:\
+      \ 详细格式\n        - minimal: 最小格式\n    include_source (bool): "
+- file: fda_api_tools.py
+  path: tools/generated_tools/fda_data_query_agent/fda_api_tools.py
+  tool_functions:
+  - name: query_fda_drugs
+    args:
+    - search_term
+    - search_field
+    - limit
+    - skip
+    - sort_field
+    - sort_order
+    docstring: "查询FDA药物批准信息、标签、NDC代码等数据\n\n此工具调用FDA openFDA Drug API，支持按品牌名、通用名、活性成分、\n\
+      制造商、NDC代码、申请号等多种方式查询药物信息。\n\nArgs:\n    search_term (str): 搜索词，如药品名称、活性成分等\n\
+      \    search_field (str): 搜索字段，可选值:\n        - openfda.brand_na"
+  - name: query_fda_devices
+    args:
+    - search_term
+    - search_field
+    - limit
+    - skip
+    - device_class
+    docstring: "查询FDA医疗设备分类、批准、510(k)/PMA信息等\n\n此工具调用FDA openFDA Device API，支持按设备名称、制造商、\n\
+      产品代码、510(k)号等查询医疗设备信息。\n\nArgs:\n    search_term (str): 搜索词，如设备名称、制造商等\n   \
+      \ search_field (str): 搜索字段，可选值:\n        - device_name: 设备名称"
+  - name: query_fda_food
+    args:
+    - search_term
+    - search_field
+    - data_type
+    - limit
+    - skip
+    - recall_class
+    docstring: "查询FDA食品召回、执法行动、不良事件等数据\n\n此工具调用FDA openFDA Food API，支持查询食品召回信息、\n\
+      执法行动和不良事件报告。\n\nArgs:\n    search_term (str): 搜索词，如产品名称、公司名等\n    search_field\
+      \ (str): 搜索字段，可选值:\n        - product_description: 产品描述\n        - "
+  - name: query_fda_adverse_events
+    args:
+    - search_term
+    - search_field
+    - product_type
+    - limit
+    - skip
+    - serious_only
+    - date_range
+    docstring: "查询FDA药物或设备的不良事件报告数据\n\n此工具调用FDA openFDA Adverse Events API，支持查询药物和\n\
+      医疗设备相关的不良事件报告。\n\nArgs:\n    search_term (str): 搜索词，如产品名称\n    search_field\
+      \ (str): 搜索字段，可选值:\n        - patient.drug.openfda.brand_name: 药品品"
+  - name: query_fda_recalls
+    args:
+    - search_term
+    - search_field
+    - product_type
+    - limit
+    - skip
+    - recall_status
+    - recall_class
+    docstring: "查询FDA召回信息（药物、设备、食品）\n\n此工具调用FDA openFDA Recall API，支持查询药物、医疗设备\n和食品的召回信息。\n\
+      \nArgs:\n    search_term (str): 搜索词，如产品名称、公司名等\n    search_field (str): 搜索字段，可选值:\n\
+      \        - product_description: 产品描述\n        - reca"
+  - name: search_fda_comprehensive
+    args:
+    - search_term
+    - search_types
+    - limit_per_type
+    - include_adverse_events
+    - include_recalls
+    docstring: "综合搜索FDA数据（跨多个数据类型）\n\n此工具执行跨多个FDA数据类型的综合搜索，适用于用户不确定\n数据类型或需要全面信息的场景。\n\
+      \nArgs:\n    search_term (str): 搜索词，如产品名称\n    search_types (List[str]): 要搜索的数据类型列表，可选值:\n\
+      \        - \"drugs\": 药物\n        - \"devices\": 医疗设备\n"
+  - name: get_fda_api_stats
+    args: []
+    docstring: "获取FDA API统计信息和健康状态\n\n此工具用于检查FDA API的可用性和响应性能。\n\nReturns:\n    str:\
+      \ JSON格式的API统计信息\n    \nExample:\n    >>> result = get_fda_api_stats()\n   \
+      \ >>> data = json.loads(result)\n    >>> print(data[\"api_status\"])"
+- file: pmc_fulltext_retriever.py
+  path: tools/generated_tools/literature_analysis_agent/pmc_fulltext_retriever.py
+  tool_functions:
+  - name: retrieve_pmc_fulltext
+    args:
+    - pmc_ids
+    - format_type
+    docstring: "Retrieve full text content from PMC articles by PMC IDs.\n\nArgs:\n\
+      \    pmc_ids: List of PMC IDs (e.g., [\"PMC1234567\", \"PMC7654321\"])\n   \
+      \ format_type: File format (txt or xml), default is txt\n    \nReturns"
+- file: pmc_s3_connector.py
+  path: tools/generated_tools/literature_analysis_agent/pmc_s3_connector.py
+  tool_functions:
+  - name: pmc_s3_connect
+    args:
+    - directory
+    - list_files
+    - max_files
+    docstring: "连接到PMC S3存储桶并列出文件\n\nArgs:\n    directory (str): PMC目录名称 (oa_comm,\
+      \ oa_noncomm, phe_timebound)\n    list_files (bool): 是否列出文件\n    max_files (int):\
+      \ 最大文件数量\n    \nReturns:\n    str: JSON格式的连接结果和文件列表"
+  - name: pmc_list_directories
+    args: []
+    docstring: "列出PMC S3存储桶中的可用目录\n\nReturns:\n    str: JSON格式的目录列表和描述"
+  - name: pmc_download_file
+    args:
+    - file_key
+    - format_type
+    - save_to_cache
+    docstring: "从PMC S3下载指定文件\n\nArgs:\n    file_key (str): 文件的S3键\n    format_type\
+      \ (str): 文件格式类型 (xml, txt)\n    save_to_cache (bool): 是否保存到本地缓存\n    \nReturns:\n\
+      \    str: 文件内容或JSON格式的下载结果"
+  - name: pmc_search_files
+    args:
+    - search_term
+    - directory
+    - format_type
+    - max_results
+    - time_budget_seconds
+    docstring: "在PMC S3中搜索文件\n\nArgs:\n    search_term (str): 搜索词\n    directory (str):\
+      \ PMC目录名称 (oa_comm, oa_noncomm, phe_timebound)\n    format_type (str): 文件格式类型\
+      \ (xml, txt)\n    max_results (int): 最大结果数量\n    \nReturns:\n  "
+  - name: pmc_get_filelist_csv
+    args:
+    - directory
+    - save_to_cache
+    docstring: "获取PMC目录的filelist.csv文件\n\nArgs:\n    directory (str): PMC目录名称 (oa_comm,\
+      \ oa_noncomm, phe_timebound)\n    save_to_cache (bool): 是否保存到本地缓存\n    \nReturns:\n\
+      \    str: JSON格式的filelist.csv内容"
+  - name: pmc_get_metadata_by_pmcid
+    args:
+    - pmcid
+    - directory
+    - timeout_seconds
+    docstring: "通过PMCID获取文章元数据（改进版，增加超时控制）\n\nArgs:\n    pmcid (str): PubMed Central\
+      \ ID (例如: PMC1234567)\n    directory (str): PMC目录名称，如果不指定则搜索所有目录\n    timeout_seconds\
+      \ (int): 超时时间（秒）\n    \nReturns:\n    str: JSON格式的文章元数据"
+  - name: pmc_get_article_by_id
+    args:
+    - pmcid
+    - format_type
+    - verify_content
+    - expected_title
+    - expected_keywords
+    docstring: "直接通过PMCID获取文章（优化版，集成内容验证）\n\nArgs:\n    pmcid (str): PubMed Central\
+      \ ID (例如: PMC1234567)\n    format_type (str): 文件格式 (xml, txt)\n    verify_content\
+      \ (bool): 是否验证内容匹配性\n    expected_title (str): 预期的标题（用于验证）\n "
+  - name: pmc_quick_search
+    args:
+    - pmcid
+    docstring: "快速搜索PMCID（优化版，直接构建路径）\n\nArgs:\n    pmcid (str): PubMed Central ID\
+      \ (例如: PMC1234567)\n    \nReturns:\n    str: JSON格式的搜索结果和建议"
+  - name: pmc_cache_status
+    args: []
+    docstring: "获取PMC本地缓存状态\n\nReturns:\n    str: JSON格式的缓存状态信息"
+  - name: pmc_clear_cache
+    args:
+    - confirm
+    docstring: "清除PMC本地缓存\n\nArgs:\n    confirm (bool): 确认清除缓存\n    \nReturns:\n \
+      \   str: JSON格式的操作结果"
+- file: review_writer.py
+  path: tools/generated_tools/literature_analysis_agent/review_writer.py
+  tool_functions:
+  - name: write_batch_review
+    args:
+    - research_id
+    - batch_number
+    - review_content
+    - user_requirement
+    docstring: "将批次文献综述写入指定目录\n\nArgs:\n    research_id: 研究ID\n    batch_number: 批次编号\n\
+      \    review_content: 综述内容\n    user_requirement: 用户研究需求（可选）\n\nReturns:\n  \
+      \  操作结果"
+  - name: write_final_review
+    args:
+    - research_id
+    - review_content
+    - user_requirement
+    docstring: "写入最终文献综述\n\nArgs:\n    research_id: 研究ID\n    review_content: 综述内容\n\
+      \    user_requirement: 用户研究需求（可选）\n\nReturns:\n    操作结果"
+  - name: get_review_history
+    args:
+    - research_id
+    docstring: "获取综述历史记录\n\nArgs:\n    research_id: 研究ID\n\nReturns:\n    包含综述历史记录的字典"
+- file: literature_batch_processor.py
+  path: tools/generated_tools/literature_analysis_agent/literature_batch_processor.py
+  tool_functions:
+  - name: load_marked_literature
+    args:
+    - research_id
+    docstring: "加载被标记的文献元数据\n\nArgs:\n    research_id: 研究ID，对应.cache/pmc_literature下的目录名\n\
+      \nReturns:\n    包含文献元数据和缓存目录信息的字典"
+  - name: get_next_batch
+    args:
+    - research_id
+    - batch_size
+    docstring: "获取下一批待处理的文献\n\nArgs:\n    research_id: 研究ID\n    batch_size: 每批处理的文献数量\n\
+      \nReturns:\n    包含下一批文献信息的字典"
+  - name: mark_batch_completed
+    args:
+    - research_id
+    - processed_pmcids
+    docstring: "标记一批文献处理完成\n\nArgs:\n    research_id: 研究ID\n    processed_pmcids:\
+      \ 已处理的PMCID列表\n\nReturns:\n    操作结果"
+  - name: get_processing_status
+    args:
+    - research_id
+    docstring: "获取处理状态\n\nArgs:\n    research_id: 研究ID\n\nReturns:\n    包含处理状态的字典"
+  - name: get_latest_review
+    args:
+    - research_id
+    docstring: "获取最新的文献综述内容\n\nArgs:\n    research_id: 研究ID\n\nReturns:\n    包含最新综述内容的字典"
+- file: ppt_converter.py
+  path: tools/generated_tools/ppt_to_markdown/ppt_converter.py
+  tool_functions:
+  - name: ppt_to_markdown_converter
+    args:
+    - file_path
+    - include_page_numbers
+    - include_slide_titles
+    - extract_notes
+    - include_images
+    - output_file
+    docstring: 'Convert a PowerPoint (PPT/PPTX) file to Markdown format.
+
+
+      This tool parses a PowerPoint presentation and converts its content to Markdown
+      format,
+
+      preserving the hierarchical structure of the original '
+  - name: extract_ppt_structure
+    args:
+    - file_path
+    docstring: 'Extract the structure of a PowerPoint presentation without converting
+      to Markdown.
+
+
+      This tool analyzes a PowerPoint file and returns a structured representation
+      of its
+
+      content, including slides, shape'
+  - name: batch_convert_ppt_to_markdown
+    args:
+    - directory_path
+    - output_directory
+    - include_page_numbers
+    - include_slide_titles
+    - extract_notes
+    - include_images
+    docstring: 'Convert multiple PowerPoint files in a directory to Markdown format.
+
+
+      This tool processes all PowerPoint files (.ppt and .pptx) in the specified directory
+
+      and converts them to Markdown format. It crea'
+- file: markdown_formatter.py
+  path: tools/generated_tools/ppt_to_markdown/markdown_formatter.py
+  tool_functions:
+  - name: format_markdown_document
+    args:
+    - markdown_content
+    - add_toc
+    - add_metadata
+    - presentation_title
+    - presentation_date
+    - author
+    - custom_css
+    - heading_style
+    docstring: 'Format and enhance a Markdown document converted from a PowerPoint
+      presentation.
+
+
+      This tool takes Markdown content generated from a PowerPoint presentation and
+
+      applies additional formatting and enhanc'
+  - name: customize_markdown_styling
+    args:
+    - markdown_content
+    - style_preset
+    - custom_replacements
+    - enhance_lists
+    - enhance_tables
+    - add_page_breaks
+    docstring: 'Apply custom styling to Markdown content converted from PowerPoint.
+
+
+      This tool enhances the visual appearance of Markdown content by applying
+
+      custom styling rules, such as adding emojis, enhancing lis'
+  - name: extract_markdown_sections
+    args:
+    - markdown_content
+    - section_type
+    - include_content
+    docstring: 'Extract specific sections from Markdown content converted from PowerPoint.
+
+
+      This tool extracts specific sections from Markdown content, such as headings,
+
+      lists, tables, or code blocks, making it easie'
+- file: file_manager.py
+  path: tools/generated_tools/ppt_to_markdown/file_manager.py
+  tool_functions:
+  - name: validate_ppt_file
+    args:
+    - file_path
+    docstring: 'Validate a PowerPoint file and extract basic metadata.
+
+
+      This tool checks if a file exists, is accessible, and is a valid PowerPoint
+      file (.ppt or .pptx).
+
+      It also extracts basic metadata about the file'
+  - name: find_ppt_files
+    args:
+    - directory_path
+    - recursive
+    - include_ppt
+    - include_pptx
+    - max_files
+    docstring: "Find PowerPoint files in a directory.\n\nThis tool searches for PowerPoint\
+      \ files (.ppt and/or .pptx) in a specified directory,\nwith options for recursive\
+      \ search and filtering.\n\nArgs:\n    directory_path "
+  - name: create_output_directory
+    args:
+    - base_directory
+    - output_name
+    - clear_existing
+    docstring: 'Create an output directory for Markdown files.
+
+
+      This tool creates a directory to store Markdown files generated from PowerPoint
+      presentations.
+
+      It can create a new directory or clear an existing one.
+
+
+      '
+  - name: save_markdown_file
+    args:
+    - content
+    - output_directory
+    - file_name
+    - source_file_path
+    - overwrite
+    docstring: "Save Markdown content to a file.\n\nThis tool saves Markdown content\
+      \ generated from a PowerPoint presentation to a file,\nwith options for naming\
+      \ and overwrite control.\n\nArgs:\n    content (str): Markdown"
+- file: logo_design_tools.py
+  path: tools/generated_tools/logo_design_agent/logo_design_tools.py
+  tool_functions:
+  - name: image_generator
+    args:
+    - prompt
+    - style
+    - resolution
+    - negative_prompt
+    - model_id
+    - output_format
+    - num_images
+    - seed
+    - save_path
+    docstring: "Generate high-quality logo images using Amazon Bedrock's image generation\
+      \ models.\n\nArgs:\n    prompt: Detailed description of the logo to generate\n\
+      \    style: Logo style (logo, minimalist, abstract, mod"
+  - name: html_report_generator
+    args:
+    - title
+    - logo_paths
+    - design_rationale
+    - color_palette
+    - font_choices
+    - design_elements
+    - usage_guidelines
+    - client_name
+    - output_path
+    docstring: "Generate a professional HTML design report for logo designs.\n\nArgs:\n\
+      \    title: Report title\n    logo_paths: List of paths to logo image files\n\
+      \    design_rationale: Explanation of the design concept an"
+  - name: web_search
+    args:
+    - query
+    - search_type
+    - max_results
+    - include_images
+    docstring: "Search the web for logo design related information and professional\
+      \ knowledge.\n\nArgs:\n    query: Search query\n    search_type: Type of search\
+      \ (design, brand, industry, color, typography)\n    max_resul"
+- file: test_browser_automation.py
+  path: tools/generated_tools/tool_build_browser_automation/test_browser_automation.py
+  tool_functions: []
+- file: browser_viewer.py
+  path: tools/generated_tools/tool_build_browser_automation/browser_viewer.py
+  tool_functions: []
+- file: session_manager.py
+  path: tools/generated_tools/tool_build_browser_automation/session_manager.py
+  tool_functions: []
+- file: examples.py
+  path: tools/generated_tools/tool_build_browser_automation/examples.py
+  tool_functions: []
+- file: browser_automation_tools.py
+  path: tools/generated_tools/tool_build_browser_automation/browser_automation_tools.py
+  tool_functions:
+  - name: browser_with_nova_act
+    args:
+    - prompt
+    - starting_page
+    - nova_act_key
+    - region
+    docstring: "使用Nova Act进行基础浏览器自动化操作\n\n通过CDP WebSocket连接执行自然语言指令，支持网页搜索、表单填写、\n\
+      数据提取等自动化任务。\n\nArgs:\n    prompt: 自然语言浏览器操作指令（如：'搜索Python教程并提取前5个结果'）\n    starting_page:\
+      \ 起始URL地址（如：'https://www.google.com'）\n    nova_act_ke"
+  - name: browser_with_live_view_nova
+    args:
+    - prompt
+    - starting_page
+    - nova_act_key
+    - region
+    - viewer_port
+    - display_size
+    - open_browser
+    docstring: "使用Nova Act进行浏览器自动化，并提供DCV实时视图\n\n在基础自动化功能基础上增加实时浏览器查看功能，支持多种显示尺寸\n\
+      和手动控制。\n\nArgs:\n    prompt: 自然语言浏览器操作指令\n    starting_page: 起始URL地址\n    nova_act_key:\
+      \ Nova Act API密钥\n    region: AWS区域，默认为'us-west-2'\n    vi"
+  - name: browser_with_live_view_use
+    args:
+    - task
+    - region
+    - viewer_port
+    - open_browser
+    - model_id
+    - timeout
+    docstring: "使用Browser Use和Claude 3.5 Sonnet进行AI驱动的浏览器自动化\n\n支持复杂的多步骤任务执行，AI会自动决策和导航。提供实时视图功能。\n\
+      \nArgs:\n    task: 自然语言任务描述（如：'在亚马逊搜索笔记本电脑并比较前5个产品的价格和评分'）\n    region: AWS区域，默认'us-west-2'\n\
+      \    viewer_port: DCV viewer服务器端"
+  - name: manage_browser_session
+    args:
+    - action
+    - region
+    - session_id
+    docstring: "浏览器会话管理器\n\n提供统一的会话创建、查询、销毁等操作。\n\nArgs:\n    action: 操作类型，可选值：\n\
+      \        - 'create': 创建新会话\n        - 'stop': 停止会话\n        - 'get_ws_headers':\
+      \ 获取WebSocket连接信息\n        - 'get_status': 查询会话状态\n        - 'list_a"
+  - name: batch_extract_from_urls
+    args:
+    - urls
+    - extraction_prompt
+    - method
+    - nova_act_key
+    - region
+    - max_concurrent
+    docstring: "批量从多个URL采集数据\n\n支持并发控制和两种采集方法（Nova Act和Browser Use），单个URL失败\n不影响其他URL的处理。\n\
+      \nArgs:\n    urls: 待采集的URL列表，JSON数组字符串格式\n        （如：'[\"https://example1.com\"\
+      , \"https://example2.com\"]'）\n    extraction_prompt: 数据提取"
+- file: data_collector.py
+  path: tools/generated_tools/lifescience_news_collector/data_collector.py
+  tool_functions:
+  - name: serpapi_search
+    args:
+    - query
+    - api_key
+    - num_results
+    - time_range
+    - language
+    - country
+    docstring: "使用SerpAPI进行Google搜索\n\nArgs:\n    query: 搜索查询词\n    api_key: SerpAPI\
+      \ API密钥\n    num_results: 返回结果数量（默认10）\n    time_range: 时间范围（d=天, w=周, m=月,\
+      \ y=年）\n    language: 搜索语言（默认zh-cn）\n    country: 搜索国家（默认cn）\n\nRetur"
+  - name: fetch_webpage_content
+    args:
+    - url
+    - timeout
+    - headers
+    docstring: "使用aiohttp获取网页内容（适用于静态网页）\n\nArgs:\n    url: 网页URL\n    timeout: 超时时间（秒）\n\
+      \    headers: 自定义请求头\n\nReturns:\n    str: JSON格式的网页内容"
+  - name: fetch_dynamic_webpage
+    args:
+    - url
+    - wait_for_selector
+    - scroll_to_bottom
+    - timeout
+    - wait_time
+    docstring: "使用Playwright获取动态网页内容（支持JavaScript渲染）\n\nArgs:\n    url: 网页URL\n  \
+      \  wait_for_selector: 等待特定CSS选择器出现\n    scroll_to_bottom: 是否滚动到页面底部（加载懒加载内容）\n\
+      \    timeout: 超时时间（毫秒）\n    wait_time: 页面加载后等待时间（毫秒）\n\nReturns:\n   "
+  - name: parse_article_content
+    args:
+    - html
+    - url
+    - title_selectors
+    - content_selectors
+    - date_selectors
+    - link_selectors
+    docstring: "从HTML中解析文章内容\n\nArgs:\n    html: HTML内容\n    url: 网页URL\n    title_selectors:\
+      \ 标题CSS选择器列表（按优先级）\n    content_selectors: 正文CSS选择器列表（按优先级）\n    date_selectors:\
+      \ 日期CSS选择器列表（可选）\n    link_selectors: 链接CSS选择器列表（可选）\n"
+  - name: extract_article_list
+    args:
+    - html
+    - url
+    - article_container_selector
+    - title_selector
+    - link_selector
+    - date_selector
+    - snippet_selector
+    - max_articles
+    docstring: "从列表页提取文章列表\n\nArgs:\n    html: HTML内容\n    url: 列表页URL\n    article_container_selector:\
+      \ 文章容器CSS选择器\n    title_selector: 标题CSS选择器（相对于容器）\n    link_selector: 链接CSS选择器（相对于容器）\n\
+      \    date_selector: 日期CSS选择器（相对于容器，可"
+  - name: deduplicate_urls
+    args:
+    - urls
+    - normalize
+    docstring: "URL去重工具\n\nArgs:\n    urls: URL列表\n    normalize: 是否规范化URL（移除查询参数和片段）\n\
+      \nReturns:\n    str: JSON格式的去重结果"
+  - name: filter_urls_by_domain
+    args:
+    - urls
+    - allowed_domains
+    - blocked_domains
+    docstring: "根据域名过滤URL\n\nArgs:\n    urls: URL列表\n    allowed_domains: 允许的域名列表（白名单）\n\
+      \    blocked_domains: 禁止的域名列表（黑名单）\n\nReturns:\n    str: JSON格式的过滤结果"
+  - name: batch_fetch_webpages
+    args:
+    - urls
+    - max_concurrent
+    - timeout
+    - use_playwright
+    - retry_count
+    docstring: "批量并发采集网页\n\nArgs:\n    urls: URL列表\n    max_concurrent: 最大并发数（默认5）\n\
+      \    timeout: 超时时间（秒）\n    use_playwright: 是否使用Playwright（默认False）\n    retry_count:\
+      \ 失败重试次数（默认2）\n\nReturns:\n    str: JSON格式的批量采集结果"
+  - name: deep_crawl_website
+    args:
+    - start_url
+    - max_depth
+    - max_pages
+    - allowed_domains
+    - article_patterns
+    - timeout
+    docstring: "深度遍历网站，自动发现和采集详情页\n\nArgs:\n    start_url: 起始URL\n    max_depth: 最大遍历深度（默认2）\n\
+      \    max_pages: 最大采集页面数（默认50）\n    allowed_domains: 允许的域名列表（默认只允许起始URL的域名）\n\
+      \    article_patterns: 文章URL模式列表（正则表达式）\n    timeout: 超时"
+  - name: clean_article_text
+    args:
+    - text
+    - remove_extra_whitespace
+    - remove_html_entities
+    - remove_special_chars
+    docstring: "清洗文章文本\n\nArgs:\n    text: 原始文本\n    remove_extra_whitespace: 移除多余空格和换行\n\
+      \    remove_html_entities: 移除HTML实体\n    remove_special_chars: 移除特殊字符\n\nReturns:\n\
+      \    str: JSON格式的清洗结果"
+  - name: load_data_source_config
+    args:
+    - config_path
+    docstring: "加载数据源配置文件\n\nArgs:\n    config_path: 配置文件路径\n\nReturns:\n    str:\
+      \ JSON格式的配置内容"
+- file: data_processor.py
+  path: tools/generated_tools/lifescience_news_collector/data_processor.py
+  tool_functions:
+  - name: deduplicate_articles
+    args:
+    - articles
+    - similarity_threshold
+    - method
+    docstring: "文章去重工具\n\nArgs:\n    articles: 文章列表，每篇文章包含title和content字段\n    similarity_threshold:\
+      \ 相似度阈值（0-1），用于fuzzy方法\n    method: 去重方法（title_hash=标题哈希, content_hash=内容哈希,\
+      \ fuzzy=模糊匹配）\n\nReturns:\n    str: JSON格式的去重结果"
+  - name: generate_article_summary
+    args:
+    - content
+    - max_sentences
+    - max_length
+    docstring: "生成文章摘要（基于规则的简化版）\n\nArgs:\n    content: 文章内容\n    max_sentences: 最大句子数\n\
+      \    max_length: 最大字符数\n\nReturns:\n    str: JSON格式的摘要结果"
+  - name: extract_keywords
+    args:
+    - text
+    - top_k
+    - min_word_length
+    - stopwords
+    docstring: "提取关键词（基于词频的简化版）\n\nArgs:\n    text: 文本内容\n    top_k: 返回前K个关键词\n  \
+      \  min_word_length: 最小词长\n    stopwords: 停用词列表\n\nReturns:\n    str: JSON格式的关键词结果"
+  - name: classify_article
+    args:
+    - title
+    - content
+    - categories
+    docstring: "基于关键词的文章分类\n\nArgs:\n    title: 文章标题\n    content: 文章内容\n    categories:\
+      \ 分类关键词字典，格式: {\"类别名\": [\"关键词1\", \"关键词2\"]}\n\nReturns:\n    str: JSON格式的分类结果"
+  - name: generate_article_tags
+    args:
+    - title
+    - content
+    - keywords
+    - max_tags
+    - predefined_tags
+    docstring: "生成文章标签\n\nArgs:\n    title: 文章标题\n    content: 文章内容\n    keywords:\
+      \ 已提取的关键词列表（可选）\n    max_tags: 最大标签数\n    predefined_tags: 预定义标签列表（可选）\n\nReturns:\n\
+      \    str: JSON格式的标签结果"
+  - name: validate_article_data
+    args:
+    - article
+    - required_fields
+    - min_content_length
+    - max_title_length
+    docstring: "验证文章数据完整性和有效性\n\nArgs:\n    article: 文章数据字典\n    required_fields:\
+      \ 必需字段列表（默认: [\"title\", \"content\", \"url\"]）\n    min_content_length: 最小内容长度\n\
+      \    max_title_length: 最大标题长度\n\nReturns:\n    str: JSON格式的验证结果"
+  - name: normalize_article_data
+    args:
+    - article
+    - add_id
+    - add_timestamp
+    - clean_content
+    docstring: "规范化文章数据格式\n\nArgs:\n    article: 原始文章数据\n    add_id: 是否添加唯一ID\n  \
+      \  add_timestamp: 是否添加时间戳\n    clean_content: 是否清洗内容\n\nReturns:\n    str: JSON格式的规范化结果"
+  - name: batch_process_articles
+    args:
+    - articles
+    - operations
+    - config
+    docstring: "批量处理文章数据\n\nArgs:\n    articles: 文章列表\n    operations: 操作列表，支持: deduplicate,\
+      \ summarize, extract_keywords, classify, generate_tags, validate, normalize\n\
+      \    config: 操作配置参数\n\nReturns:\n    str: JSON格式的批量处理结果"
+- file: storage_tools.py
+  path: tools/generated_tools/lifescience_news_collector/storage_tools.py
+  tool_functions:
+  - name: upload_file_to_s3
+    args:
+    - file_path
+    - bucket_name
+    - object_key
+    - content_type
+    - metadata
+    - region
+    docstring: "从本地文件路径上传文件到AWS S3（推荐使用，确保本地与云端内容一致）\n\nArgs:\n    file_path: 本地文件路径（支持相对路径和绝对路径）\n\
+      \    bucket_name: S3存储桶名称\n    object_key: S3对象键（文件在S3中的路径）\n    content_type:\
+      \ 内容类型（可选，自动根据文件扩展名推断）\n    metadata: 对象元数据（可选）\n"
+  - name: upload_to_s3
+    args:
+    - content
+    - bucket_name
+    - object_key
+    - content_type
+    - metadata
+    - region
+    docstring: "上传字符串内容到AWS S3（注意：推荐使用 upload_file_to_s3 上传本地文件，确保内容一致性）\n\nArgs:\n\
+      \    content: 要上传的字符串内容\n    bucket_name: S3存储桶名称\n    object_key: 对象键（文件路径）\n\
+      \    content_type: 内容类型（默认application/json）\n    metadata: 对象元数据"
+  - name: generate_presigned_url
+    args:
+    - bucket_name
+    - object_key
+    - expiration
+    - region
+    docstring: "生成S3对象的预签名URL\n\nArgs:\n    bucket_name: S3存储桶名称\n    object_key:\
+      \ 对象键（文件路径）\n    expiration: URL有效期（秒），默认7天（604800秒）\n    region: AWS区域（默认us-west-2）\n\
+      \nReturns:\n    str: JSON格式的预签名URL结果"
+  - name: download_from_s3
+    args:
+    - bucket_name
+    - object_key
+    - region
+    docstring: "从AWS S3下载内容\n\nArgs:\n    bucket_name: S3存储桶名称\n    object_key: 对象键（文件路径）\n\
+      \    region: AWS区域（默认us-east-1）\n\nReturns:\n    str: JSON格式的下载结果"
+  - name: list_s3_objects
+    args:
+    - bucket_name
+    - prefix
+    - max_keys
+    - region
+    docstring: "列出S3存储桶中的对象\n\nArgs:\n    bucket_name: S3存储桶名称\n    prefix: 对象键前缀（过滤）\n\
+      \    max_keys: 最大返回对象数\n    region: AWS区域（默认us-east-1）\n\nReturns:\n    str:\
+      \ JSON格式的对象列表"
+  - name: put_item_to_dynamodb
+    args:
+    - table_name
+    - item
+    - region
+    docstring: "向DynamoDB表插入项目\n\nArgs:\n    table_name: DynamoDB表名\n    item: 要插入的项目数据\n\
+      \    region: AWS区域（默认us-east-1）\n\nReturns:\n    str: JSON格式的插入结果"
+  - name: get_item_from_dynamodb
+    args:
+    - table_name
+    - key
+    - region
+    docstring: "从DynamoDB表获取项目\n\nArgs:\n    table_name: DynamoDB表名\n    key: 主键字典，例如\
+      \ {\"id\": \"article-123\"}\n    region: AWS区域（默认us-east-1）\n\nReturns:\n  \
+      \  str: JSON格式的获取结果"
+  - name: query_dynamodb
+    args:
+    - table_name
+    - key_condition_expression
+    - expression_attribute_values
+    - index_name
+    - limit
+    - region
+    docstring: "查询DynamoDB表\n\nArgs:\n    table_name: DynamoDB表名\n    key_condition_expression:\
+      \ 键条件表达式，例如 \"id = :id\"\n    expression_attribute_values: 表达式属性值，例如 {\":id\"\
+      : \"article-123\"}\n    index_name: 全局二级索引名称（可选）\n    limi"
+  - name: batch_write_to_dynamodb
+    args:
+    - table_name
+    - items
+    - region
+    docstring: "批量写入DynamoDB表\n\nArgs:\n    table_name: DynamoDB表名\n    items: 要写入的项目列表\n\
+      \    region: AWS区域（默认us-east-1）\n\nReturns:\n    str: JSON格式的批量写入结果"
+  - name: save_to_local_file
+    args:
+    - content
+    - file_path
+    - mode
+    - encoding
+    - create_dirs
+    docstring: "保存内容到本地文件\n\nArgs:\n    content: 要保存的内容\n    file_path: 文件路径\n   \
+      \ mode: 文件打开模式（w=覆盖, a=追加）\n    encoding: 文件编码（默认utf-8）\n    create_dirs: 是否自动创建目录（默认True）\n\
+      \nReturns:\n    str: JSON格式的保存结果"
+  - name: read_from_local_file
+    args:
+    - file_path
+    - encoding
+    docstring: "从本地文件读取内容\n\nArgs:\n    file_path: 文件路径\n    encoding: 文件编码（默认utf-8）\n\
+      \nReturns:\n    str: JSON格式的读取结果"
+  - name: list_local_files
+    args:
+    - directory
+    - pattern
+    - recursive
+    docstring: "列出本地目录中的文件\n\nArgs:\n    directory: 目录路径\n    pattern: 文件名模式（支持通配符）\n\
+      \    recursive: 是否递归搜索子目录\n\nReturns:\n    str: JSON格式的文件列表"
+  - name: save_to_cache
+    args:
+    - cache_key
+    - data
+    - cache_dir
+    - ttl_hours
+    docstring: "保存数据到本地缓存\n\nArgs:\n    cache_key: 缓存键\n    data: 要缓存的数据\n    cache_dir:\
+      \ 缓存目录\n    ttl_hours: 缓存有效期（小时），None表示永久\n\nReturns:\n    str: JSON格式的缓存结果"
+  - name: get_from_cache
+    args:
+    - cache_key
+    - cache_dir
+    docstring: "从本地缓存获取数据\n\nArgs:\n    cache_key: 缓存键\n    cache_dir: 缓存目录\n\nReturns:\n\
+      \    str: JSON格式的缓存数据"
+  - name: clear_cache
+    args:
+    - cache_dir
+    - older_than_hours
+    docstring: "清理本地缓存\n\nArgs:\n    cache_dir: 缓存目录\n    older_than_hours: 只清理超过指定小时数的缓存，None表示清理全部\n\
+      \nReturns:\n    str: JSON格式的清理结果"
+  - name: export_to_json
+    args:
+    - data
+    - output_path
+    - pretty
+    docstring: "导出数据为JSON文件\n\nArgs:\n    data: 要导出的数据\n    output_path: 输出文件路径\n\
+      \    pretty: 是否格式化输出\n\nReturns:\n    str: JSON格式的导出结果"
+  - name: export_to_csv
+    args:
+    - data
+    - output_path
+    - columns
+    docstring: "导出数据为CSV文件\n\nArgs:\n    data: 要导出的数据列表（字典列表）\n    output_path: 输出文件路径\n\
+      \    columns: 要导出的列名列表（None表示所有列）\n\nReturns:\n    str: JSON格式的导出结果"
+- file: newsletter_generator.py
+  path: tools/generated_tools/lifescience_news_collector/newsletter_generator.py
+  tool_functions:
+  - name: render_newsletter_html
+    args:
+    - template_path
+    - articles
+    - newsletter_title
+    - newsletter_date
+    - header_image_url
+    - footer_text
+    docstring: "渲染通讯HTML内容\n\nArgs:\n    template_path: HTML模板文件路径\n    articles:\
+      \ 文章列表\n    newsletter_title: 通讯标题\n    newsletter_date: 通讯日期\n    header_image_url:\
+      \ 头部图片URL（可选）\n    footer_text: 页脚文本（可选）\n\nReturns:\n    str: J"
+  - name: generate_simple_newsletter_html
+    args:
+    - articles_json
+    - newsletter_title
+    - max_articles
+    docstring: "生成简单的通讯HTML（内置模板）\n\nArgs:\n    articles_json: 文章列表的JSON字符串，每个文章包含\
+      \ title, url, summary, date, category, tags 字段\n    newsletter_title: 通讯标题\n\
+      \    max_articles: 最大文章数\n\nReturns:\n    str: JSON格式的生成结果\n\nExample:"
+  - name: generate_newsletter_from_json
+    args:
+    - data_json
+    - date
+    - output_base_dir
+    - newsletter_title
+    docstring: "从JSON数据生成HTML报告文件（使用固定模板，减少token消耗）\n\nAgent只需提供JSON数据，工具内部加载固定模板进行渲染，无需将模板内容加载到上下文。\n\
+      \nArgs:\n    data_json: JSON格式的数据，包含以下结构：\n        {\n            \"stats\"\
+      : {\n                \"total_articles\": 42,\n      "
+  - name: generate_email_subject
+    args:
+    - newsletter_title
+    - date
+    - article_count
+    docstring: "生成邮件主题\n\nArgs:\n    newsletter_title: 通讯标题\n    date: 日期（可选）\n  \
+      \  article_count: 文章数量（可选）\n\nReturns:\n    str: JSON格式的邮件主题"
+  - name: generate_email_preview_text
+    args:
+    - articles
+    - max_length
+    docstring: "生成邮件预览文本\n\nArgs:\n    articles: 文章列表\n    max_length: 最大长度\n\nReturns:\n\
+      \    str: JSON格式的预览文本"
+  - name: optimize_image_for_email
+    args:
+    - image_path
+    - max_width
+    - quality
+    docstring: "优化图片用于邮件\n\nArgs:\n    image_path: 图片文件路径\n    max_width: 最大宽度（像素）\n\
+      \    quality: JPEG质量（1-100）\n\nReturns:\n    str: JSON格式的优化结果"
+  - name: embed_image_in_html
+    args:
+    - html_content
+    - image_base64
+    - image_alt
+    docstring: "将base64图片嵌入HTML\n\nArgs:\n    html_content: HTML内容\n    image_base64:\
+      \ base64编码的图片\n    image_alt: 图片alt属性\n\nReturns:\n    str: JSON格式的嵌入结果"
+  - name: send_email_via_ses
+    args:
+    - sender
+    - recipients
+    - subject
+    - html_body
+    - text_body
+    - reply_to
+    - region
+    docstring: "通过AWS SES发送邮件\n\nArgs:\n    sender: 发件人邮箱\n    recipients: 收件人邮箱列表\n\
+      \    subject: 邮件主题\n    html_body: HTML邮件正文\n    text_body: 纯文本邮件正文（可选）\n  \
+      \  reply_to: 回复地址列表（可选）\n    region: AWS区域（默认us-east-1）\n\nReturns:\n  "
+  - name: send_bulk_email_via_ses
+    args:
+    - sender
+    - recipients
+    - subject
+    - html_body
+    - text_body
+    - batch_size
+    - region
+    docstring: "通过AWS SES批量发送邮件\n\nArgs:\n    sender: 发件人邮箱\n    recipients: 收件人邮箱列表\n\
+      \    subject: 邮件主题\n    html_body: HTML邮件正文\n    text_body: 纯文本邮件正文（可选）\n  \
+      \  batch_size: 批次大小（默认50）\n    region: AWS区域（默认us-east-1）\n\nReturns"
+  - name: save_newsletter_preview
+    args:
+    - html_content
+    - output_path
+    docstring: "保存通讯预览文件\n\nArgs:\n    html_content: HTML内容\n    output_path: 输出文件路径\n\
+      \nReturns:\n    str: JSON格式的保存结果"
+  - name: send_test_email
+    args:
+    - sender
+    - test_recipient
+    - html_content
+    - subject
+    - region
+    docstring: "发送测试邮件\n\nArgs:\n    sender: 发件人邮箱\n    test_recipient: 测试收件人邮箱\n\
+      \    html_content: HTML内容\n    subject: 邮件主题\n    region: AWS区域（默认us-east-1）\n\
+      \nReturns:\n    str: JSON格式的发送结果"
+  - name: generate_newsletter_stats
+    args:
+    - articles
+    docstring: "生成通讯统计信息\n\nArgs:\n    articles: 文章列表\n\nReturns:\n    str: JSON格式的统计信息"
+- file: document_writer_tools.py
+  path: tools/generated_tools/tech_doc_multi_agent_system/document_writer_tools.py
+  tool_functions:
+  - name: parse_user_requirement
+    args:
+    - requirement
+    - additional_context
+    docstring: "解析用户自然语言需求，提取关键技术要点和文档结构要求\n\n本工具通过自然语言处理和模式识别，从用户的需求描述中提取：\n- 文档类型（API文档、设计文档、用户手册等）\n\
+      - 核心技术要点和关键概念\n- 目标受众和技术水平\n- 文档结构要求\n- 特殊格式需求\n\nArgs:\n    requirement (str):\
+      \ 用户的自然语言需求描述\n    additional_context (Optiona"
+  - name: generate_document_structure
+    args:
+    - requirement_analysis
+    - custom_sections
+    docstring: "基于需求分析生成结构化的技术文档框架\n\n本工具根据需求分析结果，生成包含标题、摘要、章节大纲的完整文档框架。\n每个章节包含：\n\
+      - 章节标题和编号\n- 章节目标和要点\n- 建议的内容类型（文本、代码、图表等）\n- 预期字数范围\n\nArgs:\n    requirement_analysis\
+      \ (str): parse_user_requirement 工具输出的JSON结果\n    custom_se"
+  - name: generate_document_content
+    args:
+    - document_structure
+    - content_guidelines
+    docstring: "基于文档结构生成完整的技术文档内容\n\n本工具根据文档框架生成每个章节的详细内容，包括：\n- 技术说明和概念解释\n- 代码示例和配置说明\n\
+      - 最佳实践和注意事项\n- 参考链接和资源\n\n生成的内容遵循技术文档最佳实践，确保准确性、完整性和可读性。\n\nArgs:\n    document_structure\
+      \ (str): generate_document_structure 工具输出的JSON结果\n "
+  - name: parse_review_feedback
+    args:
+    - review_feedback
+    - current_document
+    docstring: "解析审核反馈，提取结构化的修改任务列表\n\n本工具分析审核Agent的反馈信息，将其转换为可执行的修改任务，包括：\n- 问题定位（章节、段落、具体位置）\n\
+      - 问题类型分类\n- 修改优先级\n- 具体修改建议\n- 修改难度评估\n\nArgs:\n    review_feedback (str): 审核Agent返回的反馈JSON字符串，包含：\n\
+      \        - overall_score: 总体评分\n "
+  - name: modify_document_content
+    args:
+    - original_document
+    - modification_tasks
+    - modification_mode
+    docstring: "根据修改任务列表对文档进行针对性修改\n\n本工具根据解析后的修改任务，对文档内容进行精准修改，支持：\n- 目标修改模式：只修改有问题的部分\n\
+      - 全面重写模式：对整个章节进行重写\n- 增量修改模式：在现有基础上添加内容\n\n修改过程保持文档整体结构和风格一致性。\n\nArgs:\n  \
+      \  original_document (str): 原始文档内容的JSON字符串\n    modification_tas"
+  - name: validate_document_completeness
+    args:
+    - document_content
+    - requirement_analysis
+    docstring: "验证文档完整性，确保满足原始需求\n\n本工具对比文档内容和需求分析，检查：\n- 所有必需章节是否包含\n- 关键技术要点是否覆盖\n\
+      - 特殊要求是否满足\n- 文档长度是否合理\n\nArgs:\n    document_content (str): 文档内容的JSON字符串\n\
+      \    requirement_analysis (str): 需求分析结果的JSON字符串\n    \nReturns:\n    st"
+  - name: format_document_for_review
+    args:
+    - document_content
+    - include_metadata
+    docstring: "格式化文档内容以便提交审核\n\n本工具将文档内容格式化为标准的审核格式，包括：\n- 添加文档元数据\n- 生成可读的文本表示\n\
+      - 标记需要特别关注的部分\n- 提供文档统计信息\n\nArgs:\n    document_content (str): 文档内容的JSON字符串\n\
+      \    include_metadata (bool): 是否包含详细元数据\n    \nReturns:\n    str: JSON"
+  - name: extract_modification_priorities
+    args:
+    - modification_tasks
+    - max_priority_items
+    docstring: "提取最高优先级的修改任务\n\n从完整的修改任务列表中提取最需要立即处理的任务，帮助Agent\n聚焦于最重要的改进点。\n\nArgs:\n\
+      \    modification_tasks (str): 修改任务列表的JSON字符串\n    max_priority_items (int):\
+      \ 最多返回的高优先级任务数量\n    \nReturns:\n    str: JSON格式的优先任务列表\n        \n"
+- file: document_structure_parser.py
+  path: tools/generated_tools/tech_doc_multi_agent_system/document_structure_parser.py
+  tool_functions:
+  - name: parse_document_structure
+    args:
+    - document_content
+    - parse_mode
+    docstring: "解析文档内容并识别各个章节和元素\n\n此工具接收DocumentContent对象，解析其结构并生成结构化的元素树。\n元素树包含标题、章节、代码块、列表、表格等各种文档元素。\n\
+      \nArgs:\n    document_content (Dict[str, Any]): DocumentContent对象，包含以下字段：\n\
+      \        - title: 文档标题\n        - sections:"
+  - name: extract_document_elements
+    args:
+    - document_content
+    - element_types
+    - filter_empty
+    docstring: "从文档中提取特定类型的元素\n\n此工具用于从DocumentContent中提取特定类型的元素，如所有标题、\n所有代码块、所有表格等。\n\
+      \nArgs:\n    document_content (Dict[str, Any]): DocumentContent对象\n    element_types\
+      \ (List[str]): 要提取的元素类型列表，如[\"h1\", \"h2\", \"code_block\"]"
+  - name: validate_document_structure
+    args:
+    - document_content
+    - validation_rules
+    docstring: "验证文档结构的完整性和有效性\n\n此工具用于检查DocumentContent的结构是否符合要求，\n包括必需字段、格式规范、内容完整性等。\n\
+      \nArgs:\n    document_content (Dict[str, Any]): DocumentContent对象\n    validation_rules\
+      \ (Dict[str, Any]): 验证规则配置，包括：\n        - require"
+  - name: normalize_document_structure
+    args:
+    - document_content
+    - normalization_options
+    docstring: "规范化文档结构，修复常见问题\n\n此工具用于自动修复文档结构中的常见问题，如缺失字段、\n格式不一致、空内容等。\n\nArgs:\n\
+      \    document_content (Dict[str, Any]): DocumentContent对象\n    normalization_options\
+      \ (Dict[str, Any]): 规范化选项，包括：\n        - add_default_title"
+  - name: analyze_document_complexity
+    args:
+    - document_content
+    docstring: "分析文档的复杂度\n\n此工具用于评估文档的复杂程度，包括结构复杂度、内容复杂度等，\n为HTML样式选择和布局优化提供参考。\n\n\
+      Args:\n    document_content (Dict[str, Any]): DocumentContent对象\n        \n\
+      Returns:\n    str: JSON格式的复杂度分析结果，包含：\n        {\n            \"status"
+- file: html_generator.py
+  path: tools/generated_tools/tech_doc_multi_agent_system/html_generator.py
+  tool_functions:
+  - name: generate_html
+    args:
+    - element_tree
+    - style_config
+    docstring: "将解析的结构转换为HTML代码\n\n此工具接收文档元素树和样式配置，生成符合HTML5标准的完整HTML文档。\n\nArgs:\n\
+      \    element_tree (Dict[str, Any]): 元素树，由parse_document_structure生成\n    style_config\
+      \ (Dict[str, Any]): 样式配置，包括：\n        - theme: 主题（\"defaul"
+  - name: generate_html_with_syntax_highlighting
+    args:
+    - element_tree
+    - style_config
+    - highlight_library
+    docstring: "生成带语法高亮的HTML文档\n\n此工具在基础HTML生成的基础上，添加代码语法高亮支持。\n\nArgs:\n    element_tree\
+      \ (Dict[str, Any]): 元素树\n    style_config (Dict[str, Any]): 样式配置\n    highlight_library\
+      \ (str): 语法高亮库（\"prism\" | \"highlight.js\"）\n        "
+  - name: generate_responsive_html
+    args:
+    - element_tree
+    - style_config
+    - breakpoints
+    docstring: "生成响应式HTML文档\n\n此工具生成支持多种设备的响应式HTML文档。\n\nArgs:\n    element_tree (Dict[str,\
+      \ Any]): 元素树\n    style_config (Dict[str, Any]): 样式配置\n    breakpoints (Dict[str,\
+      \ int]): 响应式断点配置，如：\n        {\n            \"mobile\": 4"
+  - name: generate_html_fragment
+    args:
+    - elements
+    - wrapper_tag
+    docstring: "生成HTML片段（不包含完整的HTML文档结构）\n\n此工具用于生成HTML片段，可用于嵌入到其他HTML文档中。\n\nArgs:\n\
+      \    elements (List[Dict[str, Any]]): 元素列表\n    wrapper_tag (str): 包装标签（默认\"\
+      div\"）\n        \nReturns:\n    str: JSON格式的生成结果，包含HTML片段"
+- file: document_review_tools.py
+  path: tools/generated_tools/tech_doc_multi_agent_system/document_review_tools.py
+  tool_functions:
+  - name: assess_document_quality
+    args:
+    - document
+    - dimensions
+    - detailed_analysis
+    docstring: "从多个维度评估技术文档质量\n\n该工具对技术文档进行全面的质量评估，包括内容完整性、技术准确性、\n逻辑连贯性、格式规范性和语言表达等多个维度。每个维度提供0-100的评分，\n\
+      并给出详细的分析说明。\n\nArgs:\n    document (Dict[str, Any]): 文档内容对象，包含title、sections等字段\n\
+      \    dimensions (Optional[List[str]]):"
+  - name: identify_document_issues
+    args:
+    - document
+    - focus_areas
+    - severity_threshold
+    docstring: "识别技术文档中存在的具体问题\n\n该工具深入分析文档内容，识别各类问题，包括技术错误、结构问题、\n格式错误等，并标注问题的位置、类型和严重程度。\n\
+      \nArgs:\n    document (Dict[str, Any]): 文档内容对象\n    focus_areas (Optional[List[str]]):\
+      \ 关注的问题领域，可选值：\n        - technical: 技术问题\n     "
+  - name: generate_review_feedback
+    args:
+    - quality_scores
+    - issues
+    - priority_strategy
+    docstring: "生成结构化的审核反馈信息\n\n该工具基于质量评估结果和识别的问题，生成具体的改进建议，\n包括问题描述、改进方案和优先级排序。\n\
+      \nArgs:\n    quality_scores (Dict[str, float]): 各维度质量评分\n    issues (List[Dict[str,\
+      \ Any]]): 识别的问题列表\n    priority_strategy (str): 优先级排序策略，可选值："
+  - name: make_review_decision
+    args:
+    - quality_scores
+    - pass_threshold
+    - dimension_thresholds
+    docstring: "根据质量评估结果判断是否通过审核\n\n该工具基于多维度质量评分，应用预定义的通过标准，\n做出明确的通过/不通过决定，并提供总体质量评级。\n\
+      \nArgs:\n    quality_scores (Dict[str, float]): 各维度质量评分\n    pass_threshold\
+      \ (float): 总体通过阈值，默认75.0分\n    dimension_thresholds (Optional["
+  - name: comprehensive_document_review
+    args:
+    - document
+    - pass_threshold
+    - dimension_thresholds
+    - severity_threshold
+    docstring: "执行完整的文档审核流程\n\n该工具是一个综合性工具，整合了质量评估、问题识别、反馈生成和审核决策\n四个核心功能，提供一站式的文档审核服务。\n\
+      \nArgs:\n    document (Dict[str, Any]): 文档内容对象\n    pass_threshold (float):\
+      \ 总体通过阈值，默认75.0分\n    dimension_thresholds (Optional[Dict[str"
+  - name: validate_review_criteria
+    args:
+    - criteria
+    docstring: "验证审核标准的有效性\n\n该工具用于验证自定义的审核标准是否符合要求，\n确保审核过程的一致性和可靠性。\n\nArgs:\n \
+      \   criteria (Dict[str, Any]): 审核标准配置，包含：\n        - pass_threshold: 总体通过阈值\n\
+      \        - dimension_thresholds: 各维度阈值\n        - severity_weights: 严"
+- file: document_generation_tools.py
+  path: tools/generated_tools/tech_doc_multi_agent_system/document_generation_tools.py
+  tool_functions:
+  - name: parse_user_requirement
+    args:
+    - user_input
+    - requirement_type
+    docstring: "解析用户需求，识别文档类型和关键信息\n\n此工具分析用户的自然语言输入，提取关键需求信息，\n为文档生成提供结构化的需求描述。\n\
+      \nArgs:\n    user_input (str): 用户的自然语言需求描述\n    requirement_type (str): 需求类型提示，可选值：\n\
+      \        - \"auto\": 自动检测\n        - \"api_doc\": API文档\n       "
+  - name: generate_document_outline
+    args:
+    - requirement_analysis
+    - custom_sections
+    docstring: "生成文档大纲\n\n根据需求分析结果生成详细的文档大纲，包括章节标题、\n描述和内容要点。\n\nArgs:\n    requirement_analysis\
+      \ (Dict[str, Any]): 需求分析结果\n    custom_sections (List[Dict[str, str]]): 自定义章节列表，\n\
+      \        每个章节包含title和description字段\n        \nRetu"
+  - name: apply_feedback_to_document
+    args:
+    - document_content
+    - review_feedback
+    docstring: "根据审核反馈修改文档\n\n此工具分析审核反馈，生成针对性的修改建议，\n用于指导文档的迭代改进。\n\nArgs:\n    document_content\
+      \ (Dict[str, Any]): 当前文档内容\n    review_feedback (Dict[str, Any]): 审核反馈，包含：\n\
+      \        - overall_status: \"pass\" | \"fail\"\n        - q"
+  - name: track_document_history
+    args:
+    - document_content
+    - modification_type
+    - modification_details
+    docstring: "跟踪文档修改历史\n\n此工具记录文档的每次修改，维护完整的修改历史。\n\nArgs:\n    document_content\
+      \ (Dict[str, Any]): 文档内容\n    modification_type (str): 修改类型，如\"initial_creation\"\
+      , \"feedback_revision\", \"content_enhancement\"\n    modification_"
+  - name: validate_document_quality
+    args:
+    - document_content
+    - quality_criteria
+    docstring: "验证文档质量\n\n在提交审核前进行自我质量检查。\n\nArgs:\n    document_content (Dict[str,\
+      \ Any]): 文档内容\n    quality_criteria (Dict[str, Any]): 质量标准，包括：\n        - min_section_count:\
+      \ 最少章节数\n        - min_content_length: 最少内容长度\n     "
+- file: pubmed_api_tool.py
+  path: tools/generated_tools/pubmed_search_agent/pubmed_api_tool.py
+  tool_functions:
+  - name: pubmed_search
+    args:
+    - query
+    - max_results
+    - sort_by
+    - min_date
+    - max_date
+    - optimize_query
+    docstring: "Search PubMed for scientific articles matching the query.\n\nArgs:\n\
+      \    query (str): Search query for PubMed articles\n    max_results (int): Maximum\
+      \ number of results to return (default: 20, max: 100)\n  "
+  - name: pubmed_fetch_abstract
+    args:
+    - pmid
+    docstring: "Fetch the abstract for a specific PubMed article by its PMID.\n\n\
+      Args:\n    pmid (str): PubMed ID of the article\n\nReturns:\n    str: JSON string\
+      \ containing the article abstract and metadata"
+  - name: pubmed_advanced_search
+    args:
+    - query_terms
+    - filters
+    - max_results
+    - sort_by
+    docstring: "Perform an advanced search on PubMed with structured query terms and\
+      \ filters.\n\nArgs:\n    query_terms (Dict[str, str]): Dictionary of search\
+      \ fields and terms\n                                 (e.g., {\"t"
+  - name: pubmed_fetch_citations
+    args:
+    - pmid
+    - max_results
+    docstring: "Fetch citations for a specific PubMed article by its PMID.\n\nArgs:\n\
+      \    pmid (str): PubMed ID of the article\n    max_results (int): Maximum number\
+      \ of citations to return (default: 20, max: 100)\n\nReturns"
+  - name: pubmed_fetch_related
+    args:
+    - pmid
+    - max_results
+    docstring: "Fetch articles related to a specific PubMed article by its PMID.\n\
+      \nArgs:\n    pmid (str): PubMed ID of the article\n    max_results (int): Maximum\
+      \ number of related articles to return (default: 20, max: "
+  - name: pubmed_get_trending_articles
+    args:
+    - topic
+    - days
+    - max_results
+    docstring: "Get trending or recent articles from PubMed, optionally filtered by\
+      \ topic.\n\nArgs:\n    topic (str): Optional topic to filter articles (default:\
+      \ \"\", which returns general trending articles)\n    days (in"
+  - name: pubmed_rank_articles
+    args:
+    - pmids
+    - ranking_factors
+    docstring: "Rank a list of PubMed articles based on multiple factors.\n\nArgs:\n\
+      \    pmids (List[str]): List of PubMed IDs to rank\n    ranking_factors (Dict[str,\
+      \ float], optional): Weighting factors for ranking:\n    "
+  - name: pubmed_get_author_publications
+    args:
+    - author_name
+    - max_results
+    docstring: "Get publications by a specific author from PubMed.\n\nArgs:\n    author_name\
+      \ (str): Author name to search for (format: \"Last FM\" or \"Last F\")\n   \
+      \ max_results (int): Maximum number of publications to retu"
+- file: pubmed_api_integration.py
+  path: tools/generated_tools/pubmed_search_agent/pubmed_api_integration.py
+  tool_functions:
+  - name: pubmed_search
+    args:
+    - query
+    - max_results
+    - sort_by
+    - publication_date_range
+    - use_cache
+    docstring: "Search PubMed database for medical literature.\n\nArgs:\n    query:\
+      \ Search query (can include MeSH terms, author names, keywords)\n    max_results:\
+      \ Maximum number of results to return (default: 10)\n    so"
+  - name: pubmed_get_article
+    args:
+    - pmid
+    - include_references
+    - include_citations
+    - use_cache
+    docstring: "Retrieve detailed information about a specific PubMed article.\n\n\
+      Args:\n    pmid: PubMed ID of the article\n    include_references: Whether to\
+      \ include the article's references (default: False)\n    includ"
+  - name: pubmed_advanced_search
+    args:
+    - keywords
+    - authors
+    - journal
+    - publication_date_range
+    - article_types
+    - mesh_terms
+    - max_results
+    - page
+    - use_cache
+    docstring: "Perform an advanced search on PubMed with multiple filters.\n\nArgs:\n\
+      \    keywords: Search terms for article content\n    authors: Author names (comma-separated)\n\
+      \    journal: Journal name or abbreviation\n"
+  - name: pubmed_rank_articles
+    args:
+    - pmids
+    - ranking_factors
+    - use_cache
+    docstring: "Rank PubMed articles based on multiple factors.\n\nArgs:\n    pmids:\
+      \ List of PubMed IDs to rank\n    ranking_factors: Dictionary of factors and\
+      \ their weights (e.g., {\"recency\": 0.5, \"citation_count\": 0.3,"
+  - name: pubmed_clear_cache
+    args: []
+    docstring: "Clear the PubMed API response cache.\n\nReturns:\n    JSON string\
+      \ with cache clearing result"
+  - name: pubmed_get_mesh_terms
+    args:
+    - query
+    - max_terms
+    - use_cache
+    docstring: "Get relevant MeSH (Medical Subject Headings) terms for a search query.\n\
+      \nArgs:\n    query: Search query to find relevant MeSH terms\n    max_terms:\
+      \ Maximum number of MeSH terms to return (default: 10)\n  "
+- file: tools_developer_doc.py
+  path: tools/generated_tools/pubmed_search_agent/tools_developer_doc.py
+  tool_functions:
+  - name: get_pubmed_tools_documentation
+    args: []
+    docstring: "Get documentation for the PubMed API integration tools.\n\nReturns:\n\
+      \    str: JSON string containing documentation for the PubMed API integration\
+      \ tools"
+- file: aws_resource_collector_part2.py
+  path: tools/generated_tools/aws_network_architecture_analyzer/aws_resource_collector_part2.py
+  tool_functions:
+  - name: collect_vpc_endpoints
+    args:
+    - region
+    - vpc_id
+    - profile_name
+    docstring: "Collect all VPC Endpoints in the specified AWS region.\n\nArgs:\n\
+      \    region: AWS region code\n    vpc_id: Optional VPC ID to filter endpoints\n\
+      \    profile_name: AWS profile name\n    \nReturns:\n    str: JSON"
+  - name: collect_security_groups
+    args:
+    - region
+    - vpc_id
+    - profile_name
+    docstring: "Collect all Security Groups in the specified AWS region.\n\nArgs:\n\
+      \    region: AWS region code\n    vpc_id: Optional VPC ID to filter security\
+      \ groups\n    profile_name: AWS profile name\n    \nReturns:\n    s"
+  - name: collect_network_acls
+    args:
+    - region
+    - vpc_id
+    - profile_name
+    docstring: "Collect all Network ACLs in the specified AWS region.\n\nArgs:\n \
+      \   region: AWS region code\n    vpc_id: Optional VPC ID to filter NACLs\n \
+      \   profile_name: AWS profile name\n    \nReturns:\n    str: JSON stri"
+  - name: collect_ec2_instances
+    args:
+    - region
+    - vpc_id
+    - profile_name
+    docstring: "Collect all EC2 instances in the specified AWS region.\n\nArgs:\n\
+      \    region: AWS region code\n    vpc_id: Optional VPC ID to filter instances\n\
+      \    profile_name: AWS profile name\n    \nReturns:\n    str: JSON"
+  - name: collect_load_balancers
+    args:
+    - region
+    - profile_name
+    docstring: "Collect all Load Balancers (ALB/NLB/GWLB) in the specified AWS region.\n\
+      \nArgs:\n    region: AWS region code\n    profile_name: AWS profile name\n \
+      \   \nReturns:\n    str: JSON string containing Load Balancer"
+- file: aws_resource_collector_part3.py
+  path: tools/generated_tools/aws_network_architecture_analyzer/aws_resource_collector_part3.py
+  tool_functions:
+  - name: collect_rds_instances
+    args:
+    - region
+    - profile_name
+    docstring: "Collect all RDS database instances in the specified AWS region.\n\n\
+      Args:\n    region: AWS region code\n    profile_name: AWS profile name\n   \
+      \ \nReturns:\n    str: JSON string containing RDS instance data"
+  - name: collect_vpc_peering_connections
+    args:
+    - region
+    - profile_name
+    docstring: "Collect all VPC Peering Connections in the specified AWS region.\n\
+      \nArgs:\n    region: AWS region code\n    profile_name: AWS profile name\n \
+      \   \nReturns:\n    str: JSON string containing VPC Peering data"
+  - name: collect_vpn_connections
+    args:
+    - region
+    - profile_name
+    docstring: "Collect all VPN Connections in the specified AWS region.\n\nArgs:\n\
+      \    region: AWS region code\n    profile_name: AWS profile name\n    \nReturns:\n\
+      \    str: JSON string containing VPN Connection data"
+  - name: collect_direct_connect_connections
+    args:
+    - region
+    - profile_name
+    docstring: "Collect all Direct Connect connections in the specified AWS region.\n\
+      \nArgs:\n    region: AWS region code\n    profile_name: AWS profile name\n \
+      \   \nReturns:\n    str: JSON string containing Direct Connect d"
+  - name: collect_network_firewalls
+    args:
+    - region
+    - profile_name
+    docstring: "Collect all AWS Network Firewalls in the specified AWS region.\n\n\
+      Args:\n    region: AWS region code\n    profile_name: AWS profile name\n   \
+      \ \nReturns:\n    str: JSON string containing Network Firewall data"
+- file: nlp_processor.py
+  path: tools/generated_tools/aws_network_architecture_analyzer/nlp_processor.py
+  tool_functions:
+  - name: extract_query_intent
+    args:
+    - user_query
+    docstring: "Extract intent and entities from user's natural language query.\n\n\
+      Args:\n    user_query: User's natural language question or command\n    \nReturns:\n\
+      \    str: JSON string with extracted intent and entities"
+  - name: generate_cypher_query
+    args:
+    - intent
+    - entities
+    - natural_language_query
+    docstring: "Generate Cypher query based on intent and extracted entities.\n\n\
+      Args:\n    intent: Query intent (e.g., resource_query, connectivity_analysis)\n\
+      \    entities: Extracted entities from user query\n    natural"
+  - name: validate_cypher_query
+    args:
+    - cypher_query
+    docstring: "Validate Cypher query syntax and structure.\n\nArgs:\n    cypher_query:\
+      \ Cypher query string to validate\n    \nReturns:\n    str: JSON string with\
+      \ validation results"
+  - name: parse_query_response
+    args:
+    - query_result
+    - original_query
+    docstring: "Parse Neo4j query response and format it for user-friendly output.\n\
+      \nArgs:\n    query_result: JSON string from Neo4j query execution\n    original_query:\
+      \ Original user's natural language query\n    \nRetur"
+  - name: suggest_query_improvements
+    args:
+    - user_query
+    - query_result
+    docstring: "Suggest improvements for user's query based on intent and results.\n\
+      \nArgs:\n    user_query: Original user query\n    query_result: Optional query\
+      \ execution result\n    \nReturns:\n    str: JSON string with "
+- file: aws_resource_collector.py
+  path: tools/generated_tools/aws_network_architecture_analyzer/aws_resource_collector.py
+  tool_functions:
+  - name: collect_vpcs
+    args:
+    - region
+    - profile_name
+    docstring: "Collect all VPCs in the specified AWS region.\n\nArgs:\n    region:\
+      \ AWS region code (e.g., us-east-1, us-west-2)\n    profile_name: AWS profile\
+      \ name from ~/.aws/credentials\n    \nReturns:\n    str: JSON str"
+  - name: collect_subnets
+    args:
+    - region
+    - vpc_id
+    - profile_name
+    docstring: "Collect all subnets in the specified AWS region.\n\nArgs:\n    region:\
+      \ AWS region code\n    vpc_id: Optional VPC ID to filter subnets\n    profile_name:\
+      \ AWS profile name\n    \nReturns:\n    str: JSON string "
+  - name: collect_route_tables
+    args:
+    - region
+    - vpc_id
+    - profile_name
+    docstring: "Collect all route tables in the specified AWS region.\n\nArgs:\n \
+      \   region: AWS region code\n    vpc_id: Optional VPC ID to filter route tables\n\
+      \    profile_name: AWS profile name\n    \nReturns:\n    str: JS"
+  - name: collect_internet_gateways
+    args:
+    - region
+    - profile_name
+    docstring: "Collect all Internet Gateways in the specified AWS region.\n\nArgs:\n\
+      \    region: AWS region code\n    profile_name: AWS profile name\n    \nReturns:\n\
+      \    str: JSON string containing Internet Gateway data"
+  - name: collect_nat_gateways
+    args:
+    - region
+    - profile_name
+    docstring: "Collect all NAT Gateways in the specified AWS region.\n\nArgs:\n \
+      \   region: AWS region code\n    profile_name: AWS profile name\n    \nReturns:\n\
+      \    str: JSON string containing NAT Gateway data"
+  - name: collect_transit_gateways
+    args:
+    - region
+    - profile_name
+    docstring: "Collect all Transit Gateways in the specified AWS region.\n\nArgs:\n\
+      \    region: AWS region code\n    profile_name: AWS profile name\n    \nReturns:\n\
+      \    str: JSON string containing Transit Gateway data"
+  - name: collect_vpc_endpoints
+    args:
+    - region
+    - vpc_id
+    - profile_name
+    docstring: "Collect all VPC Endpoints in the specified AWS region.\n\nArgs:\n\
+      \    region: AWS region code\n    vpc_id: Optional VPC ID to filter endpoints\n\
+      \    profile_name: AWS profile name\n    \nReturns:\n    str: JSON"
+  - name: collect_security_groups
+    args:
+    - region
+    - vpc_id
+    - profile_name
+    docstring: "Collect all Security Groups in the specified AWS region.\n\nArgs:\n\
+      \    region: AWS region code\n    vpc_id: Optional VPC ID to filter security\
+      \ groups\n    profile_name: AWS profile name\n    \nReturns:\n    s"
+  - name: collect_network_acls
+    args:
+    - region
+    - vpc_id
+    - profile_name
+    docstring: "Collect all Network ACLs in the specified AWS region.\n\nArgs:\n \
+      \   region: AWS region code\n    vpc_id: Optional VPC ID to filter NACLs\n \
+      \   profile_name: AWS profile name\n    \nReturns:\n    str: JSON stri"
+  - name: collect_ec2_instances
+    args:
+    - region
+    - vpc_id
+    - profile_name
+    docstring: "Collect all EC2 instances in the specified AWS region.\n\nArgs:\n\
+      \    region: AWS region code\n    vpc_id: Optional VPC ID to filter instances\n\
+      \    profile_name: AWS profile name\n    \nReturns:\n    str: JSON"
+  - name: collect_load_balancers
+    args:
+    - region
+    - profile_name
+    docstring: "Collect all Load Balancers (ALB/NLB/CLB/GWLB) in the specified AWS\
+      \ region.\n\nArgs:\n    region: AWS region code\n    profile_name: AWS profile\
+      \ name\n    \nReturns:\n    str: JSON string containing Load Bala"
+  - name: collect_rds_instances
+    args:
+    - region
+    - profile_name
+    docstring: "Collect all RDS database instances in the specified AWS region.\n\n\
+      Args:\n    region: AWS region code\n    profile_name: AWS profile name\n   \
+      \ \nReturns:\n    str: JSON string containing RDS instance data"
+  - name: collect_vpc_peering_connections
+    args:
+    - region
+    - profile_name
+    docstring: "Collect all VPC Peering Connections in the specified AWS region.\n\
+      \nArgs:\n    region: AWS region code\n    profile_name: AWS profile name\n \
+      \   \nReturns:\n    str: JSON string containing VPC Peering data"
+  - name: collect_vpn_connections
+    args:
+    - region
+    - profile_name
+    docstring: "Collect all VPN Connections in the specified AWS region.\n\nArgs:\n\
+      \    region: AWS region code\n    profile_name: AWS profile name\n    \nReturns:\n\
+      \    str: JSON string containing VPN Connection data"
+  - name: collect_direct_connect_connections
+    args:
+    - region
+    - profile_name
+    docstring: "Collect all Direct Connect connections in the specified AWS region.\n\
+      \nArgs:\n    region: AWS region code\n    profile_name: AWS profile name\n \
+      \   \nReturns:\n    str: JSON string containing Direct Connect d"
+  - name: collect_network_firewalls
+    args:
+    - region
+    - profile_name
+    docstring: "Collect all AWS Network Firewalls in the specified AWS region.\n\n\
+      Args:\n    region: AWS region code\n    profile_name: AWS profile name\n   \
+      \ \nReturns:\n    str: JSON string containing Network Firewall data"
+  - name: collect_all_resources
+    args:
+    - regions
+    - profile_name
+    docstring: "Collect all network resources across multiple regions.\n\nArgs:\n\
+      \    regions: List of AWS region codes (default: [\"us-east-1\"])\n    profile_name:\
+      \ AWS profile name\n    \nReturns:\n    str: JSON string conta"
+- file: neo4j_graph_manager.py
+  path: tools/generated_tools/aws_network_architecture_analyzer/neo4j_graph_manager.py
+  tool_functions:
+  - name: test_neo4j_connection
+    args:
+    - uri
+    - username
+    - password
+    docstring: "Test connection to Neo4j database.\n\nArgs:\n    uri: Neo4j connection\
+      \ URI\n    username: Neo4j username\n    password: Neo4j password\n    \nReturns:\n\
+      \    str: JSON string with connection test results"
+  - name: execute_cypher_query
+    args:
+    - query
+    - parameters
+    - uri
+    - username
+    - password
+    docstring: "Execute a Cypher query on Neo4j database.\n\nArgs:\n    query: Cypher\
+      \ query string\n    parameters: Optional query parameters\n    uri: Neo4j connection\
+      \ URI\n    username: Neo4j username\n    password: Neo4j"
+  - name: create_network_schema
+    args:
+    - uri
+    - username
+    - password
+    docstring: "Create Neo4j schema for AWS network resources including indexes and\
+      \ constraints.\n\nArgs:\n    uri: Neo4j connection URI\n    username: Neo4j\
+      \ username\n    password: Neo4j password\n    \nReturns:\n    str: J"
+  - name: batch_create_nodes
+    args:
+    - nodes
+    - node_label
+    - uri
+    - username
+    - password
+    docstring: "Batch create nodes in Neo4j database.\n\nArgs:\n    nodes: List of\
+      \ node dictionaries with properties\n    node_label: Node label (e.g., VPC,\
+      \ Subnet, EC2Instance)\n    uri: Neo4j connection URI\n    username"
+  - name: batch_create_relationships
+    args:
+    - relationships
+    - relationship_type
+    - uri
+    - username
+    - password
+    docstring: "Batch create relationships in Neo4j database.\n\nArgs:\n    relationships:\
+      \ List of relationship dictionaries with from_id, to_id, and properties\n  \
+      \  relationship_type: Relationship type (e.g., CONTAINS, "
+  - name: delete_all_data
+    args:
+    - uri
+    - username
+    - password
+    - confirm
+    docstring: "Delete all nodes and relationships from Neo4j database.\nWARNING:\
+      \ This operation cannot be undone!\n\nArgs:\n    uri: Neo4j connection URI\n\
+      \    username: Neo4j username\n    password: Neo4j password\n    con"
+  - name: get_database_stats
+    args:
+    - uri
+    - username
+    - password
+    docstring: "Get statistics about the Neo4j database including node and relationship\
+      \ counts.\n\nArgs:\n    uri: Neo4j connection URI\n    username: Neo4j username\n\
+      \    password: Neo4j password\n    \nReturns:\n    str: JS"
+  - name: find_path_between_resources
+    args:
+    - from_resource_id
+    - to_resource_id
+    - max_depth
+    - uri
+    - username
+    - password
+    docstring: "Find all paths between two resources in the network topology.\n\n\
+      Args:\n    from_resource_id: Starting resource ID\n    to_resource_id: Destination\
+      \ resource ID\n    max_depth: Maximum path depth to search\n"
+  - name: query_resources_by_properties
+    args:
+    - node_label
+    - properties
+    - limit
+    - uri
+    - username
+    - password
+    docstring: "Query resources by node label and properties.\n\nArgs:\n    node_label:\
+      \ Node label to query (e.g., VPC, Subnet, EC2Instance)\n    properties: Dictionary\
+      \ of properties to match\n    limit: Maximum number of"
+- file: report_generator.py
+  path: tools/generated_tools/aws_network_architecture_analyzer/report_generator.py
+  tool_functions:
+  - name: generate_html_report
+    args:
+    - report_title
+    - report_data
+    - output_path
+    docstring: "Generate HTML report from network topology data.\n\nArgs:\n    report_title:\
+      \ Title of the report\n    report_data: Dictionary containing network topology\
+      \ data\n    output_path: Local path to save the HTML "
+  - name: upload_report_to_s3
+    args:
+    - local_file_path
+    - s3_bucket
+    - s3_key
+    - region
+    - profile_name
+    docstring: "Upload HTML report to S3 bucket.\n\nArgs:\n    local_file_path: Local\
+      \ path to the HTML report file\n    s3_bucket: S3 bucket name\n    s3_key: S3\
+      \ object key (default: reports/{timestamp}_{filename})\n    re"
+  - name: generate_presigned_url
+    args:
+    - s3_bucket
+    - s3_key
+    - expiration
+    - region
+    - profile_name
+    docstring: "Generate pre-signed URL for S3 object access.\n\nArgs:\n    s3_bucket:\
+      \ S3 bucket name\n    s3_key: S3 object key\n    expiration: URL expiration\
+      \ time in seconds (default: 24 hours)\n    region: AWS region\n "
+  - name: create_network_topology_report
+    args:
+    - topology_data
+    - report_title
+    - s3_bucket
+    - region
+    - profile_name
+    docstring: "Create complete network topology report (generate HTML, upload to\
+      \ S3, get URL).\n\nArgs:\n    topology_data: Network topology data including\
+      \ nodes, edges, and statistics\n    report_title: Title of the re"
+  - name: generate_diagnostic_report
+    args:
+    - diagnostic_data
+    - output_format
+    docstring: "Generate diagnostic report in specified format.\n\nArgs:\n    diagnostic_data:\
+      \ Diagnostic data including issues, recommendations, etc.\n    output_format:\
+      \ Output format (markdown, json, html)\n    \nReturns"
+  - name: list_reports_in_s3
+    args:
+    - s3_bucket
+    - prefix
+    - max_keys
+    - region
+    - profile_name
+    docstring: "List all reports stored in S3 bucket.\n\nArgs:\n    s3_bucket: S3\
+      \ bucket name\n    prefix: S3 key prefix to filter reports\n    max_keys: Maximum\
+      \ number of reports to list\n    region: AWS region\n    profil"
+- file: health_checker.py
+  path: tools/generated_tools/aws_network_architecture_analyzer/health_checker.py
+  tool_functions:
+  - name: check_aws_credentials
+    args:
+    - region
+    - profile_name
+    docstring: "Check AWS credentials and permissions.\n\nArgs:\n    region: AWS region\n\
+      \    profile_name: AWS profile name\n    \nReturns:\n    str: JSON string with\
+      \ credential check results"
+  - name: check_neo4j_connection
+    args:
+    - uri
+    - username
+    - password
+    docstring: "Check Neo4j database connection and health.\n\nArgs:\n    uri: Neo4j\
+      \ connection URI\n    username: Neo4j username\n    password: Neo4j password\n\
+      \    \nReturns:\n    str: JSON string with Neo4j health check re"
+  - name: check_s3_bucket_access
+    args:
+    - bucket_name
+    - region
+    - profile_name
+    docstring: "Check S3 bucket accessibility and permissions.\n\nArgs:\n    bucket_name:\
+      \ S3 bucket name\n    region: AWS region\n    profile_name: AWS profile name\n\
+      \    \nReturns:\n    str: JSON string with S3 access check "
+  - name: check_system_health
+    args:
+    - region
+    - neo4j_uri
+    - neo4j_username
+    - neo4j_password
+    - s3_bucket
+    - s3_region
+    - profile_name
+    docstring: "Comprehensive system health check including AWS, Neo4j, and S3.\n\n\
+      Args:\n    region: AWS region\n    neo4j_uri: Neo4j connection URI\n    neo4j_username:\
+      \ Neo4j username\n    neo4j_password: Neo4j password\n"
+  - name: check_aws_service_quota
+    args:
+    - service_code
+    - region
+    - profile_name
+    docstring: "Check AWS service quotas and current usage.\n\nArgs:\n    service_code:\
+      \ AWS service code (e.g., vpc, ec2, rds)\n    region: AWS region\n    profile_name:\
+      \ AWS profile name\n    \nReturns:\n    str: JSON string"
+  - name: get_system_requirements
+    args: []
+    docstring: "Get system requirements and dependencies for the AWS Network Analyzer.\n\
+      \nReturns:\n    str: JSON string with system requirements"
+- file: aws_resource_collector_part1.py
+  path: tools/generated_tools/aws_network_architecture_analyzer/aws_resource_collector_part1.py
+  tool_functions:
+  - name: collect_vpcs
+    args:
+    - region
+    - profile_name
+    docstring: "Collect all VPCs in the specified AWS region.\n\nArgs:\n    region:\
+      \ AWS region code (e.g., us-east-1, us-west-2)\n    profile_name: AWS profile\
+      \ name from ~/.aws/credentials\n    \nReturns:\n    str: JSON str"
+  - name: collect_subnets
+    args:
+    - region
+    - vpc_id
+    - profile_name
+    docstring: "Collect all subnets in the specified AWS region.\n\nArgs:\n    region:\
+      \ AWS region code\n    vpc_id: Optional VPC ID to filter subnets\n    profile_name:\
+      \ AWS profile name\n    \nReturns:\n    str: JSON string "
+  - name: collect_route_tables
+    args:
+    - region
+    - vpc_id
+    - profile_name
+    docstring: "Collect all route tables in the specified AWS region.\n\nArgs:\n \
+      \   region: AWS region code\n    vpc_id: Optional VPC ID to filter route tables\n\
+      \    profile_name: AWS profile name\n    \nReturns:\n    str: JS"
+  - name: collect_internet_gateways
+    args:
+    - region
+    - profile_name
+    docstring: "Collect all Internet Gateways in the specified AWS region.\n\nArgs:\n\
+      \    region: AWS region code\n    profile_name: AWS profile name\n    \nReturns:\n\
+      \    str: JSON string containing Internet Gateway data"
+  - name: collect_nat_gateways
+    args:
+    - region
+    - profile_name
+    docstring: "Collect all NAT Gateways in the specified AWS region.\n\nArgs:\n \
+      \   region: AWS region code\n    profile_name: AWS profile name\n    \nReturns:\n\
+      \    str: JSON string containing NAT Gateway data"
+  - name: collect_transit_gateways
+    args:
+    - region
+    - profile_name
+    docstring: "Collect all Transit Gateways in the specified AWS region.\n\nArgs:\n\
+      \    region: AWS region code\n    profile_name: AWS profile name\n    \nReturns:\n\
+      \    str: JSON string containing Transit Gateway data"
+- file: network_analyzer.py
+  path: tools/generated_tools/aws_network_architecture_analyzer/network_analyzer.py
+  tool_functions:
+  - name: analyze_connectivity
+    args:
+    - source_resource_id
+    - destination_resource_id
+    - source_type
+    - destination_type
+    - region
+    - profile_name
+    docstring: "Analyze network connectivity between two AWS resources.\n\nArgs:\n\
+      \    source_resource_id: Source resource ID (e.g., instance ID)\n    destination_resource_id:\
+      \ Destination resource ID\n    source_type: Sour"
+  - name: analyze_security_group_rules
+    args:
+    - security_group_id
+    - region
+    - profile_name
+    docstring: "Analyze security group rules and identify potential security issues.\n\
+      \nArgs:\n    security_group_id: Security group ID\n    region: AWS region\n\
+      \    profile_name: AWS profile name\n    \nReturns:\n    str: JS"
+  - name: analyze_route_table
+    args:
+    - route_table_id
+    - region
+    - profile_name
+    docstring: "Analyze route table configuration and routing paths.\n\nArgs:\n  \
+      \  route_table_id: Route table ID\n    region: AWS region\n    profile_name:\
+      \ AWS profile name\n    \nReturns:\n    str: JSON string with route a"
+  - name: diagnose_network_issue
+    args:
+    - issue_description
+    - affected_resources
+    - region
+    - profile_name
+    docstring: "Diagnose network issues based on description and affected resources.\n\
+      \nArgs:\n    issue_description: Description of the network issue\n    affected_resources:\
+      \ List of affected resource IDs\n    region: AW"
+  - name: calculate_network_metrics
+    args:
+    - vpc_id
+    - region
+    - profile_name
+    docstring: "Calculate network metrics and statistics for a VPC.\n\nArgs:\n   \
+      \ vpc_id: VPC ID\n    region: AWS region\n    profile_name: AWS profile name\n\
+      \    \nReturns:\n    str: JSON string with network metrics"
+- file: clinicaltrials_api_tools.py
+  path: tools/generated_tools/clinicaltrials_search_agent/clinicaltrials_api_tools.py
+  tool_functions:
+  - name: clinical_trials_search
+    args:
+    - query
+    - max_results
+    - fields
+    - use_cache
+    docstring: "Search for clinical trials using the ClinicalTrials.gov API.\n\nArgs:\n\
+      \    query: Search query string (can include condition, intervention, sponsor,\
+      \ etc.)\n    max_results: Maximum number of results to re"
+  - name: clinical_trials_get_study
+    args:
+    - nct_id
+    - use_cache
+    docstring: "Get detailed information about a specific clinical trial by its NCT\
+      \ ID.\n\nArgs:\n    nct_id: The NCT ID of the clinical trial (e.g., NCT01234567)\n\
+      \    use_cache: Whether to use cached responses (default:"
+  - name: build_clinical_trials_query
+    args:
+    - natural_language_query
+    - structured_params
+    docstring: "Build a structured query for ClinicalTrials.gov API from natural language\
+      \ or parameters.\n\nArgs:\n    natural_language_query: Natural language description\
+      \ of the search\n    structured_params: Dictionary"
+  - name: parse_clinical_trials_results
+    args:
+    - results_json
+    docstring: "Parse and extract key information from ClinicalTrials.gov API results.\n\
+      \nArgs:\n    results_json: JSON string containing API results (from clinical_trials_search)\n\
+      \    \nReturns:\n    JSON string containin"
+  - name: analyze_clinical_trials_results
+    args:
+    - parsed_results_json
+    - query_terms
+    docstring: "Analyze clinical trial results for relevance, duplicates, and conflicts.\n\
+      \nArgs:\n    parsed_results_json: JSON string containing parsed results (from\
+      \ parse_clinical_trials_results)\n    query_terms: Lis"
+  - name: integrate_clinical_trials_results
+    args:
+    - result_json_list
+    docstring: "Integrate multiple clinical trial search results into a comprehensive\
+      \ result set.\n\nArgs:\n    result_json_list: List of JSON strings containing\
+      \ analyzed results\n    \nReturns:\n    JSON string containing"
+  - name: generate_clinical_report
+    args:
+    - integrated_results_json
+    - report_type
+    docstring: "Generate a clinical development report from integrated trial results.\n\
+      \nArgs:\n    integrated_results_json: JSON string containing integrated results\n\
+      \    report_type: Type of report to generate (\"summar"
+  - name: get_clinical_trials_field_values
+    args:
+    - field
+    docstring: "Get all possible values for a specific field in ClinicalTrials.gov.\n\
+      \nArgs:\n    field: The field to get values for (e.g., \"Phase\", \"OverallStatus\"\
+      , \"StudyType\")\n    \nReturns:\n    JSON string containing"
+  - name: clear_clinical_trials_cache
+    args: []
+    docstring: "Clear the ClinicalTrials.gov API response cache.\n\nReturns:\n   \
+      \ JSON string containing cache clearing result"
+core_features:
+- 工具函数装饰器
+- 工具注册和发现
+- 工具动态加载
+- 工具依赖管理
+- 工具模板系统
+- 工具自动生成
+- Strands工具集成
+- MCP工具集成
+tool_types:
+  strands_builtin:
+    description: Strands框架内置工具
+    examples:
+    - calculator
+    - shell
+    - file_operations
+  system_tools:
+    description: 系统级自定义工具
+    examples:
+    - project_manager
+    - multimodal_content_parser
+    - agent_template_provider
+  mcp_tools:
+    description: MCP协议工具
+    examples:
+    - aws_api
+    - strands_agents
+  generated_tools:
+    description: 自动生成的工具
+    examples:
+    - aws_pricing_tools
+integration_points:
+  agent_factory: Agent Factory加载和注册工具
+  prompt_manager: 从提示词模板获取工具依赖
+  mcp_manager: 集成MCP工具
+  strands_framework: 使用Strands工具系统
+tool_development_workflow:
+  step1: 定义工具函数并使用@tool装饰器
+  step2: 在工具模板提供器中注册工具
+  step3: 在Agent提示词中声明工具依赖
+  step4: Agent Factory自动加载和集成工具

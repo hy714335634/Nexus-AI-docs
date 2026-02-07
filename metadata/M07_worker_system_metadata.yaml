@@ -1,0 +1,123 @@
+module_info:
+  module_id: M07
+  name: Worker System
+  path: worker/
+  description: 异步任务处理系统，负责后台任务执行、消息队列集成和任务调度
+  priority: P2
+  status: 活跃
+  created_date: '2026-02-05'
+  last_updated: '2026-02-05'
+code_statistics:
+  total_files: 4
+  total_lines: 1485
+  code_lines: 1111
+  comment_lines: 95
+architecture:
+  pattern: Worker Pool + Message Queue
+  description: 采用工作进程池模式，通过消息队列分发任务，支持异步执行和结果回调
+files:
+- file: config.py
+  path: worker/config.py
+  classes:
+  - name: WorkerSettings
+    docstring: Worker 服务配置
+    methods: []
+  - name: Config
+    docstring: null
+    methods: []
+  functions:
+  - name: get_worker_settings
+    args: []
+    docstring: Get cached worker settings instance
+  metrics:
+    total_lines: 56
+    code_lines: 34
+    comment_lines: 7
+- file: main.py
+  path: worker/main.py
+  classes:
+  - name: Worker
+    docstring: Worker 服务主类
+    methods:
+    - __init__
+    - start
+    - stop
+    - _signal_handler
+    - _poll_and_process
+    - _process_message
+    - _start_heartbeat
+  - name: HeartbeatThread
+    docstring: null
+    methods:
+    - __init__
+    - cancel
+  functions:
+  - name: main
+    args: []
+    docstring: null
+  metrics:
+    total_lines: 250
+    code_lines: 180
+    comment_lines: 17
+- file: build_handler.py
+  path: worker/handlers/build_handler.py
+  classes:
+  - name: BuildHandler
+    docstring: "构建任务处理器\n\n使用 WorkflowEngine 执行 Agent 构建工作流\n\nValidates:\n    - Requirement\
+      \ 4.1: 从 SQS 消息中提取 project_id 和 target_stage\n    - Requirement 4.5: 使用 WorkflowEngine\
+      \ 执行任务"
+    methods:
+    - __init__
+    - handle
+    - _execute_with_workflow_engine
+    - _convert_execution_result
+    - _update_task_status
+    - _check_resume_state
+    - _update_project_status
+    - _generate_workflow_report_and_sync
+    - _sync_project_to_s3
+  functions: []
+  metrics:
+    total_lines: 580
+    code_lines: 433
+    comment_lines: 42
+- file: workflow_handler.py
+  path: worker/handlers/workflow_handler.py
+  classes:
+  - name: WorkflowHandler
+    docstring: '统一的工作流任务处理器
+
+
+      根据消息中的 workflow_type 字段分发到对应的工作流执行器'
+    methods:
+    - __init__
+    - handle
+    - _handle_agent_build
+    - _handle_agent_update
+    - _handle_tool_build
+    - _execute_agent_update_workflow
+    - _execute_tool_build_workflow
+    - _convert_execution_result
+    - _handle_execution_result
+    - _handle_execution_error
+    - _update_task_status
+    - _update_project_status
+    - _generate_workflow_report_and_sync
+  functions: []
+  metrics:
+    total_lines: 599
+    code_lines: 464
+    comment_lines: 29
+core_features:
+- 异步任务处理
+- 消息队列集成
+- 任务调度
+- 状态跟踪
+- 错误重试
+- 并发控制
+- 结果存储
+integration_points:
+  api_system: API提交任务到Worker队列
+  agent_factory: Worker执行Agent任务
+  database: Worker存储任务状态和结果
+  message_queue: 通过消息队列接收任务

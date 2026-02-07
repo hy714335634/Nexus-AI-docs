@@ -1,0 +1,284 @@
+module_info:
+  module_id: M05
+  name: Agent Build Workflow
+  path: agents/system_agents/agent_build_workflow/
+  description: 7阶段Agent自动构建工作流，通过自然语言描述自动生成完整的AI Agent系统
+  priority: P0
+  status: 活跃
+  created_date: '2026-02-05'
+  last_updated: '2026-02-05'
+code_statistics:
+  total_files: 10
+  total_lines: 2143
+  code_lines: 1616
+  comment_lines: 167
+  workflow_agents: 9
+workflow_architecture:
+  pattern: Sequential Pipeline with Agent Handoff
+  orchestrator: agent_build_workflow.py
+  total_stages: 7
+  workflow_type: Sequential with Handoff
+  description: 采用顺序流水线模式，每个阶段由专门的Agent负责，通过Handoff机制传递上下文
+workflow_stages:
+- stage: 1
+  name: Requirements Analysis
+  agent: requirements_analyzer_agent.py
+  description: 分析用户需求，提取关键信息，生成需求文档
+  output: 需求分析文档
+  exists: true
+  file_path: agents/system_agents/agent_build_workflow/requirements_analyzer_agent.py
+- stage: 2
+  name: System Architecture
+  agent: system_architect_agent.py
+  description: 设计系统架构，定义组件关系，生成架构文档
+  output: 系统架构文档
+  exists: true
+  file_path: agents/system_agents/agent_build_workflow/system_architect_agent.py
+- stage: 3
+  name: Agent Design
+  agent: agent_designer_agent.py
+  description: 设计Agent结构，定义Agent能力，生成设计文档
+  output: Agent设计文档
+  exists: true
+  file_path: agents/system_agents/agent_build_workflow/agent_designer_agent.py
+- stage: 4
+  name: Prompt Engineering
+  agent: prompt_engineer_agent.py
+  description: 设计提示词模板，优化提示词效果，生成提示词文件
+  output: YAML提示词模板
+  exists: true
+  file_path: agents/system_agents/agent_build_workflow/prompt_engineer_agent.py
+- stage: 5
+  name: Tool Development
+  agent: tool_developer_agent.py
+  description: 开发工具函数，实现业务逻辑，生成工具代码
+  output: Python工具代码
+  exists: true
+  file_path: agents/system_agents/agent_build_workflow/tool_developer_agent.py
+- stage: 6
+  name: Agent Code Development
+  agent: agent_code_developer_agent.py
+  description: 开发Agent代码，集成工具和提示词，生成完整Agent
+  output: Python Agent代码
+  exists: true
+  file_path: agents/system_agents/agent_build_workflow/agent_code_developer_agent.py
+- stage: 7
+  name: Development Management
+  agent: agent_developer_manager_agent.py
+  description: 管理开发流程，协调各阶段工作，生成最终文档
+  output: 项目文档和部署指南
+  exists: true
+  file_path: agents/system_agents/agent_build_workflow/agent_developer_manager_agent.py
+agents:
+- file: system_architect_agent.py
+  path: agents/system_agents/agent_build_workflow/system_architect_agent.py
+  classes: []
+  functions: []
+  metrics:
+    total_lines: 53
+    code_lines: 41
+    comment_lines: 4
+    avg_complexity: 0.0
+- file: agent_deployer_agent.py
+  path: agents/system_agents/agent_build_workflow/agent_deployer_agent.py
+  classes: []
+  functions: []
+  metrics:
+    total_lines: 50
+    code_lines: 41
+    comment_lines: 2
+    avg_complexity: 0.0
+- file: agent_designer_agent.py
+  path: agents/system_agents/agent_build_workflow/agent_designer_agent.py
+  classes: []
+  functions: []
+  metrics:
+    total_lines: 53
+    code_lines: 41
+    comment_lines: 4
+    avg_complexity: 0.0
+- file: tool_developer_agent.py
+  path: agents/system_agents/agent_build_workflow/tool_developer_agent.py
+  classes: []
+  functions:
+  - name: _get_project_id
+    args: []
+    docstring: 获取当前项目ID
+  - name: get_tool_developer
+    args:
+    - env
+    - version
+    - enable_sub_stage_tracking
+    docstring: "创建工具开发者 Agent\n\nArgs:\n    env: 环境名称\n    version: Agent版本\n    enable_sub_stage_tracking:\
+      \ 是否启用子阶段追踪（默认True）\n\nReturns:\n    Agent: 工具开发者 Agent（可能被包装以支持子阶段追踪）"
+  - name: _wrap_with_sub_stage_tracking
+    args:
+    - agent
+    - sub_stage_name
+    docstring: '包装Agent以支持子阶段追踪
+
+
+      Requirements: 7.2, 7.3, 7.4'
+  metrics:
+    total_lines: 127
+    code_lines: 91
+    comment_lines: 12
+    avg_complexity: 3.33
+- file: agent_code_developer_agent.py
+  path: agents/system_agents/agent_build_workflow/agent_code_developer_agent.py
+  classes: []
+  functions:
+  - name: _get_project_id
+    args: []
+    docstring: 获取当前项目ID
+  - name: get_agent_code_developer
+    args:
+    - env
+    - version
+    - enable_sub_stage_tracking
+    docstring: "创建Agent代码开发者 Agent\n\nArgs:\n    env: 环境名称\n    version: Agent版本\n\
+      \    enable_sub_stage_tracking: 是否启用子阶段追踪（默认True）\n\nReturns:\n    Agent: Agent代码开发者\
+      \ Agent（可能被包装以支持子阶段追踪）"
+  - name: _wrap_with_sub_stage_tracking
+    args:
+    - agent
+    - sub_stage_name
+    docstring: '包装Agent以支持子阶段追踪
+
+
+      Requirements: 7.2, 7.3, 7.4'
+  metrics:
+    total_lines: 129
+    code_lines: 92
+    comment_lines: 12
+    avg_complexity: 3.33
+- file: agent_developer_manager_agent.py
+  path: agents/system_agents/agent_build_workflow/agent_developer_manager_agent.py
+  classes: []
+  functions: []
+  metrics:
+    total_lines: 53
+    code_lines: 41
+    comment_lines: 4
+    avg_complexity: 0.0
+- file: prompt_engineer_agent.py
+  path: agents/system_agents/agent_build_workflow/prompt_engineer_agent.py
+  classes: []
+  functions:
+  - name: _get_project_id
+    args: []
+    docstring: 获取当前项目ID
+  - name: get_prompt_engineer
+    args:
+    - env
+    - version
+    - enable_sub_stage_tracking
+    docstring: "创建提示词工程师 Agent\n\nArgs:\n    env: 环境名称\n    version: Agent版本\n   \
+      \ enable_sub_stage_tracking: 是否启用子阶段追踪（默认True）\n\nReturns:\n    Agent: 提示词工程师\
+      \ Agent（可能被包装以支持子阶段追踪）"
+  - name: _wrap_with_sub_stage_tracking
+    args:
+    - agent
+    - sub_stage_name
+    docstring: '包装Agent以支持子阶段追踪
+
+
+      Requirements: 7.2, 7.3, 7.4'
+  metrics:
+    total_lines: 127
+    code_lines: 91
+    comment_lines: 12
+    avg_complexity: 3.33
+- file: requirements_analyzer_agent.py
+  path: agents/system_agents/agent_build_workflow/requirements_analyzer_agent.py
+  classes: []
+  functions: []
+  metrics:
+    total_lines: 53
+    code_lines: 41
+    comment_lines: 4
+    avg_complexity: 0.0
+- file: agent_build_workflow.py
+  path: agents/system_agents/agent_build_workflow/agent_build_workflow.py
+  classes: []
+  functions:
+  - name: _parse_stage_output
+    args:
+    - content
+    docstring: "解析阶段输出内容，尝试提取 JSON 数据\n\nArgs:\n    content: 阶段输出的原始内容\n    \nReturns:\n\
+      \    解析后的字典，如果无法解析则返回 None"
+  - name: _extract_json_objects
+    args:
+    - content
+    docstring: "从文本中提取所有有效的 JSON 对象\n\nArgs:\n    content: 包含 JSON 的文本内容\n    \nReturns:\n\
+      \    提取到的 JSON 对象列表"
+  - name: _get_project_id
+    args: []
+    docstring: 获取当前项目ID（从环境变量或生成新的）
+  - name: _get_resume_from_stage
+    args: []
+    docstring: "获取恢复起始阶段（从环境变量）\n\n返回:\n    str: 恢复起始阶段名称，如果不需要恢复则返回 None"
+  - name: _should_skip_stage
+    args:
+    - stage_name
+    - resume_from_stage
+    - stage_order
+    docstring: "判断是否应该跳过指定阶段\n\n参数:\n    stage_name: 当前阶段名称\n    resume_from_stage:\
+      \ 恢复起始阶段名称\n    stage_order: 阶段执行顺序列表\n    \n返回:\n    bool: 是否应该跳过该阶段"
+  - name: _load_build_rules
+    args: []
+    docstring: 读取Base与Build工作流规则。
+  - name: analyze_user_intent
+    args:
+    - user_input
+    docstring: 分析用户意图 - 通过JSON输出方式
+  - name: _create_agents_with_session
+    args:
+    - session_manager
+    docstring: 创建带session管理的agents
+  - name: run_workflow
+    args:
+    - user_input
+    - session_id
+    - project_name
+    docstring: "执行构建工作流\n\nArgs:\n    user_input: 用户输入内容\n    session_id: 可选的session_id，如果未提供则自动生成\n\
+      \    project_name: 可选的项目名称，如果提供则约束Agent使用此名称"
+  - name: run_interactive_collection
+    args: []
+    docstring: "运行交互式需求收集会话\n\nReturns:\n    收集完成的需求描述文本"
+  metrics:
+    total_lines: 979
+    code_lines: 759
+    comment_lines: 69
+    avg_complexity: 8.7
+core_features:
+- 自然语言需求输入
+- 7阶段自动化流程
+- Agent间上下文传递
+- 自动代码生成
+- 提示词模板生成
+- 工具函数开发
+- 项目文档生成
+- 交互式和批处理模式
+input_output:
+  input:
+    type: 自然语言描述
+    format: 用户需求文本
+    example: 请创建一个Agent帮我完成AWS产品报价工作
+  output:
+    agent_code: agents/generated_agents/{agent_name}/
+    prompt_template: prompts/generated_agents_prompts/{agent_name}.yaml
+    tools: tools/generated_tools/{agent_name}/
+    documentation: projects/{agent_name}/
+integration_points:
+  agent_factory: 使用Agent Factory创建工作流Agent
+  prompt_manager: 加载各阶段Agent的提示词模板
+  project_manager: 管理生成的项目文件和目录结构
+  tool_templates: 使用工具模板生成新工具代码
+usage_modes:
+  interactive:
+    description: 交互式模式，手动输入需求
+    command: python agent_build_workflow.py
+  batch:
+    description: 批处理模式，直接提供需求
+    command: python agent_build_workflow.py -i "需求描述"

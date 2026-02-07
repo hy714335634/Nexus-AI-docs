@@ -1,0 +1,438 @@
+module_info:
+  module_id: M01
+  name: Agent Factory System
+  path: nexus_utils/agent_factory.py
+  description: Agent工厂系统，负责动态创建和管理AI代理
+  priority: P0
+  status: 活跃
+  created_date: '2026-02-05'
+  last_updated: '2026-02-05'
+code_statistics:
+  total_lines: 807
+  code_lines: 571
+  comment_lines: 85
+  blank_lines: 151
+  functions_count: 18
+  classes_count: 0
+  avg_complexity: 6.94
+imports:
+- module: sys
+  names: []
+  alias: null
+  lineno: 4
+- module: os
+  names: []
+  alias: null
+  lineno: 5
+- module: boto3
+  names: []
+  alias: null
+  lineno: 6
+- module: importlib
+  names: []
+  alias: null
+  lineno: 7
+- module: json
+  names: []
+  alias: null
+  lineno: 8
+- module: time
+  names: []
+  alias: null
+  lineno: 9
+- module: types
+  names: []
+  alias: null
+  lineno: 10
+- module: typing
+  names:
+  - Dict
+  - Any
+  - Optional
+  - Type
+  - Union
+  - List
+  alias: null
+  lineno: 11
+- module: datetime
+  names:
+  - datetime
+  alias: null
+  lineno: 12
+- module: pathlib
+  names:
+  - Path
+  alias: null
+  lineno: 13
+- module: nexus_utils.config_loader
+  names:
+  - get_config
+  alias: null
+  lineno: 14
+- module: strands.models
+  names:
+  - BedrockModel
+  alias: null
+  lineno: 15
+- module: botocore.config
+  names:
+  - Config
+  alias: null
+  lineno: 16
+- module: nexus_utils
+  names:
+  - prompts_manager
+  alias: null
+  lineno: 17
+- module: strands
+  names:
+  - Agent
+  - tool
+  alias: null
+  lineno: 18
+- module: re
+  names: []
+  alias: null
+  lineno: 527
+- module: nexus_utils.prompts_manager
+  names:
+  - get_default_prompt_manager
+  alias: null
+  lineno: 699
+- module: nexus_utils.prompts_manager
+  names:
+  - get_default_prompt_manager
+  alias: null
+  lineno: 797
+- module: tools.system_tools.agent_build_workflow.tool_template_provider
+  names:
+  - get_builtin_tools
+  alias: null
+  lineno: 165
+- module: tools.system_tools.agent_build_workflow.tool_template_provider
+  names:
+  - list_all_tools
+  alias: null
+  lineno: 186
+- module: tools.system_tools.agent_build_workflow.tool_template_provider
+  names:
+  - search_tools_by_name
+  alias: null
+  lineno: 397
+- module: nexus_utils.prompts_manager
+  names:
+  - get_default_prompt_manager
+  alias: null
+  lineno: 537
+- module: nexus_utils.enhanced_logging
+  names:
+  - get_enhanced_logger
+  alias: null
+  lineno: 740
+- module: nexus_utils.strands_agent_logging_hook
+  names:
+  - create_agent_logging_hook
+  alias: null
+  lineno: 654
+- module: traceback
+  names: []
+  alias: null
+  lineno: 680
+- module: nexus_utils.mcp.manager
+  names:
+  - get_default_mcp_manager
+  alias: null
+  lineno: 573
+- module: strands_tools.browser
+  names:
+  - AgentCoreBrowser
+  alias: null
+  lineno: 242
+- module: boto3.session
+  names:
+  - Session
+  alias: null
+  lineno: 243
+functions:
+- name: _build_stage_log_path
+  lineno: 24
+  args:
+  - agent_label
+  returns: Path
+  has_docstring: true
+  docstring: Generate per-agent stage log path.
+  decorators: []
+  is_async: false
+  complexity: 1
+  lines_of_code: 5
+- name: _append_stage_log
+  lineno: 31
+  args:
+  - agent_label
+  - payload
+  returns: None
+  has_docstring: true
+  docstring: Append agent invocation payload to the stage log file.
+  decorators: []
+  is_async: false
+  complexity: 5
+  lines_of_code: 24
+- name: _wrap_agent_call_for_stage_logging
+  lineno: 57
+  args:
+  - agent
+  - agent_label
+  returns: None
+  has_docstring: true
+  docstring: Wrap an Agent's __call__ to capture invocation input for debugging.
+  decorators: []
+  is_async: false
+  complexity: 4
+  lines_of_code: 19
+- name: _wrap_model_stream_for_stage_logging
+  lineno: 78
+  args:
+  - model
+  - agent_label
+  returns: None
+  has_docstring: true
+  docstring: Wrap BedrockModel.stream to log the outgoing prompt payloads.
+  decorators: []
+  is_async: false
+  complexity: 4
+  lines_of_code: 23
+- name: get_bedrock_model
+  lineno: 117
+  args:
+  - model_id
+  - agent_name
+  - env
+  returns: null
+  has_docstring: false
+  docstring: null
+  decorators: []
+  is_async: false
+  complexity: 1
+  lines_of_code: 10
+- name: import_module_by_string
+  lineno: 128
+  args:
+  - module_name
+  returns: null
+  has_docstring: true
+  docstring: 根据字符串导入模块
+  decorators: []
+  is_async: false
+  complexity: 2
+  lines_of_code: 8
+- name: import_class_by_string
+  lineno: 138
+  args:
+  - module_name
+  - class_name
+  returns: null
+  has_docstring: true
+  docstring: 根据字符串导入特定的类
+  decorators: []
+  is_async: false
+  complexity: 2
+  lines_of_code: 9
+- name: import_from_path
+  lineno: 149
+  args:
+  - full_path
+  returns: null
+  has_docstring: true
+  docstring: '从完整路径导入，格式: ''module.submodule.ClassName'''
+  decorators: []
+  is_async: false
+  complexity: 2
+  lines_of_code: 11
+- name: get_builtin_tools_mapping
+  lineno: 162
+  args: []
+  returns: null
+  has_docstring: true
+  docstring: 通过工具模板提供器获取内置工具映射
+  decorators: []
+  is_async: false
+  complexity: 5
+  lines_of_code: 19
+- name: get_system_tools_mapping
+  lineno: 183
+  args: []
+  returns: null
+  has_docstring: true
+  docstring: 通过工具模板提供器获取系统工具映射
+  decorators: []
+  is_async: false
+  complexity: 11
+  lines_of_code: 42
+- name: get_tool_by_path
+  lineno: 227
+  args:
+  - tool_path
+  returns: null
+  has_docstring: true
+  docstring: '通过路径导入工具，支持以下格式：
+
+    - template_tools/common/demo/weather_forecast
+
+    - system_tools/project_manager/project_init
+
+    - generated_tools/aws/security/aws_compliance_checker/check_aws_compliance
+
+    - strands_tools/ca'
+  decorators: []
+  is_async: false
+  complexity: 18
+  lines_of_code: 126
+- name: get_tool_by_name
+  lineno: 355
+  args:
+  - tool_name
+  returns: null
+  has_docstring: true
+  docstring: 通过工具模板提供器动态获取工具
+  decorators: []
+  is_async: false
+  complexity: 25
+  lines_of_code: 87
+- name: import_tools_by_strings
+  lineno: 444
+  args:
+  - tool_paths
+  returns: list
+  has_docstring: true
+  docstring: 根据字符串列表动态导入多个工具
+  decorators: []
+  is_async: false
+  complexity: 5
+  lines_of_code: 27
+- name: get_agent_class_by_type
+  lineno: 476
+  args:
+  - agent_type
+  returns: Optional[Type]
+  has_docstring: true
+  docstring: 根据 agent 类型字符串获取对应的 Agent 类
+  decorators: []
+  is_async: false
+  complexity: 3
+  lines_of_code: 18
+- name: create_agent_from_prompt_template
+  lineno: 496
+  args:
+  - agent_name
+  - env
+  - version
+  - model_id
+  - enable_logging
+  - state
+  - session_manager
+  - nocallback
+  returns: Optional[Agent]
+  has_docstring: true
+  docstring: "直接从提示词模板创建 agent，支持多级相对路径\n\nArgs:\n    agent_name: agent 名称或相对路径，支持以下格式：\n\
+    \               - \"requirements_analyzer\" (agent名称)\n               - \"system_agents_prompts/requirements_analyzer\"\
+    \ (相对路径)\n        "
+  decorators: []
+  is_async: false
+  complexity: 24
+  lines_of_code: 187
+- name: list_available_agents
+  lineno: 685
+  args: []
+  returns: Dict[str, list]
+  has_docstring: true
+  docstring: "列出所有可用的 agent 模板，支持多级目录结构\n\nReturns:\n    按类型分组的 agent 列表，包含相对路径"
+  decorators: []
+  is_async: false
+  complexity: 6
+  lines_of_code: 42
+- name: add_logging_hook_to_agent
+  lineno: 728
+  args:
+  - agent
+  - agent_name
+  returns: Agent
+  has_docstring: true
+  docstring: "为Agent添加日志跟踪hook\n\nArgs:\n    agent: 原始Agent实例\n    agent_name: Agent名称\n\
+    \nReturns:\n    带有日志hook的Agent实例"
+  decorators: []
+  is_async: false
+  complexity: 5
+  lines_of_code: 60
+- name: list_available_agent_paths
+  lineno: 790
+  args: []
+  returns: List[str]
+  has_docstring: true
+  docstring: "列出所有可用的 agent 相对路径\n\nReturns:\n    所有agent的相对路径列表"
+  decorators: []
+  is_async: false
+  complexity: 2
+  lines_of_code: 17
+classes: []
+global_variables:
+- STAGE_LOG_DIR
+- config
+- boto_config
+- session
+dependencies:
+  internal: []
+  external: []
+  total_count: 0
+dependents:
+  modules: []
+  count: 0
+core_features:
+- Agent动态创建
+- 提示词模板加载
+- 工具依赖解析
+- MCP集成
+- 模型配置管理
+- 日志跟踪
+- 多级路径支持
+configuration:
+  config_files:
+  - config/default_config.yaml
+  env_vars:
+  - BYPASS_TOOL_CONSENT
+  log_directory: logs/stages
+potential_issues:
+- type: high_complexity
+  severity: medium
+  location: 函数 get_system_tools_mapping (行 183)
+  description: '圈复杂度过高: 11'
+  suggestion: 考虑重构以降低复杂度
+- type: high_complexity
+  severity: medium
+  location: 函数 get_tool_by_path (行 227)
+  description: '圈复杂度过高: 18'
+  suggestion: 考虑重构以降低复杂度
+- type: high_complexity
+  severity: medium
+  location: 函数 get_tool_by_name (行 355)
+  description: '圈复杂度过高: 25'
+  suggestion: 考虑重构以降低复杂度
+- type: high_complexity
+  severity: medium
+  location: 函数 create_agent_from_prompt_template (行 496)
+  description: '圈复杂度过高: 24'
+  suggestion: 考虑重构以降低复杂度
+- type: missing_docstring
+  severity: low
+  location: 函数 get_bedrock_model (行 117)
+  description: 缺少文档字符串
+  suggestion: 添加函数文档说明
+- type: long_function
+  severity: medium
+  location: 函数 get_tool_by_path (行 227)
+  description: '函数过长: 126 行'
+  suggestion: 考虑拆分为多个小函数
+- type: long_function
+  severity: medium
+  location: 函数 create_agent_from_prompt_template (行 496)
+  description: '函数过长: 187 行'
+  suggestion: 考虑拆分为多个小函数

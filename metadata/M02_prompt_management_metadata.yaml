@@ -1,0 +1,1077 @@
+module_info:
+  name: prompts_manager
+  file_path: nexus_utils/prompts_manager.py
+  description: Prompt Management模块 - 负责YAML提示词模板的加载、解析、版本管理和元数据处理
+  version: 1.0.0
+  last_analyzed: '2026-02-05'
+architecture:
+  design_pattern: Singleton + Factory
+  key_patterns:
+  - Singleton Pattern - PromptManager使用单例模式确保全局唯一实例
+  - Factory Pattern - PromptManagerRegistry作为工厂管理多个实例
+  - Data Class Pattern - 使用@dataclass定义数据结构
+  - Template Method Pattern - 统一的YAML解析流程
+  core_components:
+  - name: PromptManager
+    type: Singleton Manager
+    responsibility: YAML提示词模板的加载、解析和管理
+  - name: PromptAgent
+    type: Data Container
+    responsibility: Agent提示词的版本管理和环境配置
+  - name: PromptVersion
+    type: Data Container
+    responsibility: 单个版本的提示词内容和元数据
+  - name: PromptManagerRegistry
+    type: Factory
+    responsibility: 管理多个PromptManager实例
+data_structures:
+  classes:
+  - name: EnvironmentConfig
+    docstring: 环境配置类
+    base_classes: []
+    decorators:
+    - dataclass
+    attributes:
+    - temperature
+    - max_tokens
+    - streaming
+    - debug_mode
+    methods: []
+  - name: ToolConfig
+    docstring: 工具配置类
+    base_classes: []
+    decorators:
+    - dataclass
+    attributes:
+    - name
+    - enabled
+    - description
+    methods: []
+  - name: PerformanceMetrics
+    docstring: 性能指标类
+    base_classes: []
+    decorators:
+    - dataclass
+    attributes:
+    - accuracy
+    - response_time
+    - user_satisfaction
+    methods: []
+  - name: Compatibility
+    docstring: 兼容性配置类
+    base_classes: []
+    decorators:
+    - dataclass
+    attributes:
+    - min_strands_version
+    - supported_models
+    methods: []
+  - name: Metadata
+    docstring: '元数据类
+
+
+      包含 Agent 的标签、模型支持、依赖项等元数据信息
+
+      新增 mcp_dependencies 字段支持 MCP 依赖声明'
+    base_classes: []
+    decorators:
+    - dataclass
+    attributes:
+    - tags
+    - supported_models
+    - lib_dependencies
+    - tools_dependencies
+    - mcp_dependencies
+    - performance_metrics
+    - dependencies
+    - compatibility
+    - additional_request_fields
+    methods: []
+  - name: Example
+    docstring: 示例对话类
+    base_classes: []
+    decorators:
+    - dataclass
+    attributes:
+    - user
+    - assistant
+    methods: []
+  - name: PromptVersion
+    docstring: 提示词版本管理类
+    base_classes: []
+    decorators:
+    - dataclass
+    attributes:
+    - agent_name
+    - version
+    - status
+    - created_date
+    - author
+    - description
+    - system_prompt
+    - user_prompt_template
+    - context_window
+    - tools
+    - constraints
+    - examples
+    - metadata
+    methods: []
+  - name: PromptAgent
+    docstring: Agent提示词管理类
+    base_classes: []
+    decorators:
+    - dataclass
+    attributes:
+    - agent_name
+    - description
+    - category
+    - environments
+    - versions
+    methods:
+    - name: get_version
+      docstring: 获取指定版本的提示词，默认返回最新版本
+      parameters: &id020
+      - self
+      - version
+      is_private: false
+      is_property: false
+    - name: _version_key
+      docstring: 将版本字符串转换为可比较的元组
+      parameters:
+      - self
+      - version_str
+      is_private: true
+      is_property: false
+    - name: get_all_versions
+      docstring: 获取所有版本的提示词
+      parameters: &id021
+      - self
+      is_private: false
+      is_property: false
+    - name: get_environment_config
+      docstring: 获取指定环境的配置
+      parameters: &id022
+      - self
+      - environment
+      is_private: false
+      is_property: false
+  - name: PromptManager
+    docstring: 提示词管理器类
+    base_classes: []
+    decorators: []
+    attributes: []
+    methods:
+    - name: __new__
+      docstring: ''
+      parameters:
+      - cls
+      - prompt_paths
+      is_private: true
+      is_property: false
+    - name: __init__
+      docstring: ''
+      parameters:
+      - self
+      - prompt_paths
+      is_private: true
+      is_property: false
+    - name: _parse_environment_config
+      docstring: 解析环境配置
+      parameters:
+      - self
+      - env_data
+      is_private: true
+      is_property: false
+    - name: _parse_tool_config
+      docstring: 解析工具配置
+      parameters:
+      - self
+      - tool_data
+      is_private: true
+      is_property: false
+    - name: _parse_performance_metrics
+      docstring: 解析性能指标
+      parameters:
+      - self
+      - metrics_data
+      is_private: true
+      is_property: false
+    - name: _parse_compatibility
+      docstring: 解析兼容性配置
+      parameters:
+      - self
+      - compat_data
+      is_private: true
+      is_property: false
+    - name: _parse_metadata
+      docstring: '解析元数据
+
+
+        支持解析 mcp_dependencies 字段：
+
+        - 如果字段不存在，返回 None
+
+        - 如果字段存在但为空，返回空列表
+
+        - 如果字段存在且有值，返回值列表'
+      parameters:
+      - self
+      - metadata_data
+      is_private: true
+      is_property: false
+    - name: _parse_examples
+      docstring: 解析示例对话
+      parameters:
+      - self
+      - examples_data
+      is_private: true
+      is_property: false
+    - name: load_prompts
+      docstring: 加载所有提示词文件，支持多级目录结构
+      parameters: &id001
+      - self
+      is_private: false
+      is_property: false
+    - name: get_agent
+      docstring: 获取指定agent的提示词管理器，支持agent名称或相对路径
+      parameters: &id002
+      - self
+      - agent_name
+      is_private: false
+      is_property: false
+    - name: reload
+      docstring: '重新加载所有提示词文件
+
+
+        用于在运行时动态加载新增的提示词文件，无需重启服务'
+      parameters: &id003
+      - self
+      is_private: false
+      is_property: false
+    - name: load_single_prompt
+      docstring: "加载单个提示词文件\n\n用于在部署新 Agent 后动态加载其提示词，无需重新加载全部文件\n\n参数:\n    prompt_file_path:\
+        \ 提示词文件的完整路径或相对于项目根目录的路径\n    \n返回:\n    bool: 是否加载成功"
+      parameters: &id004
+      - self
+      - prompt_file_path
+      is_private: false
+      is_property: false
+    - name: get_agent_by_path
+      docstring: 通过相对路径获取agent
+      parameters: &id005
+      - self
+      - relative_path
+      is_private: false
+      is_property: false
+    - name: get_agent_path
+      docstring: 获取agent的相对路径
+      parameters: &id006
+      - self
+      - agent_name
+      is_private: false
+      is_property: false
+    - name: list_all_agent_paths
+      docstring: 列出所有agent的路径映射
+      parameters: &id007
+      - self
+      is_private: false
+      is_property: false
+    - name: get_agent_version
+      docstring: 获取指定agent的指定版本提示词
+      parameters: &id008
+      - self
+      - agent_name
+      - version
+      is_private: false
+      is_property: false
+    - name: get_all_agents
+      docstring: 获取所有可用的agent名称
+      parameters: &id009
+      - self
+      is_private: false
+      is_property: false
+    - name: get_agent_versions
+      docstring: 获取指定agent的所有版本提示词
+      parameters: &id010
+      - self
+      - agent_name
+      is_private: false
+      is_property: false
+    - name: get_latest_agent_version
+      docstring: 获取指定agent的最新版本提示词
+      parameters: &id011
+      - self
+      - agent_name
+      is_private: false
+      is_property: false
+    - name: get_agent_environment_config
+      docstring: 获取指定agent的环境配置
+      parameters: &id012
+      - self
+      - agent_name
+      - environment
+      is_private: false
+      is_property: false
+    - name: get_agents_by_category
+      docstring: 根据类别获取agent列表
+      parameters: &id013
+      - self
+      - category
+      is_private: false
+      is_property: false
+    - name: get_agents_by_tag
+      docstring: 根据标签获取agent列表
+      parameters: &id014
+      - self
+      - tag
+      is_private: false
+      is_property: false
+    - name: get_agent_supported_models
+      docstring: 获取指定agent支持的模型列表
+      parameters: &id015
+      - self
+      - agent_name
+      - version
+      is_private: false
+      is_property: false
+    - name: get_agent_additional_request_fields
+      docstring: 获取指定agent的额外请求字段列表
+      parameters: &id016
+      - self
+      - agent_name
+      - version
+      is_private: false
+      is_property: false
+    - name: get_agent_lib_dependencies
+      docstring: 获取指定agent的库依赖列表
+      parameters: &id017
+      - self
+      - agent_name
+      - version
+      is_private: false
+      is_property: false
+    - name: get_agent_tools_dependencies
+      docstring: 获取指定agent的工具依赖列表
+      parameters: &id018
+      - self
+      - agent_name
+      - version
+      is_private: false
+      is_property: false
+    - name: get_agent_mcp_dependencies
+      docstring: "获取指定agent的MCP依赖列表\n\n参数:\n    agent_name: Agent名称或相对路径\n    version:\
+        \ 版本号，默认为 \"latest\"\n    \n返回:\n    MCP依赖列表，如果不存在则返回 None"
+      parameters: &id019
+      - self
+      - agent_name
+      - version
+      is_private: false
+      is_property: false
+  - name: PromptManagerRegistry
+    docstring: PromptManager 注册表，用于管理多个 PromptManager 实例
+    base_classes: []
+    decorators: []
+    attributes:
+    - _instances
+    methods:
+    - name: get_instance
+      docstring: 获取指定路径的 PromptManager 实例
+      parameters:
+      - cls
+      - prompt_paths
+      is_private: false
+      is_property: false
+    - name: get_default_instance
+      docstring: 获取默认的 PromptManager 实例
+      parameters:
+      - cls
+      is_private: false
+      is_property: false
+    - name: clear_instances
+      docstring: 清除所有实例（主要用于测试）
+      parameters:
+      - cls
+      is_private: false
+      is_property: false
+yaml_template_structure:
+  description: YAML提示词模板的标准结构
+  statistics:
+    total_files: 59
+    by_category:
+      cloud_consulting: 1
+      testing: 1
+      content_generation: 2
+      education_technology: 1
+      financial_analysis: 7
+      document_conversion: 2
+      translation: 1
+      data_collection: 1
+      knowledge_assistant: 1
+      cloud_cost_optimization: 1
+      fda_data_query: 1
+      academic_research: 1
+      design: 4
+      数据采集与分析: 1
+      document_processing: 2
+      document_review: 1
+      technical_documentation: 1
+      cloud_infrastructure_analysis: 1
+      medical_research: 1
+      data_analysis: 1
+      analysis: 5
+      research_analysis: 1
+      api_integration: 1
+      assistant: 2
+      multimodal_analysis: 1
+      agent: 3
+      search: 1
+      development: 3
+      engineering: 3
+      documentation: 1
+      validation: 1
+      orchestration: 2
+      prompt_engineering: 1
+      workflow: 1
+      interface: 1
+    version_patterns:
+    - backup
+    - feedback_handler
+    - latest
+    - v1
+    metadata_fields:
+    - mcp_dependencies
+    - supported_models
+    - tags
+    - tools_dependencies
+    common_tools:
+    - generated_tools/Nexus-AI-QA-Assistant/multimodal_content_parser/chunk_large_content
+    - generated_tools/Nexus-AI-QA-Assistant/multimodal_content_parser/extract_code_structure
+    - generated_tools/Nexus-AI-QA-Assistant/multimodal_content_parser/extract_key_content
+    - generated_tools/Nexus-AI-QA-Assistant/multimodal_content_parser/parse_file_content
+    - generated_tools/Nexus-AI-QA-Assistant/multimodal_content_parser/parse_json_content
+    - generated_tools/Nexus-AI-QA-Assistant/multimodal_content_parser/parse_markdown_content
+    - generated_tools/Nexus-AI-QA-Assistant/multimodal_content_parser/parse_python_code
+    - generated_tools/Nexus-AI-QA-Assistant/multimodal_content_parser/parse_yaml_content
+    - generated_tools/aws_network_architecture_analyzer/aws_resource_collector/collect_all_resources
+    - generated_tools/aws_network_architecture_analyzer/aws_resource_collector/collect_direct_connect_connections
+    - generated_tools/aws_network_architecture_analyzer/aws_resource_collector/collect_ec2_instances
+    - generated_tools/aws_network_architecture_analyzer/aws_resource_collector/collect_internet_gateways
+    - generated_tools/aws_network_architecture_analyzer/aws_resource_collector/collect_load_balancers
+    - generated_tools/aws_network_architecture_analyzer/aws_resource_collector/collect_nat_gateways
+    - generated_tools/aws_network_architecture_analyzer/aws_resource_collector/collect_network_acls
+    - generated_tools/aws_network_architecture_analyzer/aws_resource_collector/collect_network_firewalls
+    - generated_tools/aws_network_architecture_analyzer/aws_resource_collector/collect_rds_instances
+    - generated_tools/aws_network_architecture_analyzer/aws_resource_collector/collect_route_tables
+    - generated_tools/aws_network_architecture_analyzer/aws_resource_collector/collect_security_groups
+    - generated_tools/aws_network_architecture_analyzer/aws_resource_collector/collect_subnets
+    - generated_tools/aws_network_architecture_analyzer/aws_resource_collector/collect_transit_gateways
+    - generated_tools/aws_network_architecture_analyzer/aws_resource_collector/collect_vpc_endpoints
+    - generated_tools/aws_network_architecture_analyzer/aws_resource_collector/collect_vpc_peering_connections
+    - generated_tools/aws_network_architecture_analyzer/aws_resource_collector/collect_vpcs
+    - generated_tools/aws_network_architecture_analyzer/aws_resource_collector/collect_vpn_connections
+    - generated_tools/aws_network_architecture_analyzer/health_checker/check_aws_credentials
+    - generated_tools/aws_network_architecture_analyzer/health_checker/check_aws_service_quota
+    - generated_tools/aws_network_architecture_analyzer/health_checker/check_neo4j_connection
+    - generated_tools/aws_network_architecture_analyzer/health_checker/check_s3_bucket_access
+    - generated_tools/aws_network_architecture_analyzer/health_checker/check_system_health
+    - generated_tools/aws_network_architecture_analyzer/health_checker/get_system_requirements
+    - generated_tools/aws_network_architecture_analyzer/neo4j_graph_manager/batch_create_nodes
+    - generated_tools/aws_network_architecture_analyzer/neo4j_graph_manager/batch_create_relationships
+    - generated_tools/aws_network_architecture_analyzer/neo4j_graph_manager/create_network_schema
+    - generated_tools/aws_network_architecture_analyzer/neo4j_graph_manager/delete_all_data
+    - generated_tools/aws_network_architecture_analyzer/neo4j_graph_manager/execute_cypher_query
+    - generated_tools/aws_network_architecture_analyzer/neo4j_graph_manager/find_path_between_resources
+    - generated_tools/aws_network_architecture_analyzer/neo4j_graph_manager/get_database_stats
+    - generated_tools/aws_network_architecture_analyzer/neo4j_graph_manager/query_resources_by_properties
+    - generated_tools/aws_network_architecture_analyzer/neo4j_graph_manager/test_neo4j_connection
+    - generated_tools/aws_network_architecture_analyzer/network_analyzer/analyze_connectivity
+    - generated_tools/aws_network_architecture_analyzer/network_analyzer/analyze_route_table
+    - generated_tools/aws_network_architecture_analyzer/network_analyzer/analyze_security_group_rules
+    - generated_tools/aws_network_architecture_analyzer/network_analyzer/calculate_network_metrics
+    - generated_tools/aws_network_architecture_analyzer/network_analyzer/diagnose_network_issue
+    - generated_tools/aws_network_architecture_analyzer/nlp_processor/extract_query_intent
+    - generated_tools/aws_network_architecture_analyzer/nlp_processor/generate_cypher_query
+    - generated_tools/aws_network_architecture_analyzer/nlp_processor/parse_query_response
+    - generated_tools/aws_network_architecture_analyzer/nlp_processor/suggest_query_improvements
+    - generated_tools/aws_network_architecture_analyzer/nlp_processor/validate_cypher_query
+    - generated_tools/aws_network_architecture_analyzer/report_generator/create_network_topology_report
+    - generated_tools/aws_network_architecture_analyzer/report_generator/generate_diagnostic_report
+    - generated_tools/aws_network_architecture_analyzer/report_generator/generate_html_report
+    - generated_tools/aws_network_architecture_analyzer/report_generator/generate_presigned_url
+    - generated_tools/aws_network_architecture_analyzer/report_generator/list_reports_in_s3
+    - generated_tools/aws_network_architecture_analyzer/report_generator/upload_report_to_s3
+    - generated_tools/aws_pricing_agent/aws_pricing_tool/get_available_instance_types
+    - generated_tools/aws_pricing_agent/aws_pricing_tool/get_aws_pricing
+    - generated_tools/aws_pricing_agent/aws_pricing_tool/get_ebs_pricing
+    - generated_tools/aws_pricing_agent/aws_pricing_tool/get_ec2_instance_pricing
+    - generated_tools/aws_pricing_agent/aws_pricing_tool/get_elasticache_pricing
+    - generated_tools/aws_pricing_agent/aws_pricing_tool/get_elb_pricing
+    - generated_tools/aws_pricing_agent/aws_pricing_tool/get_network_pricing
+    - generated_tools/aws_pricing_agent/aws_pricing_tool/get_opensearch_pricing
+    - generated_tools/aws_pricing_agent/aws_pricing_tool/get_rds_pricing
+    - generated_tools/aws_pricing_agent/aws_pricing_tool/get_s3_pricing
+    - generated_tools/aws_pricing_agent/aws_pricing_tool/recommend_instance_types
+    - generated_tools/aws_pricing_agent/aws_pricing_tool/use_aws
+    - generated_tools/clinicaltrials_search_agent/clinicaltrials_api_tools/analyze_clinical_trials_results
+    - generated_tools/clinicaltrials_search_agent/clinicaltrials_api_tools/build_clinical_trials_query
+    - generated_tools/clinicaltrials_search_agent/clinicaltrials_api_tools/clear_clinical_trials_cache
+    - generated_tools/clinicaltrials_search_agent/clinicaltrials_api_tools/clinical_trials_get_study
+    - generated_tools/clinicaltrials_search_agent/clinicaltrials_api_tools/clinical_trials_search
+    - generated_tools/clinicaltrials_search_agent/clinicaltrials_api_tools/generate_clinical_report
+    - generated_tools/clinicaltrials_search_agent/clinicaltrials_api_tools/get_clinical_trials_field_values
+    - generated_tools/clinicaltrials_search_agent/clinicaltrials_api_tools/integrate_clinical_trials_results
+    - generated_tools/clinicaltrials_search_agent/clinicaltrials_api_tools/parse_clinical_trials_results
+    - generated_tools/drug_feedback_collector/drug_feedback_tools/analyze_feedback_with_claude
+    - generated_tools/drug_feedback_collector/drug_feedback_tools/batch_analyze_feedback
+    - generated_tools/drug_feedback_collector/drug_feedback_tools/batch_extract_webpages
+    - generated_tools/drug_feedback_collector/drug_feedback_tools/check_cache
+    - generated_tools/drug_feedback_collector/drug_feedback_tools/clear_cache
+    - generated_tools/drug_feedback_collector/drug_feedback_tools/extract_webpage_content
+    - generated_tools/drug_feedback_collector/drug_feedback_tools/generate_feedback_report
+    - generated_tools/drug_feedback_collector/drug_feedback_tools/get_cache_statistics
+    - generated_tools/drug_feedback_collector/drug_feedback_tools/save_to_cache
+    - generated_tools/drug_feedback_collector/drug_feedback_tools/search_drug_feedback
+    - generated_tools/drug_feedback_collector/drug_feedback_tools/validate_drug_name
+    - generated_tools/fda_data_query_agent/fda_api_tools/get_fda_api_stats
+    - generated_tools/fda_data_query_agent/fda_api_tools/query_fda_adverse_events
+    - generated_tools/fda_data_query_agent/fda_api_tools/query_fda_devices
+    - generated_tools/fda_data_query_agent/fda_api_tools/query_fda_drugs
+    - generated_tools/fda_data_query_agent/fda_api_tools/query_fda_food
+    - generated_tools/fda_data_query_agent/fda_api_tools/query_fda_recalls
+    - generated_tools/fda_data_query_agent/fda_api_tools/search_fda_comprehensive
+    - generated_tools/fda_data_query_agent/fda_support_tools/cache_query_result
+    - generated_tools/fda_data_query_agent/fda_support_tools/clear_cache
+    - generated_tools/fda_data_query_agent/fda_support_tools/format_fda_response
+    - generated_tools/fda_data_query_agent/fda_support_tools/generate_query_suggestions
+    - generated_tools/fda_data_query_agent/fda_support_tools/get_cache_stats
+    - generated_tools/fda_data_query_agent/fda_support_tools/get_cached_result
+    - generated_tools/fda_data_query_agent/fda_support_tools/parse_fda_device_data
+    - generated_tools/fda_data_query_agent/fda_support_tools/parse_fda_drug_data
+    - generated_tools/fda_data_query_agent/fda_support_tools/validate_search_parameters
+    - generated_tools/html2pptx/cache_manager/cache_item
+    - generated_tools/html2pptx/cache_manager/cached_operation
+    - generated_tools/html2pptx/cache_manager/clear_cache
+    - generated_tools/html2pptx/cache_manager/delete_cached_item
+    - generated_tools/html2pptx/cache_manager/get_cache_info
+    - generated_tools/html2pptx/cache_manager/initialize_cache
+    - generated_tools/html2pptx/cache_manager/retrieve_cached_item
+    - generated_tools/html2pptx/html_parser/analyze_document_structure
+    - generated_tools/html2pptx/html_parser/extract_elements
+    - generated_tools/html2pptx/html_parser/extract_images
+    - generated_tools/html2pptx/html_parser/extract_links
+    - generated_tools/html2pptx/html_parser/extract_tables
+    - generated_tools/html2pptx/html_parser/extract_text_content
+    - generated_tools/html2pptx/html_parser/parse_html
+    - generated_tools/html2pptx/image_processor/convert_image_format
+    - generated_tools/html2pptx/image_processor/crop_image
+    - generated_tools/html2pptx/image_processor/download_image
+    - generated_tools/html2pptx/image_processor/enhance_image
+    - generated_tools/html2pptx/image_processor/get_image_info
+    - generated_tools/html2pptx/image_processor/optimize_image
+    - generated_tools/html2pptx/image_processor/resize_image
+    - generated_tools/html2pptx/layout_optimizer/calculate_text_box_size
+    - generated_tools/html2pptx/layout_optimizer/create_balanced_composition
+    - generated_tools/html2pptx/layout_optimizer/optimize_image_placement
+    - generated_tools/html2pptx/layout_optimizer/optimize_slide_layout
+    - generated_tools/html2pptx/layout_optimizer/optimize_table_layout
+    - generated_tools/html2pptx/layout_optimizer/optimize_visual_hierarchy
+    - generated_tools/html2pptx/layout_optimizer/suggest_content_distribution
+    - generated_tools/html2pptx/pptx_generator/add_image
+    - generated_tools/html2pptx/pptx_generator/add_shape
+    - generated_tools/html2pptx/pptx_generator/add_slide
+    - generated_tools/html2pptx/pptx_generator/add_table
+    - generated_tools/html2pptx/pptx_generator/add_text
+    - generated_tools/html2pptx/pptx_generator/create_presentation
+    - generated_tools/html2pptx/pptx_generator/get_presentation_info
+    - generated_tools/html2pptx/semantic_analyzer/analyze_content_importance
+    - generated_tools/html2pptx/semantic_analyzer/analyze_document_structure
+    - generated_tools/html2pptx/semantic_analyzer/extract_hierarchical_structure
+    - generated_tools/html2pptx/semantic_analyzer/extract_key_content
+    - generated_tools/html2pptx/semantic_analyzer/identify_key_topics
+    - generated_tools/html2pptx/semantic_analyzer/suggest_slide_structure
+    - generated_tools/html2pptx/semantic_analyzer/summarize_content
+    - generated_tools/html2pptx/style_mapper/analyze_document_theme
+    - generated_tools/html2pptx/style_mapper/extract_html_styles
+    - generated_tools/html2pptx/style_mapper/get_element_box_model
+    - generated_tools/html2pptx/style_mapper/map_color_scheme
+    - generated_tools/html2pptx/style_mapper/map_font_scheme
+    - generated_tools/html2pptx/style_mapper/map_html_styles_to_ppt
+    - generated_tools/html2pptx/style_mapper/map_text_style_to_ppt
+    - generated_tools/html_courseware_generator/courseware_generation_tools/chemistry_equation_generator
+    - generated_tools/html_courseware_generator/courseware_generation_tools/code_validator
+    - generated_tools/html_courseware_generator/courseware_generation_tools/css_style_generator
+    - generated_tools/html_courseware_generator/courseware_generation_tools/html_structure_generator
+    - generated_tools/html_courseware_generator/courseware_generation_tools/interactive_element_builder
+    - generated_tools/html_courseware_generator/courseware_generation_tools/javascript_code_generator
+    - generated_tools/html_courseware_generator/courseware_generation_tools/math_formula_renderer
+    - generated_tools/html_courseware_generator/courseware_generation_tools/physics_chart_generator
+    - generated_tools/html_courseware_generator/courseware_generation_tools/subject_template_selector
+    - generated_tools/html_courseware_generator/courseware_generation_tools/xss_scanner
+    - generated_tools/lifescience_news_collector/data_collector/clean_article_text
+    - generated_tools/lifescience_news_collector/data_collector/deduplicate_urls
+    - generated_tools/lifescience_news_collector/data_collector/extract_article_list
+    - generated_tools/lifescience_news_collector/data_collector/fetch_dynamic_webpage
+    - generated_tools/lifescience_news_collector/data_collector/filter_urls_by_domain
+    - generated_tools/lifescience_news_collector/data_collector/load_data_source_config
+    - generated_tools/lifescience_news_collector/data_collector/parse_article_content
+    - generated_tools/lifescience_news_collector/data_collector/serpapi_search
+    - generated_tools/lifescience_news_collector/data_processor/batch_process_articles
+    - generated_tools/lifescience_news_collector/data_processor/classify_article
+    - generated_tools/lifescience_news_collector/data_processor/deduplicate_articles
+    - generated_tools/lifescience_news_collector/data_processor/extract_keywords
+    - generated_tools/lifescience_news_collector/data_processor/generate_article_summary
+    - generated_tools/lifescience_news_collector/data_processor/generate_article_tags
+    - generated_tools/lifescience_news_collector/data_processor/normalize_article_data
+    - generated_tools/lifescience_news_collector/data_processor/validate_article_data
+    - generated_tools/lifescience_news_collector/newsletter_generator/embed_image_in_html
+    - generated_tools/lifescience_news_collector/newsletter_generator/generate_email_preview_text
+    - generated_tools/lifescience_news_collector/newsletter_generator/generate_email_subject
+    - generated_tools/lifescience_news_collector/newsletter_generator/generate_newsletter_from_json
+    - generated_tools/lifescience_news_collector/newsletter_generator/generate_newsletter_stats
+    - generated_tools/lifescience_news_collector/newsletter_generator/generate_simple_newsletter_html
+    - generated_tools/lifescience_news_collector/newsletter_generator/optimize_image_for_email
+    - generated_tools/lifescience_news_collector/newsletter_generator/render_newsletter_html
+    - generated_tools/lifescience_news_collector/newsletter_generator/save_newsletter_preview
+    - generated_tools/lifescience_news_collector/newsletter_generator/send_bulk_email_via_ses
+    - generated_tools/lifescience_news_collector/newsletter_generator/send_email_via_ses
+    - generated_tools/lifescience_news_collector/newsletter_generator/send_test_email
+    - generated_tools/lifescience_news_collector/storage_tools/batch_write_to_dynamodb
+    - generated_tools/lifescience_news_collector/storage_tools/clear_cache
+    - generated_tools/lifescience_news_collector/storage_tools/download_from_s3
+    - generated_tools/lifescience_news_collector/storage_tools/export_to_csv
+    - generated_tools/lifescience_news_collector/storage_tools/export_to_json
+    - generated_tools/lifescience_news_collector/storage_tools/generate_presigned_url
+    - generated_tools/lifescience_news_collector/storage_tools/get_from_cache
+    - generated_tools/lifescience_news_collector/storage_tools/get_item_from_dynamodb
+    - generated_tools/lifescience_news_collector/storage_tools/list_local_files
+    - generated_tools/lifescience_news_collector/storage_tools/list_s3_objects
+    - generated_tools/lifescience_news_collector/storage_tools/put_item_to_dynamodb
+    - generated_tools/lifescience_news_collector/storage_tools/query_dynamodb
+    - generated_tools/lifescience_news_collector/storage_tools/read_from_local_file
+    - generated_tools/lifescience_news_collector/storage_tools/save_to_cache
+    - generated_tools/lifescience_news_collector/storage_tools/save_to_local_file
+    - generated_tools/lifescience_news_collector/storage_tools/upload_file_to_s3
+    - generated_tools/logo_design_agent/logo_design_tools/html_report_generator
+    - generated_tools/logo_design_agent/logo_design_tools/image_generator
+    - generated_tools/logo_design_agent/logo_design_tools/web_search
+    - generated_tools/medical_document_translation_agent/batch_processor/create_batch_task
+    - generated_tools/medical_document_translation_agent/batch_processor/generate_batch_report
+    - generated_tools/medical_document_translation_agent/batch_processor/get_batch_progress
+    - generated_tools/medical_document_translation_agent/batch_processor/start_batch_task
+    - generated_tools/medical_document_translation_agent/docx_processor/compare_docx
+    - generated_tools/medical_document_translation_agent/docx_processor/create_docx
+    - generated_tools/medical_document_translation_agent/docx_processor/create_docx_from_text
+    - generated_tools/medical_document_translation_agent/docx_processor/extract_docx_structure
+    - generated_tools/medical_document_translation_agent/docx_processor/modify_docx
+    - generated_tools/medical_document_translation_agent/docx_processor/read_docx
+    - generated_tools/medical_document_translation_agent/medical_glossary_manager/add_term
+    - generated_tools/medical_document_translation_agent/medical_glossary_manager/export_glossary
+    - generated_tools/medical_document_translation_agent/medical_glossary_manager/import_glossary
+    - generated_tools/medical_document_translation_agent/medical_glossary_manager/match_terms
+    - generated_tools/medical_document_translation_agent/medical_glossary_manager/search_term
+    - generated_tools/medical_document_translation_agent/quality_controller/check_abbreviation_handling
+    - generated_tools/medical_document_translation_agent/quality_controller/check_terminology_consistency
+    - generated_tools/medical_document_translation_agent/quality_controller/generate_quality_report
+    - generated_tools/medical_document_translation_agent/quality_controller/identify_uncertain_translations
+    - generated_tools/medical_document_translation_agent/translation_engine/translate_abbreviations
+    - generated_tools/medical_document_translation_agent/translation_engine/translate_text
+    - generated_tools/medical_document_translation_agent/translation_engine/translate_with_context
+    - generated_tools/medical_document_translation_agent/translation_engine/translate_with_domain_adaptation
+    - generated_tools/multi_cloud_pricing_comparison_agent/aws_pricing_tools/get_aws_ebs_pricing
+    - generated_tools/multi_cloud_pricing_comparison_agent/aws_pricing_tools/get_aws_ec2_pricing
+    - generated_tools/multi_cloud_pricing_comparison_agent/aws_pricing_tools/get_aws_elasticache_pricing
+    - generated_tools/multi_cloud_pricing_comparison_agent/aws_pricing_tools/get_aws_elb_pricing
+    - generated_tools/multi_cloud_pricing_comparison_agent/aws_pricing_tools/get_aws_network_pricing
+    - generated_tools/multi_cloud_pricing_comparison_agent/aws_pricing_tools/get_aws_opensearch_pricing
+    - generated_tools/multi_cloud_pricing_comparison_agent/aws_pricing_tools/get_aws_rds_pricing
+    - generated_tools/multi_cloud_pricing_comparison_agent/aws_pricing_tools/get_aws_s3_pricing
+    - generated_tools/multi_cloud_pricing_comparison_agent/aws_pricing_tools/recommend_aws_instances
+    - generated_tools/multi_cloud_pricing_comparison_agent/azure_pricing_tools/get_azure_bandwidth_pricing
+    - generated_tools/multi_cloud_pricing_comparison_agent/azure_pricing_tools/get_azure_blob_pricing
+    - generated_tools/multi_cloud_pricing_comparison_agent/azure_pricing_tools/get_azure_disk_pricing
+    - generated_tools/multi_cloud_pricing_comparison_agent/azure_pricing_tools/get_azure_gateway_pricing
+    - generated_tools/multi_cloud_pricing_comparison_agent/azure_pricing_tools/get_azure_redis_pricing
+    - generated_tools/multi_cloud_pricing_comparison_agent/azure_pricing_tools/get_azure_search_pricing
+    - generated_tools/multi_cloud_pricing_comparison_agent/azure_pricing_tools/get_azure_sql_pricing
+    - generated_tools/multi_cloud_pricing_comparison_agent/azure_pricing_tools/get_azure_vm_pricing
+    - generated_tools/multi_cloud_pricing_comparison_agent/azure_pricing_tools/recommend_azure_instances
+    - generated_tools/multi_cloud_pricing_comparison_agent/comparison_tools/calculate_annual_cost
+    - generated_tools/multi_cloud_pricing_comparison_agent/comparison_tools/compare_pricing_across_clouds
+    - generated_tools/multi_cloud_pricing_comparison_agent/comparison_tools/format_pricing_data
+    - generated_tools/multi_cloud_pricing_comparison_agent/comparison_tools/generate_excel_report
+    - generated_tools/multi_cloud_pricing_comparison_agent/comparison_tools/map_aws_to_azure_services
+    - generated_tools/multi_cloud_pricing_comparison_agent/comparison_tools/map_regions
+    - generated_tools/ppt_to_markdown/file_manager/create_output_directory
+    - generated_tools/ppt_to_markdown/file_manager/find_ppt_files
+    - generated_tools/ppt_to_markdown/file_manager/save_markdown_file
+    - generated_tools/ppt_to_markdown/file_manager/validate_ppt_file
+    - generated_tools/ppt_to_markdown/markdown_formatter/customize_markdown_styling
+    - generated_tools/ppt_to_markdown/markdown_formatter/extract_markdown_sections
+    - generated_tools/ppt_to_markdown/markdown_formatter/format_markdown_document
+    - generated_tools/ppt_to_markdown/ppt_converter/batch_convert_ppt_to_markdown
+    - generated_tools/ppt_to_markdown/ppt_converter/extract_ppt_structure
+    - generated_tools/ppt_to_markdown/ppt_converter/ppt_to_markdown_converter
+    - generated_tools/stock_analysis_agent/financial_analysis_tools/analyze_efficiency
+    - generated_tools/stock_analysis_agent/financial_analysis_tools/analyze_growth
+    - generated_tools/stock_analysis_agent/financial_analysis_tools/analyze_liquidity
+    - generated_tools/stock_analysis_agent/financial_analysis_tools/analyze_profitability
+    - generated_tools/stock_analysis_agent/financial_analysis_tools/analyze_solvency
+    - generated_tools/stock_analysis_agent/financial_analysis_tools/calculate_financial_ratios
+    - generated_tools/stock_analysis_agent/financial_analysis_tools/compare_peer_performance
+    - generated_tools/stock_analysis_agent/financial_data_fetcher/fetch_analyst_estimates
+    - generated_tools/stock_analysis_agent/financial_data_fetcher/fetch_company_overview
+    - generated_tools/stock_analysis_agent/financial_data_fetcher/fetch_comparable_companies
+    - generated_tools/stock_analysis_agent/financial_data_fetcher/fetch_earnings_data
+    - generated_tools/stock_analysis_agent/financial_data_fetcher/fetch_financial_statements
+    - generated_tools/stock_analysis_agent/financial_data_fetcher/fetch_macro_economic_data
+    - generated_tools/stock_analysis_agent/financial_data_fetcher/fetch_market_data
+    - generated_tools/stock_analysis_agent/financial_data_fetcher/search_industry_trends
+    - generated_tools/stock_analysis_agent/financial_data_fetcher/validate_financial_data
+    - generated_tools/stock_analysis_agent/multi_agent_as_tools/benchmark_agent_tool
+    - generated_tools/stock_analysis_agent/multi_agent_as_tools/data_collector_agent_tool
+    - generated_tools/stock_analysis_agent/multi_agent_as_tools/prediction_agent_tool
+    - generated_tools/stock_analysis_agent/multi_agent_as_tools/report_generator_agent_tool
+    - generated_tools/stock_analysis_agent/multi_agent_as_tools/risk_assessment_agent_tool
+    - generated_tools/stock_analysis_agent/multi_agent_as_tools/valuation_agent_tool
+    - generated_tools/stock_analysis_agent/report_generation_tools/export_report
+    - generated_tools/stock_analysis_agent/report_generation_tools/generate_comparison_report
+    - generated_tools/stock_analysis_agent/report_generation_tools/generate_executive_summary
+    - generated_tools/stock_analysis_agent/report_generation_tools/generate_financial_analysis_report
+    - generated_tools/stock_analysis_agent/report_generation_tools/generate_valuation_report
+    - generated_tools/stock_analysis_agent/report_generation_tools/prepare_chart_data
+    - generated_tools/stock_analysis_agent/valuation_tools/calculate_capm
+    - generated_tools/stock_analysis_agent/valuation_tools/calculate_dcf_valuation
+    - generated_tools/stock_analysis_agent/valuation_tools/calculate_price_targets
+    - generated_tools/stock_analysis_agent/valuation_tools/calculate_relative_valuation
+    - generated_tools/stock_analysis_agent/valuation_tools/calculate_wacc
+    - generated_tools/stock_analysis_agent/valuation_tools/sensitivity_analysis
+    - generated_tools/tech_doc_multi_agent_system/document_generation_tools/apply_feedback_to_document
+    - generated_tools/tech_doc_multi_agent_system/document_generation_tools/generate_document_outline
+    - generated_tools/tech_doc_multi_agent_system/document_generation_tools/parse_user_requirement
+    - generated_tools/tech_doc_multi_agent_system/document_generation_tools/track_document_history
+    - generated_tools/tech_doc_multi_agent_system/document_generation_tools/validate_document_quality
+    - generated_tools/tech_doc_multi_agent_system/document_review_tools/assess_document_quality
+    - generated_tools/tech_doc_multi_agent_system/document_review_tools/comprehensive_document_review
+    - generated_tools/tech_doc_multi_agent_system/document_review_tools/generate_review_feedback
+    - generated_tools/tech_doc_multi_agent_system/document_review_tools/identify_document_issues
+    - generated_tools/tech_doc_multi_agent_system/document_review_tools/make_review_decision
+    - generated_tools/tech_doc_multi_agent_system/document_review_tools/validate_review_criteria
+    - generated_tools/tech_doc_multi_agent_system/document_structure_parser/analyze_document_complexity
+    - generated_tools/tech_doc_multi_agent_system/document_structure_parser/extract_document_elements
+    - generated_tools/tech_doc_multi_agent_system/document_structure_parser/normalize_document_structure
+    - generated_tools/tech_doc_multi_agent_system/document_structure_parser/parse_document_structure
+    - generated_tools/tech_doc_multi_agent_system/document_structure_parser/validate_document_structure
+    - generated_tools/tech_doc_multi_agent_system/document_writer_tools/extract_modification_priorities
+    - generated_tools/tech_doc_multi_agent_system/document_writer_tools/format_document_for_review
+    - generated_tools/tech_doc_multi_agent_system/document_writer_tools/generate_document_content
+    - generated_tools/tech_doc_multi_agent_system/document_writer_tools/generate_document_structure
+    - generated_tools/tech_doc_multi_agent_system/document_writer_tools/modify_document_content
+    - generated_tools/tech_doc_multi_agent_system/document_writer_tools/parse_review_feedback
+    - generated_tools/tech_doc_multi_agent_system/document_writer_tools/parse_user_requirement
+    - generated_tools/tech_doc_multi_agent_system/document_writer_tools/validate_document_completeness
+    - generated_tools/tech_doc_multi_agent_system/html_generator/generate_html
+    - generated_tools/tech_doc_multi_agent_system/html_generator/generate_html_fragment
+    - generated_tools/tech_doc_multi_agent_system/html_generator/generate_html_with_syntax_highlighting
+    - generated_tools/tech_doc_multi_agent_system/html_generator/generate_responsive_html
+    - strands_tools/calculator
+    - strands_tools/current_time
+    - strands_tools/file_read
+    - strands_tools/file_write
+    - strands_tools/generate_image
+    - strands_tools/http_request
+    - strands_tools/memory
+    - strands_tools/retrieve
+    - strands_tools/rss
+    - strands_tools/shell
+    - strands_tools/think
+    - strands_tools/use_aws
+    - strands_tools/use_llm
+    - system_tools/agent_build_workflow/agent_developer_team_members/agent_template_searcher
+    - system_tools/agent_build_workflow/agent_template_provider/get_all_templates
+    - system_tools/agent_build_workflow/agent_template_provider/get_available_tags
+    - system_tools/agent_build_workflow/agent_template_provider/get_template_by_id
+    - system_tools/agent_build_workflow/agent_template_provider/get_template_content
+    - system_tools/agent_build_workflow/agent_template_provider/search_templates_by_description
+    - system_tools/agent_build_workflow/agent_template_provider/search_templates_by_tags
+    - system_tools/agent_build_workflow/deployment_manager/deploy_agent_to_agentcore
+    - system_tools/agent_build_workflow/project_information/project_verify
+    - system_tools/agent_build_workflow/project_manager/generate_content
+    - system_tools/agent_build_workflow/project_manager/generate_python_requirements
+    - system_tools/agent_build_workflow/project_manager/get_agent_artifact_paths
+    - system_tools/agent_build_workflow/project_manager/get_project_config
+    - system_tools/agent_build_workflow/project_manager/get_project_from_stats
+    - system_tools/agent_build_workflow/project_manager/get_project_readme
+    - system_tools/agent_build_workflow/project_manager/get_project_stage_content
+    - system_tools/agent_build_workflow/project_manager/get_project_status
+    - system_tools/agent_build_workflow/project_manager/list_all_projects
+    - system_tools/agent_build_workflow/project_manager/list_project_agents
+    - system_tools/agent_build_workflow/project_manager/list_project_tools
+    - system_tools/agent_build_workflow/project_manager/project_init
+    - system_tools/agent_build_workflow/project_manager/update_agent_artifact_path
+    - system_tools/agent_build_workflow/project_manager/update_agent_artifact_paths
+    - system_tools/agent_build_workflow/project_manager/update_project_config
+    - system_tools/agent_build_workflow/project_manager/update_project_readme
+    - system_tools/agent_build_workflow/project_manager/update_project_stage_content
+    - system_tools/agent_build_workflow/project_manager/update_project_status
+    - system_tools/agent_build_workflow/prompt_template_provider/get_prompt_template
+    - system_tools/agent_build_workflow/prompt_template_provider/get_prompt_template_info
+    - system_tools/agent_build_workflow/prompt_template_provider/get_template_metadata
+    - system_tools/agent_build_workflow/prompt_template_provider/get_template_structure
+    - system_tools/agent_build_workflow/prompt_template_provider/list_prompt_templates
+    - system_tools/agent_build_workflow/prompt_template_provider/search_templates_by_category
+    - system_tools/agent_build_workflow/prompt_template_provider/validate_all_templates
+    - system_tools/agent_build_workflow/prompt_template_provider/validate_prompt_template
+    - system_tools/agent_build_workflow/tool_template_provider/get_available_categories
+    - system_tools/agent_build_workflow/tool_template_provider/get_builtin_tools
+    - system_tools/agent_build_workflow/tool_template_provider/get_generated_tools
+    - system_tools/agent_build_workflow/tool_template_provider/get_template_tools
+    - system_tools/agent_build_workflow/tool_template_provider/get_tool_content
+    - system_tools/agent_build_workflow/tool_template_provider/get_tool_details
+    - system_tools/agent_build_workflow/tool_template_provider/list_all_tools
+    - system_tools/agent_build_workflow/tool_template_provider/search_tools_by_category
+    - system_tools/agent_build_workflow/tool_template_provider/search_tools_by_name
+    - system_tools/agent_build_workflow/tool_template_provider/validate_tool_file
+    - system_tools/agent_build_workflow/tool_validator/verify_library_dependencies
+    - system_tools/agent_update_workflow/prompt_version_manager/append_prompt_version
+    - system_tools/agent_update_workflow/prompt_version_manager/read_prompt_versions
+    - system_tools/agent_update_workflow/tool_version_generator/create_versioned_tool
+    - system_tools/agent_update_workflow/tool_version_generator/list_version_tools
+    - system_tools/agent_update_workflow/version_manager/append_change_log
+    - system_tools/agent_update_workflow/version_manager/finalize_update_version
+    - system_tools/agent_update_workflow/version_manager/get_stage_document
+    - system_tools/agent_update_workflow/version_manager/initialize_update_version
+    - system_tools/agent_update_workflow/version_manager/register_version_stage
+    - system_tools/agent_update_workflow/version_manager/write_stage_document
+    - system_tools/multimodal_content_parser/get_supported_formats
+    - system_tools/multimodal_content_parser/parse_multimodal_content_from_path
+    - system_tools/tool_build_workflow/tool_project_manager/generate_tool_file
+    - system_tools/tool_build_workflow/tool_project_manager/generate_tool_readme
+    - system_tools/tool_build_workflow/tool_project_manager/get_tool_project_config
+    - system_tools/tool_build_workflow/tool_project_manager/get_tool_project_status
+    - system_tools/tool_build_workflow/tool_project_manager/get_tool_stage_document
+    - system_tools/tool_build_workflow/tool_project_manager/initialize_tool_project
+    - system_tools/tool_build_workflow/tool_project_manager/register_tool
+    - system_tools/tool_build_workflow/tool_project_manager/update_tool_project_stage
+    - system_tools/tool_build_workflow/tool_project_manager/write_tool_stage_document
+    - template_tools/common/data_converter/csv_converter
+    - template_tools/common/data_converter/data_validator
+    - template_tools/common/data_converter/json_converter
+    - template_tools/common/data_converter/xml_converter
+    - template_tools/common/research_tools/data_analyzer
+    - template_tools/common/research_tools/information_collector
+    - template_tools/common/research_tools/report_generator
+    - template_tools/common/research_tools/trend_predictor
+    - template_tools/common/research_tools/web_search_enhanced
+    - template_tools/common/text_processor/content_extractor
+    - template_tools/common/text_processor/format_converter
+    - template_tools/common/text_processor/text_analyzer
+    - template_tools/common/text_processor/text_cleaner
+    - template_tools/network/http_client/api_client
+    - template_tools/network/http_client/auth_manager
+    - template_tools/network/http_client/data_sync
+    - template_tools/network/http_client/webhook_sender
+    supported_models:
+    - global.amazon.nova-2-lite-v1:0
+    - global.anthropic.claude-haiku-4-5-20251001-v1:0
+    - global.anthropic.claude-sonnet-4-20250514-v1:0
+    - global.anthropic.claude-sonnet-4-5-20250929-v1:0
+    - us.amazon.nova-pro-v1:0
+    - us.anthropic.claude-3-7-sonnet-20250219-v1:0
+    - us.anthropic.claude-3-opus-20240229-v1:0
+    - us.anthropic.claude-haiku-4-5-20251001-v1:0
+    - us.anthropic.claude-opus-4-20250514-v1:0
+    - us.anthropic.claude-opus-4-5-20251101-v1:0
+    - us.anthropic.claude-sonnet-4-5-20250929-v1:0
+  template_hierarchy:
+    agent:
+      name: Agent名称
+      description: Agent描述
+      category: Agent类别
+      environments:
+        development: 开发环境配置
+        production: 生产环境配置
+        testing: 测试环境配置
+      versions:
+      - version: 版本号
+        status: 状态(stable/beta/deprecated)
+        created_date: 创建日期
+        author: 作者
+        description: 版本描述
+        system_prompt: 系统提示词
+        user_prompt_template: 用户提示词模板
+        metadata:
+          tags: 标签列表
+          supported_models: 支持的模型列表
+          tools_dependencies: 工具依赖列表
+          lib_dependencies: 库依赖列表
+          mcp_dependencies: MCP服务器依赖列表
+version_management:
+  description: 版本管理机制
+  features:
+  - 支持多版本并存
+  - 自动选择latest版本
+  - 语义化版本号比较
+  - 版本状态管理(stable/beta/deprecated)
+  - 版本创建日期和作者追踪
+  version_selection_logic:
+    latest_keyword: 优先返回名为"latest"的版本
+    semantic_versioning: 如无"latest"，按语义化版本号比较选择最新版本
+    fallback: 无法解析版本号时返回(0,)作为默认值
+metadata_processing:
+  description: 元数据处理逻辑
+  supported_fields:
+  - tags - Agent标签
+  - supported_models - 支持的AI模型列表
+  - lib_dependencies - Python库依赖
+  - tools_dependencies - Strands工具依赖
+  - mcp_dependencies - MCP服务器依赖
+  - performance_metrics - 性能指标
+  - compatibility - 兼容性配置
+  - additional_request_fields - 额外请求字段
+  mcp_support:
+    description: MCP依赖声明支持
+    field_name: mcp_dependencies
+    handling:
+    - 字段不存在时返回None
+    - 字段为空时返回空列表
+    - 字段有值时返回值列表
+    - 支持单个字符串自动转换为列表
+key_features:
+  dynamic_loading:
+    description: 动态加载机制
+    features:
+    - 递归扫描prompts目录下所有YAML文件
+    - 支持多级目录结构
+    - 自动建立agent名称到相对路径的映射
+    - 支持通过agent名称或相对路径访问
+  hot_reload:
+    description: 热重载支持
+    methods:
+    - reload() - 重新加载所有提示词文件
+    - load_single_prompt() - 动态加载单个提示词文件
+    use_cases:
+    - 运行时添加新Agent无需重启服务
+    - 更新提示词内容后动态刷新
+    - 开发调试时快速迭代
+  path_mapping:
+    description: 路径映射机制
+    features:
+    - 支持agent名称作为key
+    - 支持相对路径作为key
+    - 双向映射便于查询
+    - 自动去除./prompts/前缀和.yaml后缀
+api_reference:
+  manager_methods:
+  - name: load_prompts
+    docstring: 加载所有提示词文件，支持多级目录结构
+    parameters: *id001
+  - name: get_agent
+    docstring: 获取指定agent的提示词管理器，支持agent名称或相对路径
+    parameters: *id002
+  - name: reload
+    docstring: '重新加载所有提示词文件
+
+
+      用于在运行时动态加载新增的提示词文件，无需重启服务'
+    parameters: *id003
+  - name: load_single_prompt
+    docstring: "加载单个提示词文件\n\n用于在部署新 Agent 后动态加载其提示词，无需重新加载全部文件\n\n参数:\n    prompt_file_path:\
+      \ 提示词文件的完整路径或相对于项目根目录的路径\n    \n返回:\n    bool: 是否加载成功"
+    parameters: *id004
+  - name: get_agent_by_path
+    docstring: 通过相对路径获取agent
+    parameters: *id005
+  - name: get_agent_path
+    docstring: 获取agent的相对路径
+    parameters: *id006
+  - name: list_all_agent_paths
+    docstring: 列出所有agent的路径映射
+    parameters: *id007
+  - name: get_agent_version
+    docstring: 获取指定agent的指定版本提示词
+    parameters: *id008
+  - name: get_all_agents
+    docstring: 获取所有可用的agent名称
+    parameters: *id009
+  - name: get_agent_versions
+    docstring: 获取指定agent的所有版本提示词
+    parameters: *id010
+  - name: get_latest_agent_version
+    docstring: 获取指定agent的最新版本提示词
+    parameters: *id011
+  - name: get_agent_environment_config
+    docstring: 获取指定agent的环境配置
+    parameters: *id012
+  - name: get_agents_by_category
+    docstring: 根据类别获取agent列表
+    parameters: *id013
+  - name: get_agents_by_tag
+    docstring: 根据标签获取agent列表
+    parameters: *id014
+  - name: get_agent_supported_models
+    docstring: 获取指定agent支持的模型列表
+    parameters: *id015
+  - name: get_agent_additional_request_fields
+    docstring: 获取指定agent的额外请求字段列表
+    parameters: *id016
+  - name: get_agent_lib_dependencies
+    docstring: 获取指定agent的库依赖列表
+    parameters: *id017
+  - name: get_agent_tools_dependencies
+    docstring: 获取指定agent的工具依赖列表
+    parameters: *id018
+  - name: get_agent_mcp_dependencies
+    docstring: "获取指定agent的MCP依赖列表\n\n参数:\n    agent_name: Agent名称或相对路径\n    version:\
+      \ 版本号，默认为 \"latest\"\n    \n返回:\n    MCP依赖列表，如果不存在则返回 None"
+    parameters: *id019
+  agent_methods:
+  - name: get_version
+    docstring: 获取指定版本的提示词，默认返回最新版本
+    parameters: *id020
+  - name: get_all_versions
+    docstring: 获取所有版本的提示词
+    parameters: *id021
+  - name: get_environment_config
+    docstring: 获取指定环境的配置
+    parameters: *id022
+  convenience_functions:
+  - name: get_prompt_manager
+    description: 获取PromptManager实例的便捷函数
+    parameters:
+    - 'prompt_paths: List[str] = None'
+    returns: PromptManager
+  - name: get_default_prompt_manager
+    description: 获取默认PromptManager实例的便捷函数
+    parameters: []
+    returns: PromptManager
+dependencies:
+  external:
+  - yaml
+  - glob
+  internal:
+  - yaml - YAML文件解析
+  - glob - 文件模式匹配
+  - os - 文件系统操作
+  - pathlib - 路径处理
+usage_patterns:
+  basic_usage:
+  - 创建PromptManager实例
+  - 获取指定agent的提示词
+  - 获取特定版本的提示词
+  - 获取环境配置
+  advanced_usage:
+  - 按类别筛选agent
+  - 按标签筛选agent
+  - 获取工具依赖列表
+  - 获取MCP依赖列表
+  - 动态加载新提示词
+integration_points:
+  agent_factory:
+    description: 与Agent Factory的集成
+    usage: Agent Factory使用PromptManager加载提示词模板创建Agent实例
+  mcp_manager:
+    description: 与MCP Manager的集成
+    usage: 通过mcp_dependencies字段声明MCP服务器依赖
+  config_loader:
+    description: 与Config Loader的集成
+    usage: 环境配置与系统配置协同工作

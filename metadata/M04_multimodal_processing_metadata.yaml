@@ -1,0 +1,250 @@
+module_info:
+  module_id: M04
+  name: Multimodal Processing
+  path: nexus_utils/multimodal_processing/
+  description: 多模态内容处理系统，支持图像、文档、Excel、Word等多种格式的统一处理和分析
+  priority: P1
+  status: 活跃
+  created_date: '2026-02-05'
+  last_updated: '2026-02-05'
+code_statistics:
+  total_files: 12
+  total_lines: 4723
+  code_lines: 3594
+  comment_lines: 265
+  blank_lines: 864
+  total_classes: 22
+  total_functions: 2
+architecture:
+  design_pattern: Strategy + Factory + Service Layer
+  components:
+    processors:
+      count: 3
+      description: 各类内容处理器，实现具体的文件格式处理逻辑
+      files:
+      - image_processor.py
+      - text_processor.py
+      - document_processor.py
+    services:
+      count: 2
+      description: 服务层组件，提供S3存储、AI模型调用等服务
+      files:
+      - s3_storage_service.py
+      - multimodal_model_service.py
+    utilities:
+      count: 4
+      description: 工具类组件，提供通用功能支持
+      files:
+      - markdown_generator.py
+      - file_upload_manager.py
+      - content_parsing_engine.py
+      - error_handler.py
+    models:
+      count: 3
+      description: 数据模型定义
+      files:
+      - interfaces.py
+      - exceptions.py
+      - data_models.py
+processors:
+- file: image_processor.py
+  path: nexus_utils/multimodal_processing/image_processor.py
+  classes:
+  - name: ImageProcessor
+    lineno: 27
+    docstring: 'Processor for image files using multimodal AI models.
+
+
+      This processor handles various image formats (PNG, JPG, JPEG, GIF, etc.)
+
+      and uses AWS Bedrock Claude models to analyze and describe image content'
+    methods_count: 12
+    methods:
+    - __init__
+    - can_process
+    - get_supported_types
+    - process
+    - _download_image_from_s3
+    - _convert_image_to_base64
+    - _validate_image_file
+    - _extract_image_metadata
+    - _format_image_analysis
+    - _format_file_size
+    - _create_test_image
+    - _cleanup_temp_file
+  functions: []
+  metrics:
+    total_lines: 491
+    code_lines: 368
+    comment_lines: 32
+    blank_lines: 91
+    avg_complexity: 0.0
+- file: text_processor.py
+  path: nexus_utils/multimodal_processing/text_processor.py
+  classes:
+  - name: TextProcessor
+    lineno: 22
+    docstring: 'Processor for handling plain text files.
+
+
+      This processor handles various text file formats including .txt, .md, .json,
+      .yaml, .yml,
+
+      .csv, .log, and other plain text formats. It reads the content and u'
+    methods_count: 13
+    methods:
+    - __init__
+    - can_process
+    - get_supported_types
+    - process
+    - _read_text_file
+    - _get_local_file_path
+    - _extract_content_metadata
+    - _analyze_json_content
+    - _analyze_yaml_content
+    - _analyze_csv_content
+    - _analyze_markdown_content
+    - _analyze_log_content
+    - _analyze_code_content
+  functions: []
+  metrics:
+    total_lines: 361
+    code_lines: 277
+    comment_lines: 20
+    blank_lines: 64
+    avg_complexity: 0.0
+- file: document_processor.py
+  path: nexus_utils/multimodal_processing/document_processor.py
+  classes:
+  - name: DocumentProcessor
+    lineno: 29
+    docstring: 'Processor for handling structured documents (Excel, Word, CSV).
+
+
+      This processor can handle:
+
+      - Excel files (.xlsx, .xls) using pandas and openpyxl
+
+      - Word documents (.docx) using python-docx
+
+      - CSV files'
+    methods_count: 13
+    methods:
+    - __init__
+    - can_process
+    - get_supported_types
+    - process
+    - _get_local_file_path
+    - _extract_document_content
+    - _extract_excel_content
+    - _extract_word_content
+    - _extract_csv_content
+    - _get_extraction_method
+    - _get_excel_metadata
+    - _get_word_metadata
+    - _get_csv_metadata
+  functions: []
+  metrics:
+    total_lines: 594
+    code_lines: 447
+    comment_lines: 42
+    blank_lines: 105
+    avg_complexity: 0.0
+services:
+- file: s3_storage_service.py
+  path: nexus_utils/multimodal_processing/s3_storage_service.py
+  classes:
+  - name: S3StorageService
+    lineno: 21
+    docstring: 'Service for managing file storage operations with AWS S3.
+
+
+      Provides secure file upload, download, deletion, and URL generation
+
+      with built-in error handling and retry mechanisms.'
+    methods_count: 11
+    methods:
+    - __init__
+    - store_file
+    - get_file_url
+    - download_file
+    - download_file_by_key
+    - delete_file
+    - check_file_exists
+    - get_file_metadata
+    - _generate_s3_key
+    - cleanup_expired_files
+    - _delete_objects_batch
+  functions: []
+  metrics:
+    total_lines: 703
+    code_lines: 576
+    comment_lines: 22
+    blank_lines: 105
+    avg_complexity: 0.0
+- file: multimodal_model_service.py
+  path: nexus_utils/multimodal_processing/multimodal_model_service.py
+  classes:
+  - name: MultimodalModelService
+    lineno: 23
+    docstring: 'Service for integrating with AWS Bedrock Claude models for multimodal
+      content processing.
+
+
+      This service handles image analysis, text processing, and Markdown generation
+
+      using AWS Bedrock''s Claude mode'
+    methods_count: 12
+    methods:
+    - __init__
+    - _init_bedrock_client
+    - convert_image_to_base64
+    - _detect_image_media_type
+    - analyze_image
+    - process_text_content
+    - generate_markdown_output
+    - _build_image_analysis_prompt
+    - _build_text_processing_prompt
+    - _build_markdown_generation_prompt
+    - _call_model_with_retry
+    - health_check
+  functions: []
+  metrics:
+    total_lines: 597
+    code_lines: 426
+    comment_lines: 55
+    blank_lines: 116
+    avg_complexity: 0.0
+core_features:
+- 统一内容解析引擎
+- 图像内容分析和OCR
+- Excel文档处理
+- Word文档处理
+- 文本文件处理
+- S3存储集成
+- AI模型服务集成
+- Markdown结构化输出
+- 文件上传管理
+- 错误处理和日志
+supported_formats:
+  images:
+  - jpg
+  - jpeg
+  - png
+  - gif
+  documents:
+  - xlsx
+  - docx
+  - txt
+  - csv
+  output:
+  - markdown
+integration_points:
+  aws_s3: S3存储服务用于文件存储和管理
+  aws_bedrock: Bedrock AI模型用于内容分析
+  system_tools: 作为系统工具被Agent调用
+configuration:
+  s3_bucket: awesome-nexus-ai-file-storage
+  s3_prefix: multimodal-content/
+  max_file_size: 50MB
+  max_files_per_request: 10

@@ -1,0 +1,165 @@
+module_info:
+  module_id: M10
+  name: Infrastructure
+  path: infrastructure/
+  description: 基础设施即代码(IaC)，包含Terraform配置、Docker容器化和部署脚本
+  priority: P2
+  status: 活跃
+  created_date: '2026-02-05'
+  last_updated: '2026-02-05'
+file_statistics:
+  total_files: 68
+  terraform_files: 26
+  docker_files: 7
+  config_files: 3
+  other_files: 32
+terraform_configuration:
+  description: Terraform基础设施配置
+  files:
+  - name: outputs.tf
+    path: infrastructure/basic/outputs.tf
+    size_bytes: 3101
+  - name: 05-compute-ecs.tf
+    path: infrastructure/basic/05-compute-ecs.tf
+    size_bytes: 15712
+  - name: 01-networking.tf
+    path: infrastructure/basic/01-networking.tf
+    size_bytes: 10194
+  - name: 04-compute-ecr.tf
+    path: infrastructure/basic/04-compute-ecr.tf
+    size_bytes: 1518
+  - name: main.tf
+    path: infrastructure/basic/main.tf
+    size_bytes: 704
+  - name: 09-bastion-iam.tf
+    path: infrastructure/basic/09-bastion-iam.tf
+    size_bytes: 1783
+  - name: versions.tf
+    path: infrastructure/basic/versions.tf
+    size_bytes: 226
+  - name: 07-services.tf
+    path: infrastructure/basic/07-services.tf
+    size_bytes: 3916
+  - name: 05-compute-ec2.tf
+    path: infrastructure/basic/05-compute-ec2.tf
+    size_bytes: 7066
+  - name: terraform.tfvars
+    path: infrastructure/basic/terraform.tfvars
+    size_bytes: 1287
+  - name: 05-compute-ec2-iam.tf
+    path: infrastructure/basic/05-compute-ec2-iam.tf
+    size_bytes: 7071
+  - name: 09-bastion-host.tf
+    path: infrastructure/basic/09-bastion-host.tf
+    size_bytes: 3855
+  - name: 02-storage-efs.tf
+    path: infrastructure/basic/02-storage-efs.tf
+    size_bytes: 1363
+  - name: 02-storage-dynamodb.tf
+    path: infrastructure/basic/02-storage-dynamodb.tf
+    size_bytes: 4581
+  - name: variables.tf
+    path: infrastructure/basic/variables.tf
+    size_bytes: 6932
+  - name: 04-compute-docker-build.tf
+    path: infrastructure/basic/04-compute-docker-build.tf
+    size_bytes: 6269
+  - name: 08-cleanup.tf
+    path: infrastructure/basic/08-cleanup.tf
+    size_bytes: 1457
+  - name: 04-compute-iam.tf
+    path: infrastructure/basic/04-compute-iam.tf
+    size_bytes: 15918
+  - name: 03-messaging-sqs.tf
+    path: infrastructure/basic/03-messaging-sqs.tf
+    size_bytes: 913
+  - name: 06-loadbalancer.tf
+    path: infrastructure/basic/06-loadbalancer.tf
+    size_bytes: 4688
+  - name: outputs.tf
+    path: infrastructure/basic/modules/networking/security-groups/outputs.tf
+    size_bytes: 125
+  - name: main.tf
+    path: infrastructure/basic/modules/networking/security-groups/main.tf
+    size_bytes: 924
+  - name: variables.tf
+    path: infrastructure/basic/modules/networking/security-groups/variables.tf
+    size_bytes: 169
+  - name: outputs.tf
+    path: infrastructure/basic/modules/networking/vpc/outputs.tf
+    size_bytes: 251
+  - name: main.tf
+    path: infrastructure/basic/modules/networking/vpc/main.tf
+    size_bytes: 1320
+  - name: variables.tf
+    path: infrastructure/basic/modules/networking/vpc/variables.tf
+    size_bytes: 269
+docker_configuration:
+  description: Docker容器化配置
+  files:
+  - name: Dockerfile.api
+    path: infrastructure/docker/Dockerfile.api
+    size_bytes: 2706
+  - name: docker-compose.yml
+    path: infrastructure/docker/docker-compose.yml
+    size_bytes: 6129
+  - name: Dockerfile.worker
+    path: infrastructure/docker/Dockerfile.worker
+    size_bytes: 2861
+  - name: Dockerfile
+    path: infrastructure/docker/api/Dockerfile
+    size_bytes: 1860
+  - name: Dockerfile
+    path: infrastructure/docker/worker/Dockerfile
+    size_bytes: 2009
+  - name: Dockerfile
+    path: infrastructure/docker/base/Dockerfile
+    size_bytes: 1601
+  - name: Dockerfile
+    path: infrastructure/basic/scripts/Dockerfile
+    size_bytes: 858
+config_files:
+  description: 配置文件
+  files:
+  - name: package-lock.json
+    path: infrastructure/package-lock.json
+    size_bytes: 93
+  - name: docker-compose.local.yml
+    path: infrastructure/docker/docker-compose.local.yml
+    size_bytes: 3100
+  - name: docker-compose.prod.yml
+    path: infrastructure/docker/docker-compose.prod.yml
+    size_bytes: 5232
+core_features:
+- 基础设施即代码(IaC)
+- Terraform资源管理
+- Docker容器化
+- AWS资源配置
+- 环境隔离
+- 自动化部署
+- 配置管理
+- 版本控制
+aws_resources:
+  description: AWS资源配置
+  potential_resources:
+  - ECS - 容器服务
+  - ECR - 容器镜像仓库
+  - Lambda - 无服务器函数
+  - S3 - 对象存储
+  - DynamoDB - NoSQL数据库
+  - CloudWatch - 监控和日志
+  - IAM - 身份和访问管理
+  - VPC - 虚拟私有云
+deployment_workflow:
+  step1: 本地开发和测试
+  step2: 构建Docker镜像
+  step3: 推送镜像到ECR
+  step4: Terraform初始化和规划
+  step5: Terraform应用配置
+  step6: 部署到AWS环境
+  step7: 验证和监控
+integration_points:
+  agent_factory: 部署Agent运行环境
+  api_system: 部署API服务
+  worker_system: 部署Worker服务
+  monitoring: 集成监控和日志系统
