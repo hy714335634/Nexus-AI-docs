@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus-AI 文档查看器</title>
+    <meta name="description" content="Nexus-AI Markdown 文档渲染查看器">
+    <style>
+/* ---- 主题变量 ---- */
+:root {
+    --color-primary: #2563eb;
+    --color-primary-light: #3b82f6;
+    --color-primary-bg: rgba(37, 99, 235, 0.08);
+    --color-success: #10b981;
+    --color-warning: #f59e0b;
+    --color-danger: #ef4444;
+    --color-info: #8b5cf6;
+}
+[data-theme="light"] {
+    --bg-body: #f0f4f8;
+    --bg-card: #ffffff;
+    --bg-nav: rgba(255,255,255,0.85);
+    --bg-code: #f3f4f6;
+    --bg-code-block: #1e293b;
+    --text-primary: #111827;
+    --text-secondary: #4b5563;
+    --text-muted: #9ca3af;
+    --border-color: #e5e7eb;
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+}
+[data-theme="dark"] {
+    --bg-body: #0f172a;
+    --bg-card: #1e293b;
+    --bg-nav: rgba(15,23,42,0.9);
+    --bg-code: #334155;
+    --bg-code-block: #0f172a;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --border-color: #334155;
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.3);
+}
+
+/* ---- 基础样式 ---- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg-body);
+    color: var(--text-primary);
+    line-height: 1.7;
+    min-height: 100vh;
+}
+
+/* ---- 顶部导航 ---- */
+.top-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: 56px; display: flex; align-items: center; gap: 12px;
+    padding: 0 24px;
+    background: var(--bg-nav); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
+}
+.top-bar .back-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border-color);
+    background: var(--bg-card); color: var(--color-primary);
+    font-size: 0.85rem; cursor: pointer; text-decoration: none;
+    transition: all 0.2s;
+}
+.top-bar .back-btn:hover { background: var(--color-primary-bg); }
+.top-bar .doc-title {
+    font-size: 0.95rem; font-weight: 600; color: var(--text-primary);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.top-bar .doc-path {
+    font-size: 0.8rem; color: var(--text-muted);
+    margin-left: auto; white-space: nowrap;
+}
+.top-bar .theme-btn {
+    background: none; border: none; font-size: 1.2rem; cursor: pointer;
+    padding: 4px 8px; border-radius: 6px;
+}
+.top-bar .theme-btn:hover { background: var(--color-primary-bg); }
+
+/* ---- 内容区域 ---- */
+.content-wrapper {
+    max-width: 900px; margin: 80px auto 60px; padding: 0 24px;
+}
+.md-body {
+    background: var(--bg-card); border-radius: 12px;
+    padding: 40px 48px; box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+}
+
+/* ---- Markdown 渲染样式 ---- */
+.md-body h1 { font-size: 1.8rem; margin: 0 0 16px; padding-bottom: 12px; border-bottom: 2px solid var(--color-primary); color: var(--color-primary); }
+.md-body h2 { font-size: 1.4rem; margin: 32px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border-color); color: var(--text-primary); }
+.md-body h3 { font-size: 1.15rem; margin: 24px 0 8px; color: var(--text-primary); }
+.md-body h4 { font-size: 1rem; margin: 20px 0 6px; color: var(--text-secondary); }
+.md-body p { margin: 10px 0; color: var(--text-primary); }
+.md-body ul, .md-body ol { margin: 8px 0; padding-left: 24px; }
+.md-body li { margin: 4px 0; }
+.md-body a { color: var(--color-primary); text-decoration: none; }
+.md-body a:hover { text-decoration: underline; }
+.md-body strong { color: var(--text-primary); }
+.md-body blockquote {
+    margin: 12px 0; padding: 12px 16px; border-left: 4px solid var(--color-primary);
+    background: var(--color-primary-bg); border-radius: 0 8px 8px 0;
+    color: var(--text-secondary);
+}
+.md-body code {
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em; padding: 2px 6px; border-radius: 4px;
+    background: var(--bg-code); color: var(--color-danger);
+}
+.md-body pre {
+    margin: 14px 0; border-radius: 10px; overflow-x: auto;
+    background: var(--bg-code-block); border: 1px solid var(--border-color);
+}
+.md-body pre code {
+    display: block; padding: 16px 20px; background: none;
+    color: #e2e8f0; font-size: 0.85rem; line-height: 1.6;
+}
+.md-body table {
+    width: 100%; border-collapse: collapse; margin: 14px 0;
+    font-size: 0.9rem;
+}
+.md-body th, .md-body td {
+    padding: 10px 14px; border: 1px solid var(--border-color); text-align: left;
+}
+.md-body th { background: var(--color-primary-bg); font-weight: 600; }
+.md-body tr:nth-child(even) { background: var(--bg-code); }
+.md-body hr { margin: 24px 0; border: none; border-top: 1px solid var(--border-color); }
+.md-body img { max-width: 100%; border-radius: 8px; margin: 12px 0; }
+
+/* ---- 目录侧边栏 ---- */
+.toc-sidebar {
+    position: fixed; top: 72px; right: 16px; width: 220px;
+    max-height: calc(100vh - 100px); overflow-y: auto;
+    background: var(--bg-card); border-radius: 10px;
+    border: 1px solid var(--border-color); padding: 16px;
+    font-size: 0.8rem; box-shadow: var(--shadow-md);
+}
+.toc-sidebar .toc-title {
+    font-weight: 700; font-size: 0.85rem; margin-bottom: 10px;
+    color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;
+}
+.toc-sidebar a {
+    display: block; padding: 3px 0; color: var(--text-secondary);
+    text-decoration: none; line-height: 1.5;
+    border-left: 2px solid transparent; padding-left: 8px;
+    transition: all 0.15s;
+}
+.toc-sidebar a:hover { color: var(--color-primary); }
+.toc-sidebar a.active { color: var(--color-primary); border-left-color: var(--color-primary); font-weight: 600; }
+.toc-sidebar a.toc-h3 { padding-left: 20px; font-size: 0.78rem; }
+.toc-sidebar a.toc-h4 { padding-left: 32px; font-size: 0.75rem; color: var(--text-muted); }
+
+/* ---- 加载状态 ---- */
+.loading { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+.loading .spinner {
+    width: 36px; height: 36px; border: 3px solid var(--border-color);
+    border-top-color: var(--color-primary); border-radius: 50%;
+    animation: spin 0.8s linear infinite; margin: 0 auto 16px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.error-msg {
+    text-align: center; padding: 60px 20px; color: var(--color-danger);
+}
+.error-msg .error-icon { font-size: 3rem; margin-bottom: 12px; }
+
+/* ---- Mermaid 图表 ---- */
+.mermaid { margin: 16px 0; text-align: center; }
+
+/* ---- 响应式 ---- */
+@media (max-width: 1200px) { .toc-sidebar { display: none; } }
+@media (max-width: 768px) {
+    .md-body { padding: 24px 20px; }
+    .content-wrapper { padding: 0 12px; }
+    .top-bar .doc-path { display: none; }
+}
+
+/* ---- 打印 ---- */
+@media print {
+    .top-bar, .toc-sidebar { display: none; }
+    .content-wrapper { margin-top: 0; }
+    .md-body { box-shadow: none; border: none; }
+}
+    </style>
+</head>
+<body>
+
+<!-- 顶部导航 -->
+<div class="top-bar">
+    <a class="back-btn" href="architect-report.html">← 返回报告</a>
+    <span class="doc-title" id="docTitle">加载中...</span>
+    <span class="doc-path" id="docPath"></span>
+    <button class="theme-btn" id="themeToggle" title="切换主题">🌙</button>
+</div>
+
+<!-- 目录侧边栏 -->
+<div class="toc-sidebar" id="tocSidebar">
+    <div class="toc-title">目录</div>
+    <div id="tocContent"></div>
+</div>
+
+<!-- 主内容 -->
+<div class="content-wrapper">
+    <div class="md-body" id="mdContent">
+        <div class="loading">
+            <div class="spinner"></div>
+            <div>正在加载文档...</div>
+        </div>
+    </div>
+</div>
+
+<script>
+/* ---- 主题切换 ---- */
+(function() {
+    var saved = localStorage.getItem('nexus-report-theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+    updateThemeIcon();
+})();
+
+function updateThemeIcon() {
+    var btn = document.getElementById('themeToggle');
+    if (!btn) return;
+    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    btn.textContent = isDark ? '☀️' : '🌙';
+}
+
+document.getElementById('themeToggle').addEventListener('click', function() {
+    var html = document.documentElement;
+    var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('nexus-report-theme', next);
+    updateThemeIcon();
+});
+
+/* ---- 获取 URL 参数中的文件路径 ---- */
+function getFilePath() {
+    var params = new URLSearchParams(window.location.search);
+    return params.get('file') || '';
+}
+
+/* ---- 简易 Markdown 解析器 ---- */
+function parseMd(md) {
+    var lines = md.split('\n');
+    var html = '';
+    var inCodeBlock = false;
+    var codeLang = '';
+    var codeLines = [];
+    var inTable = false;
+    var tableRows = [];
+    var inList = false;
+    var listType = '';
+    var listItems = [];
+
+    function flushList() {
+        if (!inList) return;
+        var tag = listType === 'ol' ? 'ol' : 'ul';
+        html += '<' + tag + '>' + listItems.join('') + '</' + tag + '>\n';
+        inList = false;
+        listItems = [];
+    }
+
+    function flushTable() {
+        if (!inTable) return;
+        var result = '<table>\n<thead><tr>';
+        var headers = tableRows[0];
+        for (var h = 0; h < headers.length; h++) {
+            result += '<th>' + inlineFormat(headers[h].trim()) + '</th>';
+        }
+        result += '</tr></thead>\n<tbody>\n';
+        for (var r = 2; r < tableRows.length; r++) {
+            result += '<tr>';
+            for (var c = 0; c < tableRows[r].length; c++) {
+                result += '<td>' + inlineFormat(tableRows[r][c].trim()) + '</td>';
+            }
+            result += '</tr>\n';
+        }
+        result += '</tbody></table>\n';
+        html += result;
+        inTable = false;
+        tableRows = [];
+    }
+
+    function inlineFormat(text) {
+        /* 图片 */
+        text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
+        /* 链接 */
+        text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+        /* 粗体+斜体 */
+        text = text.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+        /* 粗体 */
+        text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        /* 斜体 */
+        text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
+        /* 行内代码 */
+        text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+        return text;
+    }
+
+    for (var i = 0; i < lines.length; i++) {
+        var line = lines[i];
+
+        /* 代码块 */
+        if (line.match(/^```/)) {
+            if (inCodeBlock) {
+                if (codeLang === 'mermaid') {
+                    /* Mermaid 图表输出为 div，后续由 mermaid.js 渲染 */
+                    html += '<div class="mermaid">\n' + codeLines.join('\n') + '\n</div>\n';
+                } else {
+                    html += '<pre><code class="language-' + codeLang + '">' +
+                        codeLines.join('\n').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') +
+                        '</code></pre>\n';
+                }
+                inCodeBlock = false;
+                codeLines = [];
+                codeLang = '';
+            } else {
+                flushList();
+                flushTable();
+                inCodeBlock = true;
+                codeLang = line.replace(/^```/, '').trim() || 'text';
+            }
+            continue;
+        }
+        if (inCodeBlock) { codeLines.push(line); continue; }
+
+        /* 空行 */
+        if (line.trim() === '') {
+            flushList();
+            flushTable();
+            continue;
+        }
+
+        /* 表格 */
+        if (line.trim().match(/^\|/) && line.trim().match(/\|$/)) {
+            flushList();
+            var cells = line.trim().replace(/^\|/, '').replace(/\|$/, '').split('|');
+            if (!inTable) inTable = true;
+            tableRows.push(cells);
+            continue;
+        } else if (inTable) {
+            flushTable();
+        }
+
+        /* 标题 */
+        var headingMatch = line.match(/^(#{1,6})\s+(.+)/);
+        if (headingMatch) {
+            flushList();
+            var level = headingMatch[1].length;
+            var text = inlineFormat(headingMatch[2]);
+            var id = headingMatch[2].replace(/[^a-zA-Z0-9\u4e00-\u9fff]+/g, '-').toLowerCase();
+            html += '<h' + level + ' id="' + id + '">' + text + '</h' + level + '>\n';
+            continue;
+        }
+
+        /* 水平线 */
+        if (line.match(/^(-{3,}|\*{3,}|_{3,})$/)) {
+            flushList();
+            html += '<hr>\n';
+            continue;
+        }
+
+        /* 引用 */
+        if (line.match(/^>\s?/)) {
+            flushList();
+            html += '<blockquote>' + inlineFormat(line.replace(/^>\s?/, '')) + '</blockquote>\n';
+            continue;
+        }
+
+        /* 无序列表 */
+        var ulMatch = line.match(/^(\s*)[-*+]\s+(.+)/);
+        if (ulMatch) {
+            flushTable();
+            if (!inList) { inList = true; listType = 'ul'; }
+            listItems.push('<li>' + inlineFormat(ulMatch[2]) + '</li>');
+            continue;
+        }
+
+        /* 有序列表 */
+        var olMatch = line.match(/^(\s*)\d+\.\s+(.+)/);
+        if (olMatch) {
+            flushTable();
+            if (!inList) { inList = true; listType = 'ol'; }
+            listItems.push('<li>' + inlineFormat(olMatch[2]) + '</li>');
+            continue;
+        }
+
+        /* 普通段落 */
+        flushList();
+        html += '<p>' + inlineFormat(line) + '</p>\n';
+    }
+
+    flushList();
+    flushTable();
+    if (inCodeBlock) {
+        html += '<pre><code>' + codeLines.join('\n').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</code></pre>\n';
+    }
+
+    return html;
+}
+
+/* ---- 生成目录 ---- */
+function buildToc(container) {
+    var headings = container.querySelectorAll('h2, h3, h4');
+    var tocHtml = '';
+    headings.forEach(function(h) {
+        var level = h.tagName.toLowerCase();
+        var cls = 'toc-' + level;
+        var id = h.id || h.textContent.replace(/[^a-zA-Z0-9\u4e00-\u9fff]+/g, '-').toLowerCase();
+        h.id = id;
+        tocHtml += '<a href="#' + id + '" class="' + cls + '">' + h.textContent + '</a>';
+    });
+    document.getElementById('tocContent').innerHTML = tocHtml;
+
+    /* 目录高亮 */
+    var tocLinks = document.querySelectorAll('#tocContent a');
+    window.addEventListener('scroll', function() {
+        var scrollPos = window.scrollY + 100;
+        var activeLink = null;
+        headings.forEach(function(h, idx) {
+            if (h.offsetTop <= scrollPos) activeLink = tocLinks[idx];
+        });
+        tocLinks.forEach(function(l) { l.classList.remove('active'); });
+        if (activeLink) activeLink.classList.add('active');
+    }, { passive: true });
+}
+
+/* ---- 从文件名提取标题 ---- */
+function extractTitle(filePath) {
+    var name = filePath.split('/').pop().replace(/\.md$/i, '');
+    /* 移除数字前缀如 01- */
+    name = name.replace(/^\d+-/, '');
+    /* 连字符转空格并首字母大写 */
+    return name.split('-').map(function(w) {
+        return w.charAt(0).toUpperCase() + w.slice(1);
+    }).join(' ');
+}
+
+/* ---- 主逻辑 ---- */
+(function main() {
+    var filePath = getFilePath();
+    var titleEl = document.getElementById('docTitle');
+    var pathEl = document.getElementById('docPath');
+    var contentEl = document.getElementById('mdContent');
+
+    if (!filePath) {
+        titleEl.textContent = '错误';
+        contentEl.innerHTML = '<div class="error-msg"><div class="error-icon">⚠️</div>' +
+            '<h3>未指定文档文件</h3><p>请通过 <code>?file=path/to/file.md</code> 参数指定要查看的文档。</p>' +
+            '<p style="margin-top:16px;"><a href="architect-report.html" style="color:var(--color-primary);">← 返回架构报告</a></p></div>';
+        return;
+    }
+
+    titleEl.textContent = extractTitle(filePath);
+    pathEl.textContent = filePath;
+    document.title = extractTitle(filePath) + ' - Nexus-AI 文档';
+
+    fetch(filePath)
+        .then(function(res) {
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            return res.text();
+        })
+        .then(function(md) {
+            var html = parseMd(md);
+            contentEl.innerHTML = html;
+
+            /* 从 Markdown 第一个 h1 提取标题 */
+            var h1 = contentEl.querySelector('h1');
+            if (h1) titleEl.textContent = h1.textContent;
+
+            /* 生成目录 */
+            buildToc(contentEl);
+
+            /* 渲染 Mermaid 图表（如果有） */
+            var mermaidDivs = contentEl.querySelectorAll('.mermaid');
+            if (mermaidDivs.length > 0) {
+                var s = document.createElement('script');
+                s.src = 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js';
+                s.onload = function() {
+                    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: isDark ? 'dark' : 'default',
+                        securityLevel: 'loose',
+                        flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis' },
+                        sequence: { useMaxWidth: true }
+                    });
+                    try {
+                        mermaid.run({ nodes: mermaidDivs });
+                    } catch (e) {
+                        try { mermaid.init(undefined, mermaidDivs); } catch (e2) { /* 忽略 */ }
+                    }
+                };
+                document.head.appendChild(s);
+            }
+        })
+        .catch(function(err) {
+            contentEl.innerHTML = '<div class="error-msg"><div class="error-icon">❌</div>' +
+                '<h3>无法加载文档</h3><p>文件路径: <code>' + filePath + '</code></p>' +
+                '<p>错误: ' + err.message + '</p>' +
+                '<p style="margin-top:16px;"><a href="architect-report.html" style="color:var(--color-primary);">← 返回架构报告</a></p></div>';
+        });
+})();
+</script>
+
+</body>
+</html>

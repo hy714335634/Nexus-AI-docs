@@ -1,0 +1,16 @@
+# 架构图目录
+
+本目录用于存放Mermaid格式的架构图文件。
+
+## 规划的架构图
+
+- system-overview.mmd - 系统总览图
+- module-dependencies.mmd - 模块依赖图
+- data-flow.mmd - 数据流图
+- agent-factory-flow.mmd - Agent工厂流程图
+- workflow-orchestration.mmd - 工作流编排图
+- api-architecture.mmd - API架构图
+- multimodal-processing.mmd - 多模态处理流程图
+- mcp-integration.mmd - MCP集成图
+- deployment-architecture.mmd - 部署架构图
+- agent-creation-flow.mmd - Agent创建流程图

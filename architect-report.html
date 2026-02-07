@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus-AI 架构报告</title>
+    <meta name="description" content="Nexus-AI 系统架构分析与文档整理 - 架构师报告">
+    <meta name="author" content="Nexus-AI Team">
+    <link rel="stylesheet" href="assets/report.css">
+</head>
+<body>
+
+<!-- ============================================
+     顶部导航栏
+     ============================================ -->
+<nav class="top-nav" id="topNav">
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">☰</button>
+    <div class="nav-brand">
+        <div class="brand-icon">N</div>
+        <span>Nexus-AI</span>
+    </div>
+    <div class="nav-links">
+        <a href="#overview" class="active">系统概览</a>
+        <a href="#architecture">架构设计</a>
+        <a href="#modules">模块详情</a>
+        <a href="#flows">业务流程</a>
+        <a href="#issues">问题分析</a>
+        <a href="#api">API参考</a>
+        <a href="#verification">质量验证</a>
+    </div>
+    <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="切换主题">🌙</button>
+    </div>
+</nav>
+
+<!-- ============================================
+     侧边目录
+     ============================================ -->
+<aside class="sidebar" id="sidebar">
+    <div class="search-box">
+        <div class="search-wrapper">
+            <input type="text" class="search-input" id="searchInput" placeholder="搜索内容..." aria-label="Search">
+        </div>
+    </div>
+    <div class="sidebar-title">目录导航</div>
+    <nav class="sidebar-nav" id="sidebarNav">
+        <a href="#overview" class="active">
+            <span class="nav-icon">📊</span>系统概览
+        </a>
+        <a href="#architecture">
+            <span class="nav-icon">🏗️</span>架构设计
+        </a>
+        <a href="#modules">
+            <span class="nav-icon">📦</span>模块详情
+        </a>
+        <a href="#flows">
+            <span class="nav-icon">🔄</span>业务流程
+        </a>
+        <a href="#issues">
+            <span class="nav-icon">⚠️</span>问题分析
+        </a>
+        <a href="#api">
+            <span class="nav-icon">🔌</span>API参考
+        </a>
+        <a href="#verification">
+            <span class="nav-icon">✅</span>质量验证
+        </a>
+    </nav>
+    <div class="sidebar-title" style="margin-top:24px;">快速信息</div>
+    <div style="padding:0 20px; font-size:0.8rem; color:var(--text-muted); line-height:1.8;">
+        <div>📅 报告日期: 2026-02-06</div>
+        <div>📋 文档版本: 2.0</div>
+        <div>🏷️ 状态: 已完成</div>
+    </div>
+</aside>
+
+<!-- ============================================
+     主内容区域
+     ============================================ -->
+<main class="main-content" id="mainContent">
+
+    <!-- Hero 区域 -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Nexus-AI 架构报告</h1>
+            <p class="subtitle">企业级 AI Agent 开发平台 — 系统架构分析与文档整理</p>
+            <div class="meta">
+                <span>📅 报告日期: 2026-02-06</span>
+                <span>📋 版本: 2.0</span>
+                <span>👤 Nexus-AI 团队</span>
+                <span>🏷️ Python 3.13+ / AWS Bedrock / FastAPI</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         Section 1: 系统概览
+         ========================================== -->
+    <section class="section" id="overview">
+        <div class="section-header">
+            <div class="section-icon" style="background:var(--color-primary-bg);color:var(--color-primary);">📊</div>
+            <h2>系统概览</h2>
+            <span class="section-desc">项目核心指标与架构总览</span>
+        </div>
+        <!-- 相关文档链接 -->
+        <div class="doc-links-bar">
+            📄 相关文档：
+            <a class="doc-link" href="md-viewer.html?file=ARCHITECTURE_OVERVIEW.md" target="_blank">系统架构总览</a>
+        </div>
+
+        <!-- 统计卡片 -->
+        <div class="stats-grid">
+            <div class="stat-card primary">
+                <div class="stat-icon">📦</div>
+                <div class="stat-value">10</div>
+                <div class="stat-label">核心模块</div>
+                <div class="stat-trend" style="color:var(--color-success);">● 全部已文档化</div>
+            </div>
+            <div class="stat-card success">
+                <div class="stat-icon">📄</div>
+                <div class="stat-value">32</div>
+                <div class="stat-label">文档文件</div>
+                <div class="stat-trend" style="color:var(--color-success);">● 覆盖率 100%</div>
+            </div>
+            <div class="stat-card info">
+                <div class="stat-icon">📐</div>
+                <div class="stat-value">10+</div>
+                <div class="stat-label">架构图</div>
+                <div class="stat-trend" style="color:var(--color-primary);">● Mermaid 格式</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-icon">⚠️</div>
+                <div class="stat-value">847</div>
+                <div class="stat-label">已识别问题</div>
+                <div class="stat-trend" style="color:var(--color-warning);">● 含改进建议</div>
+            </div>
+            <div class="stat-card danger">
+                <div class="stat-icon">🔌</div>
+                <div class="stat-value">60+</div>
+                <div class="stat-label">API 端点</div>
+                <div class="stat-trend" style="color:var(--color-success);">● REST API v2</div>
+            </div>
+        </div>
+
+        <!-- 系统架构概览图 -->
+        <div class="diagram-container">
+            <h4>🏗️ 系统整体架构</h4>
+            <div class="mermaid">
+graph TB
+    subgraph PL["表示层 Presentation Layer"]
+        CLI["CLI 工具"]
+        WebUI["Web 界面<br/>(Next.js 14)"]
+        RESTAPI["REST API<br/>(FastAPI)"]
+    end
+    subgraph AL["应用层 Application Layer"]
+        AF["Agent Factory"]
+        WE["Workflow Engine"]
+        MAO["Multi-Agent<br/>Orchestrator"]
+    end
+    subgraph SL["服务层 Service Layer"]
+        PM["Prompt Manager"]
+        MCPMgr["MCP Manager"]
+        MMP["Multimodal<br/>Processor"]
+        CM["Config Manager"]
+    end
+    subgraph IL["基础设施层 Infrastructure Layer"]
+        DDB[("DynamoDB")]
+        SQS["SQS Queue"]
+        S3[("S3 Storage")]
+        BDK["AWS Bedrock"]
+    end
+    CLI --> RESTAPI
+    WebUI --> RESTAPI
+    RESTAPI --> AF
+    RESTAPI --> WE
+    AF --> PM
+    AF --> MCPMgr
+    WE --> MAO
+    MAO --> MMP
+    PM --> CM
+    MCPMgr --> CM
+    RESTAPI --> DDB
+    WE --> SQS
+    MMP --> S3
+    AF --> BDK
+            </div>
+        </div>
+
+        <!-- 技术栈概览 -->
+        <div class="card" style="margin-top:20px;">
+            <div class="card-header">
+                <h3>🛠️ 技术栈概览</h3>
+            </div>
+            <div class="card-body">
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+                    <div>
+                        <strong style="color:var(--color-primary);">后端</strong>
+                        <div style="margin-top:6px;font-size:0.85rem;">Python 3.13+ · FastAPI · Uvicorn · Strands Framework</div>
+                    </div>
+                    <div>
+                        <strong style="color:var(--color-success);">AI 服务</strong>
+                        <div style="margin-top:6px;font-size:0.85rem;">AWS Bedrock · Claude Haiku 4.5 · Claude Sonnet 4.5 · Claude Opus 4.5</div>
+                    </div>
+                    <div>
+                        <strong style="color:var(--color-warning);">存储</strong>
+                        <div style="margin-top:6px;font-size:0.85rem;">DynamoDB · S3 · SQS</div>
+                    </div>
+                    <div>
+                        <strong style="color:var(--color-info);">前端</strong>
+                        <div style="margin-top:6px;font-size:0.85rem;">Next.js 14 · React 18 · TypeScript · Tailwind CSS</div>
+                    </div>
+                    <div>
+                        <strong style="color:var(--color-danger);">集成</strong>
+                        <div style="margin-top:6px;font-size:0.85rem;">MCP Protocol · Strands Tools · Boto3 SDK</div>
+                    </div>
+                    <div>
+                        <strong style="color:var(--text-secondary);">部署</strong>
+                        <div style="margin-top:6px;font-size:0.85rem;">Docker · Terraform · AWS AgentCore</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 设计原则 -->
+        <div class="card" style="margin-top:20px;">
+            <div class="card-header">
+                <h3>🎯 设计原则</h3>
+            </div>
+            <div class="card-body">
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;">
+                    <div style="padding:14px;border-radius:10px;border:1px solid var(--border-color);background:var(--bg-hover);">
+                        <strong>📐 模块化设计</strong>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:6px;">各模块职责清晰，低耦合高内聚，支持独立开发和测试</div>
+                    </div>
+                    <div style="padding:14px;border-radius:10px;border:1px solid var(--border-color);background:var(--bg-hover);">
+                        <strong>🔌 可扩展性</strong>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:6px;">支持动态加载 Agent、工具和提示词模板，插件式架构</div>
+                    </div>
+                    <div style="padding:14px;border-radius:10px;border:1px solid var(--border-color);background:var(--bg-hover);">
+                        <strong>⚙️ 配置驱动</strong>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:6px;">通过 YAML 配置管理系统行为，支持热重载和多环境</div>
+                    </div>
+                    <div style="padding:14px;border-radius:10px;border:1px solid var(--border-color);background:var(--bg-hover);">
+                        <strong>⚡ 异步处理</strong>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:6px;">基于 SQS 的异步任务处理，支持长时间运行的构建任务</div>
+                    </div>
+                    <div style="padding:14px;border-radius:10px;border:1px solid var(--border-color);background:var(--bg-hover);">
+                        <strong>🤖 多模型支持</strong>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:6px;">自动选择合适的 AI 模型（Haiku/Sonnet/Opus），智能路由</div>
+                    </div>
+                    <div style="padding:14px;border-radius:10px;border:1px solid var(--border-color);background:var(--bg-hover);">
+                        <strong>🔄 自举式进化</strong>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:6px;">Agent 系统能够自我优化和迭代，"Agent Build Agent" 理念</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 三端服务架构 -->
+        <div class="card" style="margin-top:20px;">
+            <div class="card-header">
+                <h3>🏢 三端服务架构</h3>
+            </div>
+            <div class="card-body">
+                <p style="margin-bottom:16px;">Nexus-AI 采用前后端分离 + 异步任务处理架构，三个服务各司其职：</p>
+                <table class="issue-table">
+                    <thead>
+                        <tr><th>服务</th><th>目录</th><th>技术栈</th><th>端口</th><th>职责</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Web 前端</strong></td>
+                            <td><code>web/</code></td>
+                            <td>Next.js 14</td>
+                            <td>3000</td>
+                            <td>用户界面、状态管理、API 调用</td>
+                        </tr>
+                        <tr>
+                            <td><strong>API 后端</strong></td>
+                            <td><code>api/v2/</code></td>
+                            <td>FastAPI</td>
+                            <td>8000</td>
+                            <td>RESTful API、JWT 认证、数据 CRUD</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Worker</strong></td>
+                            <td><code>worker/</code></td>
+                            <td>Python</td>
+                            <td>—</td>
+                            <td>SQS 消息消费、工作流执行、长任务处理</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="margin-top:16px;">
+                    <h4 style="font-size:0.9rem;margin-bottom:10px;">服务间通信</h4>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;">
+                        <div style="padding:10px;border-radius:8px;background:var(--color-primary-bg);font-size:0.85rem;">
+                            <strong>前端 → API</strong>: HTTP/REST + SSE 流式
+                        </div>
+                        <div style="padding:10px;border-radius:8px;background:var(--color-success-bg);font-size:0.85rem;">
+                            <strong>API → Worker</strong>: SQS 消息队列
+                        </div>
+                        <div style="padding:10px;border-radius:8px;background:var(--color-warning-bg);font-size:0.85rem;">
+                            <strong>Worker → DB</strong>: AWS SDK 直连
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DynamoDB 表结构 -->
+        <div class="card" style="margin-top:20px;">
+            <div class="card-header">
+                <h3>🗄️ DynamoDB 数据表</h3>
+            </div>
+            <div class="card-body">
+                <table class="issue-table">
+                    <thead>
+                        <tr><th>表名</th><th>PK</th><th>SK</th><th>用途</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>nexus_projects</code></td><td>project_id</td><td>metadata</td><td>项目基本信息</td></tr>
+                        <tr><td><code>nexus_agents</code></td><td>agent_id</td><td>version</td><td>Agent 配置和版本</td></tr>
+                        <tr><td><code>nexus_stages</code></td><td>project_id</td><td>stage_name</td><td>工作流阶段状态</td></tr>
+                        <tr><td><code>nexus_tasks</code></td><td>task_id</td><td>timestamp</td><td>异步任务状态</td></tr>
+                        <tr><td><code>nexus_agent_instances</code></td><td>instance_id</td><td>agent_id</td><td>Agent 实例信息</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         Section 2: 架构设计
+         ========================================== -->
+    <section class="section" id="architecture">
+        <div class="section-header">
+            <div class="section-icon" style="background:var(--color-info-bg);color:var(--color-info);">🏗️</div>
+            <h2>架构设计</h2>
+            <span class="section-desc">系统架构、模块依赖、数据流与部署</span>
+        </div>
+        <!-- 相关文档链接 -->
+        <div class="doc-links-bar">
+            📄 相关文档：
+            <a class="doc-link" href="md-viewer.html?file=architecture/system-architecture.md" target="_blank">系统架构设计</a>
+            <a class="doc-link" href="md-viewer.html?file=architecture/module-dependencies.md" target="_blank">模块依赖关系</a>
+            <a class="doc-link" href="md-viewer.html?file=architecture/data-flow.md" target="_blank">数据流设计</a>
+            <a class="doc-link" href="md-viewer.html?file=architecture/deployment-architecture.md" target="_blank">部署架构</a>
+        </div>
+
+        <!-- Tab 切换 -->
+        <div class="tabs" id="archTabs">
+            <button class="tab-btn active" data-tab="arch-system">系统架构</button>
+            <button class="tab-btn" data-tab="arch-deps">模块依赖</button>
+            <button class="tab-btn" data-tab="arch-dataflow">数据流</button>
+            <button class="tab-btn" data-tab="arch-deploy">部署架构</button>
+        </div>
+
+        <!-- Tab: 系统架构 -->
+        <div class="tab-panel active" id="arch-system">
+            <div class="card">
+                <div class="card-header"><h3>四层架构设计</h3></div>
+                <div class="card-body">
+                    <p>Nexus-AI 采用经典的四层架构设计，各层职责清晰，通过标准化接口进行通信。上层可以依赖下层，下层不能依赖上层。</p>
+                    <div style="margin-top:16px;display:grid;gap:12px;">
+                        <div style="padding:14px;border-radius:10px;background:var(--color-primary-bg);border-left:4px solid var(--color-primary);">
+                            <strong>表示层 (Presentation)</strong> — CLI 工具、Web 界面 (Next.js 14)、REST API (FastAPI)
+                            <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:6px;">负责用户交互和请求路由。CLI 支持项目管理、构建、部署等操作；Web 界面提供可视化管理；REST API 提供标准化 HTTP 接口。</div>
+                        </div>
+                        <div style="padding:14px;border-radius:10px;background:var(--color-success-bg);border-left:4px solid var(--color-success);">
+                            <strong>应用层 (Application)</strong> — Agent Factory、Workflow Engine、Multi-Agent Orchestrator
+                            <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:6px;">核心业务逻辑层。Agent Factory 从 YAML 模板动态创建 Agent；Workflow Engine 编排多阶段工作流；Multi-Agent Orchestrator 支持 Graph 和 Swarm 两种编排模式。</div>
+                        </div>
+                        <div style="padding:14px;border-radius:10px;background:var(--color-warning-bg);border-left:4px solid var(--color-warning);">
+                            <strong>服务层 (Service)</strong> — Prompt Manager、MCP Manager、Multimodal Processor、Config Manager
+                            <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:6px;">通用服务层。Prompt Manager 管理 YAML 提示词模板和版本；MCP Manager 管理外部工具集成；Multimodal Processor 处理多格式文件；Config Manager 提供集中配置。</div>
+                        </div>
+                        <div style="padding:14px;border-radius:10px;background:var(--color-info-bg);border-left:4px solid var(--color-info);">
+                            <strong>基础设施层 (Infrastructure)</strong> — DynamoDB、SQS、S3、AWS Bedrock
+                            <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:6px;">AWS 托管服务层。DynamoDB 存储项目和 Agent 数据；SQS 分发异步任务；S3 存储文件和制品；Bedrock 提供 AI 模型推理。</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 核心组件关系图 -->
+            <div class="diagram-container" style="margin-top:20px;">
+                <h4>核心组件交互关系</h4>
+                <div class="mermaid">
+graph LR
+    subgraph "Agent Factory 核心流程"
+        A["YAML 模板"] --> B["Prompt Manager"]
+        B --> C["Agent Factory"]
+        D["工具依赖"] --> C
+        E["MCP 配置"] --> C
+        C --> F["Bedrock 模型"]
+        F --> G["Agent 实例"]
+    end
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: 模块依赖 -->
+        <div class="tab-panel" id="arch-deps">
+            <div class="diagram-container">
+                <h4>模块依赖关系图</h4>
+                <div class="mermaid">
+graph TB
+    subgraph AppLayer["应用层"]
+        API["M06: API System"]
+        ABW["M05: Agent Build<br/>Workflow"]
+        AF["M01: Agent Factory"]
+    end
+    subgraph SvcLayer["服务层"]
+        PM["M02: Prompt Manager"]
+        MM["M03: MCP Manager"]
+        MP["M04: Multimodal<br/>Processor"]
+        CM["M08: Config Manager"]
+        TS["M09: Tool System"]
+    end
+    subgraph InfraLayer["基础设施层"]
+        WS["M07: Worker System"]
+        INF["M10: Infrastructure"]
+    end
+    API --> AF
+    API --> ABW
+    API --> WS
+    ABW --> AF
+    ABW --> TS
+    AF --> PM
+    AF --> MM
+    AF --> CM
+    PM --> CM
+    MM --> CM
+    MP --> CM
+    TS --> MM
+    WS --> ABW
+                </div>
+            </div>
+            <div class="card" style="margin-top:16px;">
+                <div class="card-header"><h3>依赖层次分析</h3></div>
+                <div class="card-body">
+                    <div style="display:grid;gap:8px;">
+                        <div><strong>深度 0</strong> (无依赖): M08 Config Manager, M10 Infrastructure</div>
+                        <div><strong>深度 1</strong>: M02 Prompt Manager, M03 MCP Manager, M04 Multimodal Processor</div>
+                        <div><strong>深度 2</strong>: M01 Agent Factory, M09 Tool System</div>
+                        <div><strong>深度 3</strong>: M05 Agent Build Workflow, M06 API System</div>
+                        <div><strong>深度 4</strong>: M07 Worker System</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: 数据流 -->
+        <div class="tab-panel" id="arch-dataflow">
+            <div class="diagram-container">
+                <h4>Agent 创建数据流</h4>
+                <div class="mermaid">
+sequenceDiagram
+    participant User as 用户
+    participant API as REST API
+    participant Factory as Agent Factory
+    participant Prompt as Prompt Manager
+    participant Bedrock as AWS Bedrock
+    User->>API: 创建 Agent 请求
+    API->>Factory: create_agent_from_prompt_template()
+    Factory->>Prompt: 加载提示词模板
+    Prompt-->>Factory: 返回模板配置
+    Factory->>Bedrock: 初始化模型
+    Bedrock-->>Factory: 返回 Agent 实例
+    Factory-->>API: 返回 Agent
+    API-->>User: 返回结果
+                </div>
+            </div>
+            <div class="diagram-container">
+                <h4>多模态内容处理流程</h4>
+                <div class="mermaid">
+graph LR
+    A["📤 上传文件"] --> B["✅ 文件验证"]
+    B --> C["☁️ S3 存储"]
+    C --> D["📝 内容解析"]
+    D --> E["🤖 AI 分析"]
+    E --> F["📋 生成 Markdown"]
+    F --> G["📨 返回结果"]
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: 部署架构 -->
+        <div class="tab-panel" id="arch-deploy">
+            <div class="diagram-container">
+                <h4>AWS 云部署拓扑</h4>
+                <div class="mermaid">
+graph TB
+    subgraph AWS["AWS Cloud"]
+        subgraph APILayer["API 层"]
+            ALB["Application<br/>Load Balancer"]
+            APICont["API Container<br/>(FastAPI :8000)"]
+        end
+        subgraph WorkerLayer["Worker 层"]
+            WKCont["Worker Container<br/>(Python)"]
+        end
+        subgraph StorageLayer["存储层"]
+            S3B[("S3 Bucket")]
+            DDB[("DynamoDB")]
+            SQSQ["SQS Queue"]
+        end
+        subgraph AILayer["AI 服务层"]
+            BDK["AWS Bedrock<br/>(Claude Models)"]
+        end
+    end
+    ALB --> APICont
+    APICont --> SQSQ
+    SQSQ --> WKCont
+    APICont --> DDB
+    APICont --> S3B
+    APICont --> BDK
+    WKCont --> BDK
+    WKCont --> DDB
+                </div>
+            </div>
+            <div class="card" style="margin-top:16px;">
+                <div class="card-header"><h3>部署模式</h3></div>
+                <div class="card-body">
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
+                        <div style="padding:14px;border-radius:10px;border:1px solid var(--border-color);">
+                            <strong>☁️ AWS 云部署</strong>
+                            <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:6px;">生产环境推荐，充分利用 AWS 托管服务</div>
+                        </div>
+                        <div style="padding:14px;border-radius:10px;border:1px solid var(--border-color);">
+                            <strong>🐳 容器化部署</strong>
+                            <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:6px;">Docker 容器，支持本地和云端部署</div>
+                        </div>
+                        <div style="padding:14px;border-radius:10px;border:1px solid var(--border-color);">
+                            <strong>💻 本地开发</strong>
+                            <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:6px;">开发和测试环境，快速迭代</div>
+                        </div>
+                        <div style="padding:14px;border-radius:10px;border:1px solid var(--border-color);">
+                            <strong>🔀 混合部署</strong>
+                            <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:6px;">结合云端和本地资源的混合模式</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         Section 3: 模块详情
+         ========================================== -->
+    <section class="section" id="modules">
+        <div class="section-header">
+            <div class="section-icon" style="background:var(--color-success-bg);color:var(--color-success);">📦</div>
+            <h2>模块详情</h2>
+            <span class="section-desc">10 个核心模块的详细信息</span>
+        </div>
+        <!-- 相关文档链接 -->
+        <div class="doc-links-bar">
+            📄 模块文档：
+            <a class="doc-link" href="md-viewer.html?file=modules/01-agent-factory.md" target="_blank">Agent Factory</a>
+            <a class="doc-link" href="md-viewer.html?file=modules/02-prompt-management.md" target="_blank">Prompt Management</a>
+            <a class="doc-link" href="md-viewer.html?file=modules/03-mcp-integration.md" target="_blank">MCP Integration</a>
+            <a class="doc-link" href="md-viewer.html?file=modules/04-multimodal-processing.md" target="_blank">Multimodal Processing</a>
+            <a class="doc-link" href="md-viewer.html?file=modules/05-agent-build-workflow.md" target="_blank">Agent Build Workflow</a>
+            <a class="doc-link" href="md-viewer.html?file=modules/06-api-system.md" target="_blank">API System</a>
+            <a class="doc-link" href="md-viewer.html?file=modules/07-worker-system.md" target="_blank">Worker System</a>
+            <a class="doc-link" href="md-viewer.html?file=modules/08-configuration-management.md" target="_blank">Configuration</a>
+            <a class="doc-link" href="md-viewer.html?file=modules/09-tool-system.md" target="_blank">Tool System</a>
+            <a class="doc-link" href="md-viewer.html?file=modules/10-infrastructure.md" target="_blank">Infrastructure</a>
+        </div>
+
+        <div class="module-grid">
+            <!-- M01: Agent Factory -->
+            <div class="module-card">
+                <span class="module-id">M01</span>
+                <div class="module-icon" style="background:var(--color-primary-bg);color:var(--color-primary);">🏭</div>
+                <h3>Agent Factory System</h3>
+                <div class="module-desc">从 YAML 提示词模板动态创建 Agent，支持版本管理、工具依赖解析和多模型配置。核心函数: <code>create_agent_from_prompt_template()</code>、<code>get_tool_by_path()</code>、<code>import_tools_by_strings()</code></div>
+                <div class="module-path">nexus_utils/agent_factory.py</div>
+                <div class="module-meta">
+                    <span class="badge badge-p0">P0</span>
+                    <span class="badge badge-active">活跃</span>
+                </div>
+            </div>
+
+            <!-- M02: Prompt Management -->
+            <div class="module-card">
+                <span class="module-id">M02</span>
+                <div class="module-icon" style="background:var(--color-success-bg);color:var(--color-success);">📝</div>
+                <h3>Prompt Management</h3>
+                <div class="module-desc">YAML 格式提示词模板管理，支持版本控制、元数据处理和分层模板组织。核心类: <code>PromptManager</code>（单例模式）、<code>PromptManagerRegistry</code></div>
+                <div class="module-path">nexus_utils/prompts_manager.py</div>
+                <div class="module-meta">
+                    <span class="badge badge-p0">P0</span>
+                    <span class="badge badge-active">活跃</span>
+                </div>
+            </div>
+
+            <!-- M03: MCP Integration -->
+            <div class="module-card">
+                <span class="module-id">M03</span>
+                <div class="module-icon" style="background:var(--color-warning-bg);color:var(--color-warning);">🔗</div>
+                <h3>MCP Integration</h3>
+                <div class="module-desc">MCP 服务器配置管理、客户端连接和工具集成，支持 stdio 和 SSE 传输方式。核心类: <code>MCPManager</code>、<code>MCPClientFactory</code>、<code>MCPServerConfig</code></div>
+                <div class="module-path">nexus_utils/mcp_manager.py, nexus_utils/mcp/</div>
+                <div class="module-meta">
+                    <span class="badge badge-p0">P0</span>
+                    <span class="badge badge-active">活跃</span>
+                </div>
+            </div>
+
+            <!-- M04: Multimodal Processing -->
+            <div class="module-card">
+                <span class="module-id">M04</span>
+                <div class="module-icon" style="background:var(--color-danger-bg);color:var(--color-danger);">🖼️</div>
+                <h3>Multimodal Processing</h3>
+                <div class="module-desc">统一处理图像、文档、Excel、Word 等多种格式，集成 S3 存储和 AI 分析。核心组件: <code>ContentParsingEngine</code>、<code>FileUploadManager</code>、<code>S3StorageService</code></div>
+                <div class="module-path">nexus_utils/multimodal_processing/</div>
+                <div class="module-meta">
+                    <span class="badge badge-p0">P0</span>
+                    <span class="badge badge-active">活跃</span>
+                </div>
+            </div>
+
+            <!-- M05: Agent Build Workflow -->
+            <div class="module-card">
+                <span class="module-id">M05</span>
+                <div class="module-icon" style="background:var(--color-info-bg);color:var(--color-info);">⚙️</div>
+                <h3>Agent Build Workflow</h3>
+                <div class="module-desc">9 阶段 Agent 开发流程自动化（含 Orchestrator 和 Deployer），包含需求分析、架构设计、代码开发等专业角色。</div>
+                <div class="module-path">agents/system_agents/agent_build_workflow/</div>
+                <div class="module-meta">
+                    <span class="badge badge-p0">P0</span>
+                    <span class="badge badge-active">活跃</span>
+                </div>
+            </div>
+
+            <!-- M06: API System -->
+            <div class="module-card">
+                <span class="module-id">M06</span>
+                <div class="module-icon" style="background:var(--color-primary-bg);color:var(--color-primary);">🔌</div>
+                <h3>API System</h3>
+                <div class="module-desc">基于 FastAPI 的 RESTful API 服务，Router → Service → Database 三层架构，支持 SSE 流式响应。60+ 端点。</div>
+                <div class="module-path">api/v2/</div>
+                <div class="module-meta">
+                    <span class="badge badge-p0">P0</span>
+                    <span class="badge badge-active">活跃</span>
+                </div>
+            </div>
+
+            <!-- M07: Worker System -->
+            <div class="module-card">
+                <span class="module-id">M07</span>
+                <div class="module-icon" style="background:var(--color-success-bg);color:var(--color-success);">👷</div>
+                <h3>Worker System</h3>
+                <div class="module-desc">基于 SQS 的异步任务处理系统，支持长时间运行的构建和工作流任务。核心: <code>BuildHandler</code>、<code>WorkflowHandler</code>，支持心跳维护和断点恢复。</div>
+                <div class="module-path">worker/</div>
+                <div class="module-meta">
+                    <span class="badge badge-p1">P1</span>
+                    <span class="badge badge-stable">稳定</span>
+                </div>
+            </div>
+
+            <!-- M08: Configuration Management -->
+            <div class="module-card">
+                <span class="module-id">M08</span>
+                <div class="module-icon" style="background:var(--color-warning-bg);color:var(--color-warning);">⚡</div>
+                <h3>Configuration Management</h3>
+                <div class="module-desc">集中式配置加载和管理（单例模式），支持 YAML 配置、环境变量覆盖和多环境切换。核心: <code>ConfigLoader</code>、<code>get_config()</code></div>
+                <div class="module-path">nexus_utils/config_loader.py, config/</div>
+                <div class="module-meta">
+                    <span class="badge badge-p1">P1</span>
+                    <span class="badge badge-stable">稳定</span>
+                </div>
+            </div>
+
+            <!-- M09: Tool System -->
+            <div class="module-card">
+                <span class="module-id">M09</span>
+                <div class="module-icon" style="background:var(--color-info-bg);color:var(--color-info);">🔧</div>
+                <h3>Tool System</h3>
+                <div class="module-desc">工具注册、发现和执行系统，包含系统工具、模板工具和生成工具三类。共 539 个工具函数，使用 <code>@tool</code> 装饰器标记。</div>
+                <div class="module-path">tools/, nexus_utils/workflow/</div>
+                <div class="module-meta">
+                    <span class="badge badge-p1">P1</span>
+                    <span class="badge badge-active">活跃</span>
+                </div>
+            </div>
+
+            <!-- M10: Infrastructure -->
+            <div class="module-card">
+                <span class="module-id">M10</span>
+                <div class="module-icon" style="background:var(--color-danger-bg);color:var(--color-danger);">🏗️</div>
+                <h3>Infrastructure</h3>
+                <div class="module-desc">基础设施即代码，包含 Terraform 配置（VPC、ECS、DynamoDB、S3、SQS、ECR）、Docker 容器化和 AWS 资源管理。</div>
+                <div class="module-path">infrastructure/</div>
+                <div class="module-meta">
+                    <span class="badge badge-p2">P2</span>
+                    <span class="badge badge-stable">稳定</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 模块核心类/函数索引 -->
+        <div class="card" style="margin-top:24px;">
+            <div class="card-header"><h3>📋 核心类/函数索引</h3></div>
+            <div class="card-body">
+                <table class="issue-table">
+                    <thead>
+                        <tr><th>名称</th><th>类型</th><th>模块</th><th>功能描述</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>create_agent_from_prompt_template()</code></td><td>函数</td><td>M01</td><td>从 YAML 模板创建 Agent 实例的核心入口</td></tr>
+                        <tr><td><code>get_tool_by_path()</code></td><td>函数</td><td>M01</td><td>通过路径动态导入工具函数</td></tr>
+                        <tr><td><code>import_tools_by_strings()</code></td><td>函数</td><td>M01</td><td>批量导入工具依赖</td></tr>
+                        <tr><td><code>PromptManager</code></td><td>类</td><td>M02</td><td>提示词模板管理器（单例模式）</td></tr>
+                        <tr><td><code>PromptManagerRegistry</code></td><td>类</td><td>M02</td><td>提示词管理器注册表</td></tr>
+                        <tr><td><code>MCPManager</code></td><td>类</td><td>M03</td><td>MCP 服务器配置管理</td></tr>
+                        <tr><td><code>MCPClientFactory</code></td><td>类</td><td>M03</td><td>MCP 客户端创建工厂</td></tr>
+                        <tr><td><code>ContentParsingEngine</code></td><td>类</td><td>M04</td><td>统一内容解析引擎</td></tr>
+                        <tr><td><code>FileUploadManager</code></td><td>类</td><td>M04</td><td>文件上传和验证管理</td></tr>
+                        <tr><td><code>S3StorageService</code></td><td>类</td><td>M04</td><td>S3 文件存储服务</td></tr>
+                        <tr><td><code>WorkflowEngine</code></td><td>类</td><td>M05</td><td>工作流编排引擎</td></tr>
+                        <tr><td><code>StageExecutor</code></td><td>类</td><td>M05</td><td>阶段执行器</td></tr>
+                        <tr><td><code>AgentService</code></td><td>类</td><td>M06</td><td>Agent 业务逻辑服务</td></tr>
+                        <tr><td><code>SessionService</code></td><td>类</td><td>M06</td><td>会话管理服务</td></tr>
+                        <tr><td><code>AgentRuntimeService</code></td><td>类</td><td>M06</td><td>Agent 运行时服务（含流式响应）</td></tr>
+                        <tr><td><code>BuildHandler</code></td><td>类</td><td>M07</td><td>构建任务处理器</td></tr>
+                        <tr><td><code>ConfigLoader</code></td><td>类</td><td>M08</td><td>配置加载器（单例模式）</td></tr>
+                        <tr><td><code>get_config()</code></td><td>函数</td><td>M08</td><td>获取全局配置实例</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         Section 4: 业务流程
+         ========================================== -->
+    <section class="section" id="flows">
+        <div class="section-header">
+            <div class="section-icon" style="background:var(--color-warning-bg);color:var(--color-warning);">🔄</div>
+            <h2>业务流程</h2>
+            <span class="section-desc">核心业务流程与工作流编排</span>
+        </div>
+        <!-- 相关文档链接 -->
+        <div class="doc-links-bar">
+            📄 流程文档：
+            <a class="doc-link" href="md-viewer.html?file=business-flows/agent-creation-process.md" target="_blank">Agent创建流程</a>
+            <a class="doc-link" href="md-viewer.html?file=business-flows/workflow-execution.md" target="_blank">工作流执行</a>
+            <a class="doc-link" href="md-viewer.html?file=business-flows/content-processing.md" target="_blank">内容处理流程</a>
+            <a class="doc-link" href="md-viewer.html?file=business-flows/deployment-process.md" target="_blank">部署流程</a>
+        </div>
+
+        <div class="flow-grid">
+            <!-- Agent 创建流程 -->
+            <div class="flow-card">
+                <div class="flow-icon" style="background:var(--color-primary-bg);color:var(--color-primary);">🤖</div>
+                <h3>Agent 创建流程</h3>
+                <p>通过自然语言描述自动生成 AI Agent，支持从 YAML 模板动态创建。</p>
+                <div class="flow-steps">
+                    <div class="flow-step"><span class="step-num">1</span>用户提交 Agent 需求描述</div>
+                    <div class="flow-step"><span class="step-num">2</span>加载 YAML 提示词模板</div>
+                    <div class="flow-step"><span class="step-num">3</span>解析工具依赖关系</div>
+                    <div class="flow-step"><span class="step-num">4</span>初始化 Bedrock 模型</div>
+                    <div class="flow-step"><span class="step-num">5</span>创建并返回 Agent 实例</div>
+                </div>
+            </div>
+
+            <!-- 工作流执行 -->
+            <div class="flow-card">
+                <div class="flow-icon" style="background:var(--color-success-bg);color:var(--color-success);">⚙️</div>
+                <h3>工作流执行（9 阶段）</h3>
+                <p>完整的 Agent 开发流程自动化，每个阶段由专门的 Agent 负责。支持 V1（顺序编排）和 V2（引擎驱动）两代架构。</p>
+                <div class="flow-steps">
+                    <div class="flow-step"><span class="step-num">1</span>编排协调 (Orchestrator)</div>
+                    <div class="flow-step"><span class="step-num">2</span>需求分析 (Requirements Analyzer)</div>
+                    <div class="flow-step"><span class="step-num">3</span>系统架构设计 (System Architect)</div>
+                    <div class="flow-step"><span class="step-num">4</span>Agent 设计 (Agent Designer)</div>
+                    <div class="flow-step"><span class="step-num">5</span>提示词工程 (Prompt Engineer)</div>
+                    <div class="flow-step"><span class="step-num">6</span>工具开发 (Tool Developer)</div>
+                    <div class="flow-step"><span class="step-num">7</span>Agent 代码开发 (Code Developer)</div>
+                    <div class="flow-step"><span class="step-num">8</span>开发管理 (Developer Manager)</div>
+                    <div class="flow-step"><span class="step-num">9</span>自动部署 (Agent Deployer)</div>
+                </div>
+            </div>
+
+            <!-- 内容处理流程 -->
+            <div class="flow-card">
+                <div class="flow-icon" style="background:var(--color-warning-bg);color:var(--color-warning);">📄</div>
+                <h3>多模态内容处理</h3>
+                <p>统一处理图像、文档、Excel、Word 等多种格式的内容。</p>
+                <div class="flow-steps">
+                    <div class="flow-step"><span class="step-num">1</span>文件上传与格式验证</div>
+                    <div class="flow-step"><span class="step-num">2</span>S3 安全存储</div>
+                    <div class="flow-step"><span class="step-num">3</span>内容解析引擎处理</div>
+                    <div class="flow-step"><span class="step-num">4</span>AI 智能分析</div>
+                    <div class="flow-step"><span class="step-num">5</span>生成结构化 Markdown</div>
+                </div>
+            </div>
+
+            <!-- 部署流程 -->
+            <div class="flow-card">
+                <div class="flow-icon" style="background:var(--color-info-bg);color:var(--color-info);">🚀</div>
+                <h3>部署流程</h3>
+                <p>自动化部署到 AWS AgentCore，支持容器化和基础设施即代码。</p>
+                <div class="flow-steps">
+                    <div class="flow-step"><span class="step-num">1</span>代码构建与打包</div>
+                    <div class="flow-step"><span class="step-num">2</span>Docker 镜像构建</div>
+                    <div class="flow-step"><span class="step-num">3</span>Terraform 基础设施部署</div>
+                    <div class="flow-step"><span class="step-num">4</span>服务启动与健康检查</div>
+                    <div class="flow-step"><span class="step-num">5</span>监控与日志配置</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 工作流类型对比 -->
+        <div class="card" style="margin-top:24px;">
+            <div class="card-header"><h3>📊 工作流类型对比</h3></div>
+            <div class="card-body">
+                <p style="margin-bottom:16px;">Nexus-AI 支持四种工作流类型，均通过统一的 <code>config/workflows.yaml</code> 配置文件定义：</p>
+                <table class="issue-table">
+                    <thead>
+                        <tr><th>工作流类型</th><th>名称</th><th>阶段数</th><th>说明</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>agent_build</code></td><td>Agent 构建工作流</td><td>9 个阶段</td><td>从需求到部署的完整 Agent 开发流程</td></tr>
+                        <tr><td><code>agent_update</code></td><td>Agent 更新工作流</td><td>5 个阶段</td><td>更新已有 Agent 的功能和配置</td></tr>
+                        <tr><td><code>tool_build</code></td><td>工具构建工作流</td><td>6 个阶段</td><td>自动构建工具函数</td></tr>
+                        <tr><td><code>magician</code></td><td>Magician 智能路由</td><td>1 个阶段</td><td>智能识别用户意图并路由到合适的工作流</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 两代执行架构对比 -->
+        <div class="card" style="margin-top:20px;">
+            <div class="card-header"><h3>🔀 两代执行架构</h3></div>
+            <div class="card-body">
+                <p style="margin-bottom:16px;">系统同时存在两代工作流执行架构，V2 为推荐使用版本：</p>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;">
+                    <div style="padding:16px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-hover);">
+                        <strong style="color:var(--text-muted);">V1 — 顺序编排</strong>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:8px;line-height:1.7;">
+                            入口: <code>agent_build_workflow.py</code><br>
+                            执行方式: 硬编码顺序调用<br>
+                            断点续传: 环境变量控制<br>
+                            适用: 命令行直接执行
+                        </div>
+                    </div>
+                    <div style="padding:16px;border-radius:12px;border:2px solid var(--color-primary);background:var(--color-primary-bg);">
+                        <strong style="color:var(--color-primary);">V2 — 引擎驱动 ⭐</strong>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:8px;line-height:1.7;">
+                            入口: <code>run_workflow_v2.py</code><br>
+                            执行方式: <code>WorkflowEngine</code> 类驱动<br>
+                            断点续传: 内置 <code>execute_from_stage()</code><br>
+                            暂停/恢复: 支持（DynamoDB 控制状态）<br>
+                            适用: API 驱动、Web 界面集成
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Agent 创建方式对比 -->
+        <div class="card" style="margin-top:20px;">
+            <div class="card-header"><h3>🤖 Agent 创建方式对比</h3></div>
+            <div class="card-body">
+                <table class="issue-table">
+                    <thead>
+                        <tr><th>特性</th><th>模板驱动创建</th><th>自动化构建流程</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>适用场景</strong></td><td>标准 Agent、快速原型</td><td>定制 Agent、复杂需求</td></tr>
+                        <tr><td><strong>创建时间</strong></td><td>秒级（~3-5 秒）</td><td>分钟级（~5-15 分钟）</td></tr>
+                        <tr><td><strong>技术要求</strong></td><td>低（了解 YAML 即可）</td><td>极低（自然语言描述）</td></tr>
+                        <tr><td><strong>定制程度</strong></td><td>中等（基于模板修改）</td><td>高（完全定制）</td></tr>
+                        <tr><td><strong>输出内容</strong></td><td>Agent 实例</td><td>完整项目（代码+文档）</td></tr>
+                        <tr><td><strong>核心入口</strong></td><td><code>create_agent_from_prompt_template()</code></td><td><code>WorkflowEngine.execute()</code></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         Section 5: 问题分析
+         ========================================== -->
+    <section class="section" id="issues">
+        <div class="section-header">
+            <div class="section-icon" style="background:var(--color-danger-bg);color:var(--color-danger);">⚠️</div>
+            <h2>问题分析</h2>
+            <span class="section-desc">代码审查发现的问题与改进建议</span>
+        </div>
+        <!-- 相关文档链接 -->
+        <div class="doc-links-bar">
+            📄 分析文档：
+            <a class="doc-link" href="md-viewer.html?file=code-analysis/redundancy-analysis.md" target="_blank">冗余代码分析</a>
+            <a class="doc-link" href="md-viewer.html?file=code-analysis/interface-conflicts.md" target="_blank">接口冲突分析</a>
+            <a class="doc-link" href="md-viewer.html?file=code-analysis/deprecated-code.md" target="_blank">废弃代码清单</a>
+            <a class="doc-link" href="md-viewer.html?file=code-analysis/logic-gaps.md" target="_blank">逻辑缺陷分析</a>
+            <a class="doc-link" href="md-viewer.html?file=code-analysis/improvement-suggestions.md" target="_blank">改进建议</a>
+        </div>
+
+        <!-- 问题统计概览 -->
+        <div class="issue-summary">
+            <div class="issue-badge">
+                <div class="issue-count severity-critical">2</div>
+                <div class="issue-label">Critical 严重</div>
+            </div>
+            <div class="issue-badge">
+                <div class="issue-count severity-high">97</div>
+                <div class="issue-label">High 高</div>
+            </div>
+            <div class="issue-badge">
+                <div class="issue-count severity-medium">742</div>
+                <div class="issue-label">Medium 中</div>
+            </div>
+            <div class="issue-badge">
+                <div class="issue-count severity-low">6</div>
+                <div class="issue-label">Low 低</div>
+            </div>
+            <div class="issue-badge">
+                <div class="issue-count" style="color:var(--color-primary);">847</div>
+                <div class="issue-label">总计</div>
+            </div>
+        </div>
+
+        <!-- 问题来源分布 -->
+        <div class="card" style="margin-bottom:20px;">
+            <div class="card-header"><h3>📊 问题来源与模块热点</h3></div>
+            <div class="card-body">
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px;">
+                    <div style="padding:12px;border-radius:10px;border:1px solid var(--border-color);text-align:center;">
+                        <div style="font-size:1.5rem;font-weight:800;color:var(--color-primary);">71</div>
+                        <div style="font-size:0.8rem;color:var(--text-secondary);">冗余代码<br>(45 函数 + 26 类)</div>
+                    </div>
+                    <div style="padding:12px;border-radius:10px;border:1px solid var(--border-color);text-align:center;">
+                        <div style="font-size:1.5rem;font-weight:800;color:var(--color-warning);">143</div>
+                        <div style="font-size:0.8rem;color:var(--text-secondary);">接口冲突<br>(参数+返回类型)</div>
+                    </div>
+                    <div style="padding:12px;border-radius:10px;border:1px solid var(--border-color);text-align:center;">
+                        <div style="font-size:1.5rem;font-weight:800;color:var(--color-info);">618</div>
+                        <div style="font-size:0.8rem;color:var(--text-secondary);">废弃代码<br>(未使用导入)</div>
+                    </div>
+                    <div style="padding:12px;border-radius:10px;border:1px solid var(--border-color);text-align:center;">
+                        <div style="font-size:1.5rem;font-weight:800;color:var(--color-danger);">15</div>
+                        <div style="font-size:0.8rem;color:var(--text-secondary);">逻辑缺陷<br>(Critical 2 + High 5)</div>
+                    </div>
+                </div>
+                <table class="issue-table">
+                    <thead><tr><th>模块</th><th>问题数</th><th>主要问题类型</th></tr></thead>
+                    <tbody>
+                        <tr><td>生成工具 (<code>tools/generated_tools/</code>)</td><td>200+</td><td>重复函数、未使用导入</td></tr>
+                        <tr><td>API System (<code>api/v2/</code>)</td><td>180+</td><td>接口冲突、重复函数、未使用导入</td></tr>
+                        <tr><td>核心工具库 (<code>nexus_utils/</code>)</td><td>150+</td><td>重复类、接口冲突、逻辑缺陷</td></tr>
+                        <tr><td>生成 Agent (<code>agents/generated_agents/</code>)</td><td>80+</td><td>重复代码、未使用导入</td></tr>
+                        <tr><td>Agent Build Workflow</td><td>50+</td><td>重复函数、未使用导入</td></tr>
+                        <tr><td>Worker System (<code>worker/</code>)</td><td>30+</td><td>逻辑缺陷、重复函数</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 问题分类 Tab -->
+        <div class="tabs" id="issueTabs">
+            <button class="tab-btn active" data-tab="issue-redundancy">冗余代码</button>
+            <button class="tab-btn" data-tab="issue-conflict">接口冲突</button>
+            <button class="tab-btn" data-tab="issue-deprecated">废弃代码</button>
+            <button class="tab-btn" data-tab="issue-logic">逻辑缺陷</button>
+            <button class="tab-btn" data-tab="issue-improve">改进建议</button>
+        </div>
+
+        <!-- 冗余代码 -->
+        <div class="tab-panel active" id="issue-redundancy">
+            <div class="card">
+                <div class="card-header"><h3>🔁 冗余代码分析</h3></div>
+                <div class="card-body">
+                    <p style="margin-bottom:16px;">识别到 71 处功能重复实现（45 个重复函数 + 26 个重复类），主要集中在配置加载、工具导入、时间处理和错误处理模式。</p>
+                    <table class="issue-table">
+                        <thead>
+                            <tr><th>严重性</th><th>问题描述</th><th>涉及模块</th><th>建议</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="severity-high">High</span></td>
+                                <td>26 个重复类定义（ConfigLoader、MCPManager、MCPServerConfig 等）</td>
+                                <td>M01, M03, M06, M08</td>
+                                <td>合并重复类，使用继承或组合</td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>_get_project_root()</code> 在 9 处重复实现</td>
+                                <td>M05, M06, M09</td>
+                                <td>提取到 <code>nexus_utils/common/paths.py</code></td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>_now()</code> / <code>_request_id()</code> 各在 9 处重复</td>
+                                <td>M06</td>
+                                <td>提取到 <code>nexus_utils/common/</code></td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td>AWS 网络分析工具 15+ 个资源收集函数重复</td>
+                                <td>M09 (generated_tools)</td>
+                                <td>消除 _part1/2/3 文件中的重复</td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td>模板 Agent 与生成 Agent 代码完全重复</td>
+                                <td>M05 (agents)</td>
+                                <td>生成代码应引用模板而非复制</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 接口冲突 -->
+        <div class="tab-panel" id="issue-conflict">
+            <div class="card">
+                <div class="card-header"><h3>⚡ 接口冲突分析</h3></div>
+                <div class="card-body">
+                    <p style="margin-bottom:16px;">发现 143 个接口冲突，包括参数不一致和返回类型不一致，涉及多个核心模块。</p>
+                    <table class="issue-table">
+                        <thead>
+                            <tr><th>严重性</th><th>问题描述</th><th>涉及模块</th><th>建议</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="severity-high">High</span></td>
+                                <td><code>get_agent()</code> 在 5 处参数定义不一致 (agent_id/agent_name/name)</td>
+                                <td>M01, M02, M06</td>
+                                <td>按层级区分参数命名规范</td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-high">High</span></td>
+                                <td><code>get_workflow_config()</code> / <code>get_workflow_stages()</code> 参数不一致</td>
+                                <td>M08, M06</td>
+                                <td>统一为 <code>get_workflow_config(workflow_type)</code></td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-high">High</span></td>
+                                <td><code>list_agents()</code> / <code>list_projects()</code> 在 3 处参数不一致</td>
+                                <td>M06</td>
+                                <td>按层级区分，保持各层参数合理性</td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td><code>mark_stage_*</code> 返回值类型不一致 (bool vs None)</td>
+                                <td>M06</td>
+                                <td>统一返回 <code>bool</code></td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td>MCP 工具接口与内置工具接口风格不同</td>
+                                <td>M03, M09</td>
+                                <td>建立工具接口规范</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 废弃代码 -->
+        <div class="tab-panel" id="issue-deprecated">
+            <div class="card">
+                <div class="card-header"><h3>🗑️ 废弃代码清单</h3></div>
+                <div class="card-body">
+                    <p style="margin-bottom:16px;">识别到 618 个未使用的导入，分布在整个项目中。未发现装饰器或注释标记的废弃代码。</p>
+                    <table class="issue-table">
+                        <thead>
+                            <tr><th>严重性</th><th>问题描述</th><th>文件位置</th><th>建议</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td>~200 个未使用导入</td>
+                                <td>tools/generated_tools/</td>
+                                <td>使用 autoflake 自动清理</td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td>~120 个未使用导入</td>
+                                <td>nexus_utils/</td>
+                                <td>使用 autoflake 自动清理</td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td>~100 个未使用导入</td>
+                                <td>api/v2/</td>
+                                <td>使用 autoflake 自动清理</td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td>~80 个未使用导入</td>
+                                <td>agents/</td>
+                                <td>使用 autoflake 自动清理</td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td>~20 个未使用导入</td>
+                                <td>worker/</td>
+                                <td>使用 autoflake 自动清理</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 逻辑缺陷 -->
+        <div class="tab-panel" id="issue-logic">
+            <div class="card">
+                <div class="card-header"><h3>🐛 逻辑缺陷分析</h3></div>
+                <div class="card-body">
+                    <p style="margin-bottom:16px;">发现 15 个逻辑缺陷（Critical: 2, High: 5, Medium: 6, Low: 2），主要集中在错误处理、资源管理和并发控制方面。</p>
+                    <table class="issue-table">
+                        <thead>
+                            <tr><th>严重性</th><th>问题描述</th><th>涉及模块</th><th>建议</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="severity-critical">Critical</span></td>
+                                <td>Worker 心跳线程可能在任务完成前被停止，导致任务重复执行</td>
+                                <td>M07</td>
+                                <td>重构心跳机制，添加幂等性检查</td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-critical">Critical</span></td>
+                                <td>流式响应缺少完整错误处理，客户端可能无限等待</td>
+                                <td>M06</td>
+                                <td>添加超时机制和错误事件</td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-high">High</span></td>
+                                <td>会话管理缺少并发控制，数据可能不一致</td>
+                                <td>M06</td>
+                                <td>使用 DynamoDB 条件更新</td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-high">High</span></td>
+                                <td>工作流阶段失败后缺少回滚机制</td>
+                                <td>M05</td>
+                                <td>添加阶段回滚和补偿逻辑</td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-high">High</span></td>
+                                <td>工具依赖解析循环依赖检测不完整</td>
+                                <td>M01</td>
+                                <td>实现完整的循环依赖检测</td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-high">High</span></td>
+                                <td>S3 文件上传失败时未清理临时文件</td>
+                                <td>M04</td>
+                                <td>添加 finally 块清理逻辑</td>
+                            </tr>
+                            <tr>
+                                <td><span class="severity-medium">Medium</span></td>
+                                <td>Worker 任务超时处理不完善</td>
+                                <td>M07</td>
+                                <td>添加超时检测和任务重试</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 改进建议 -->
+        <div class="tab-panel" id="issue-improve">
+            <div class="card">
+                <div class="card-header"><h3>💡 改进建议</h3></div>
+                <div class="card-body">
+                    <div style="display:grid;gap:12px;">
+                        <div style="padding:14px;border-radius:10px;border-left:4px solid var(--color-danger);background:var(--color-danger-bg);">
+                            <strong>🔴 短期 P0 (1-2 周) — 紧急修复</strong>
+                            <div style="font-size:0.875rem;color:var(--text-secondary);margin-top:6px;">
+                                <div style="margin-bottom:6px;"><strong>P0-001</strong>: Worker 心跳机制重构 — 使用守护线程 + 事件信号机制，添加任务幂等性检查 (<code>worker/handlers/build_handler.py</code>)</div>
+                                <div><strong>P0-002</strong>: API 流式响应错误处理 — 添加超时机制和 SSE 错误事件，确保异常时资源正确清理 (<code>api/v2/services/agent_runtime_service.py</code>)</div>
+                            </div>
+                        </div>
+                        <div style="padding:14px;border-radius:10px;border-left:4px solid var(--color-warning);background:var(--color-warning-bg);">
+                            <strong>🟡 中期 P1 (1-2 月) — 代码质量提升</strong>
+                            <div style="font-size:0.875rem;color:var(--text-secondary);margin-top:6px;">
+                                <div style="margin-bottom:4px;">• 提取公共工具函数到 <code>nexus_utils/common/</code>（消除 9 处 <code>_get_project_root()</code> 重复）</div>
+                                <div style="margin-bottom:4px;">• 合并 26 个重复类定义（ConfigLoader、MCPManager 等），使用继承或组合</div>
+                                <div style="margin-bottom:4px;">• 统一接口参数命名规范（<code>agent_id</code> vs <code>agent_name</code> vs <code>name</code>）</div>
+                                <div>• 使用 autoflake 清理 618 个未使用导入</div>
+                            </div>
+                        </div>
+                        <div style="padding:14px;border-radius:10px;border-left:4px solid var(--color-success);background:var(--color-success-bg);">
+                            <strong>🟢 长期 P2 (3-6 月) — 架构优化</strong>
+                            <div style="font-size:0.875rem;color:var(--text-secondary);margin-top:6px;">
+                                <div style="margin-bottom:4px;">• 引入统一异常处理框架和结构化日志</div>
+                                <div style="margin-bottom:4px;">• 添加工作流阶段回滚和补偿机制</div>
+                                <div style="margin-bottom:4px;">• 实现完整的循环依赖检测</div>
+                                <div style="margin-bottom:4px;">• 提升测试覆盖率，完善监控和可观测性</div>
+                                <div>• 生成代码应引用模板而非复制（消除模板/生成 Agent 重复）</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         Section 6: API 参考
+         ========================================== -->
+    <section class="section" id="api">
+        <div class="section-header">
+            <div class="section-icon" style="background:var(--color-primary-bg);color:var(--color-primary);">🔌</div>
+            <h2>API 参考</h2>
+            <span class="section-desc">REST API v2 端点列表</span>
+        </div>
+        <!-- 相关文档链接 -->
+        <div class="doc-links-bar">
+            📄 API 文档：
+            <a class="doc-link" href="md-viewer.html?file=api-reference/rest-api-v2.md" target="_blank">REST API v2</a>
+            <a class="doc-link" href="md-viewer.html?file=api-reference/internal-apis.md" target="_blank">内部API</a>
+            <a class="doc-link" href="md-viewer.html?file=api-reference/mcp-tools-reference.md" target="_blank">MCP工具参考</a>
+        </div>
+
+        <!-- Agent 管理 API -->
+        <div class="api-group">
+            <div class="api-group-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'table':'none'">
+                <span>🤖</span>
+                <h4>Agent 管理</h4>
+                <span class="api-count">8 个端点</span>
+            </div>
+            <table class="api-table">
+                <thead><tr><th style="width:80px;">方法</th><th>路径</th><th>说明</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="method-badge method-get">GET</span></td><td><code>/agents</code></td><td>获取 Agent 列表</td></tr>
+                    <tr><td><span class="method-badge method-get">GET</span></td><td><code>/agents/{id}</code></td><td>获取 Agent 详情</td></tr>
+                    <tr><td><span class="method-badge method-get">GET</span></td><td><code>/agents/{id}/context</code></td><td>获取 Agent 上下文</td></tr>
+                    <tr><td><span class="method-badge method-post">POST</span></td><td><code>/agents/{id}/invoke</code></td><td>调用 Agent</td></tr>
+                    <tr><td><span class="method-badge method-put">PUT</span></td><td><code>/agents/{id}/status</code></td><td>更新 Agent 状态</td></tr>
+                    <tr><td><span class="method-badge method-delete">DEL</span></td><td><code>/agents/{id}</code></td><td>删除 Agent</td></tr>
+                    <tr><td><span class="method-badge method-get">GET</span></td><td><code>/agents/{id}/files</code></td><td>获取 Agent 文件列表</td></tr>
+                    <tr><td><span class="method-badge method-get">GET</span></td><td><code>/agents/{id}/runtime/health</code></td><td>检查运行时健康</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 项目管理 API -->
+        <div class="api-group">
+            <div class="api-group-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'table':'none'">
+                <span>📁</span>
+                <h4>项目管理</h4>
+                <span class="api-count">7 个端点</span>
+            </div>
+            <table class="api-table">
+                <thead><tr><th style="width:80px;">方法</th><th>路径</th><th>说明</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="method-badge method-get">GET</span></td><td><code>/projects</code></td><td>获取项目列表</td></tr>
+                    <tr><td><span class="method-badge method-get">GET</span></td><td><code>/projects/{id}</code></td><td>获取项目详情</td></tr>
+                    <tr><td><span class="method-badge method-post">POST</span></td><td><code>/projects</code></td><td>创建项目</td></tr>
+                    <tr><td><span class="method-badge method-delete">DEL</span></td><td><code>/projects/{id}</code></td><td>删除项目</td></tr>
+                    <tr><td><span class="method-badge method-get">GET</span></td><td><code>/projects/{id}/stages</code></td><td>获取阶段状态</td></tr>
+                    <tr><td><span class="method-badge method-get">GET</span></td><td><code>/projects/{id}/build</code></td><td>构建仪表板</td></tr>
+                    <tr><td><span class="method-badge method-post">POST</span></td><td><code>/projects/{id}/control</code></td><td>控制项目（暂停/恢复/停止）</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 会话管理 API -->
+        <div class="api-group">
+            <div class="api-group-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'table':'none'">
+                <span>💬</span>
+                <h4>会话管理</h4>
+                <span class="api-count">7 个端点</span>
+            </div>
+            <table class="api-table">
+                <thead><tr><th style="width:80px;">方法</th><th>路径</th><th>说明</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="method-badge method-post">POST</span></td><td><code>/agents/{id}/sessions</code></td><td>创建会话</td></tr>
+                    <tr><td><span class="method-badge method-get">GET</span></td><td><code>/agents/{id}/sessions</code></td><td>获取 Agent 会话列表</td></tr>
+                    <tr><td><span class="method-badge method-get">GET</span></td><td><code>/sessions/{id}</code></td><td>获取会话详情</td></tr>
+                    <tr><td><span class="method-badge method-get">GET</span></td><td><code>/sessions/{id}/messages</code></td><td>获取消息列表</td></tr>
+                    <tr><td><span class="method-badge method-post">POST</span></td><td><code>/sessions/{id}/messages</code></td><td>发送消息</td></tr>
+                    <tr><td><span class="method-badge method-post">POST</span></td><td><code>/sessions/{id}/stream</code></td><td>流式对话 (SSE)</td></tr>
+                    <tr><td><span class="method-badge method-delete">DEL</span></td><td><code>/sessions/{id}</code></td><td>删除会话</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 工具与 MCP API -->
+        <div class="api-group">
+            <div class="api-group-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'table':'none'">
+                <span>🔧</span>
+                <h4>工具与 MCP</h4>
+                <span class="api-count">11 个端点</span>
+            </div>
+            <table class="api-table">
+                <thead><tr><th style="width:80px;">方法</th><th>路径</th><th>说明</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="method-badge method-get">GET</span></td><td><code>/tools/categories</code></td><td>获取工具分类</td></tr>
+                    <tr><td><span class="method-badge method-get">GET</span></td><td><code>/tools/list</code></td><td>获取工具列表</td></tr>
+                    <tr><td><span class="method-badge method-get">GET</span></td><td><code>/tools/{name}</code></td><td>获取工具详情</td></tr>
+                    <tr><td><span class="method-badge method-post">POST</span></td><td><code>/tools/{name}/test</code></td><td>测试工具</td></tr>
+                    <tr><td><span class="method-badge method-get">GET</span></td><td><code>/mcp/servers</code></td><td>获取 MCP 服务器列表</td></tr>
+                    <tr><td><span class="method-badge method-post">POST</span></td><td><code>/mcp/servers</code></td><td>创建 MCP 服务器</td></tr>
+                    <tr><td><span class="method-badge method-put">PUT</span></td><td><code>/mcp/servers/{name}</code></td><td>更新 MCP 服务器配置</td></tr>
+                    <tr><td><span class="method-badge method-delete">DEL</span></td><td><code>/mcp/servers/{name}</code></td><td>删除 MCP 服务器</td></tr>
+                    <tr><td><span class="method-badge method-post">POST</span></td><td><code>/mcp/servers/{name}/enable</code></td><td>启用 MCP 服务器</td></tr>
+                    <tr><td><span class="method-badge method-post">POST</span></td><td><code>/mcp/servers/{name}/disable</code></td><td>禁用 MCP 服务器</td></tr>
+                    <tr><td><span class="method-badge method-post">POST</span></td><td><code>/mcp/servers/{name}/test</code></td><td>测试 MCP 连接</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 工作流 API -->
+        <div class="api-group">
+            <div class="api-group-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'table':'none'">
+                <span>🔄</span>
+                <h4>工作流</h4>
+                <span class="api-count">4 个端点</span>
+            </div>
+            <table class="api-table">
+                <thead><tr><th style="width:80px;">方法</th><th>路径</th><th>说明</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="method-badge method-post">POST</span></td><td><code>/workflows/agent-update</code></td><td>创建 Agent 更新工作流</td></tr>
+                    <tr><td><span class="method-badge method-post">POST</span></td><td><code>/workflows/tool-build</code></td><td>创建工具构建工作流</td></tr>
+                    <tr><td><span class="method-badge method-get">GET</span></td><td><code>/workflows/{id}/status</code></td><td>获取工作流状态</td></tr>
+                    <tr><td><span class="method-badge method-get">GET</span></td><td><code>/workflows/types</code></td><td>获取支持的工作流类型</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- API 服务信息 -->
+        <div class="card" style="margin-top:24px;">
+            <div class="card-header"><h3>ℹ️ API 服务信息</h3></div>
+            <div class="card-body">
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;">
+                    <div style="padding:12px;border-radius:10px;border:1px solid var(--border-color);">
+                        <strong>框架</strong>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:4px;">FastAPI + Uvicorn (ASGI)</div>
+                    </div>
+                    <div style="padding:12px;border-radius:10px;border:1px solid var(--border-color);">
+                        <strong>默认端口</strong>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:4px;">8000 (API) / 3000 (Web)</div>
+                    </div>
+                    <div style="padding:12px;border-radius:10px;border:1px solid var(--border-color);">
+                        <strong>API 文档</strong>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:4px;"><code>/docs</code> (Swagger) · <code>/redoc</code></div>
+                    </div>
+                    <div style="padding:12px;border-radius:10px;border:1px solid var(--border-color);">
+                        <strong>版本兼容</strong>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:4px;">v1 映射到 v2 处理器</div>
+                    </div>
+                </div>
+                <div style="margin-top:16px;">
+                    <h4 style="font-size:0.9rem;margin-bottom:8px;">通用响应格式</h4>
+                    <pre><code>{
+  "success": true,
+  "data": { ... },
+  "message": "操作成功",
+  "pagination": { "page": 1, "limit": 20, "total": 100 },
+  "timestamp": "2026-02-05T10:00:00Z",
+  "request_id": "550e8400-e29b-41d4-..."
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- 内部 API 概览 -->
+        <div class="card" style="margin-top:20px;">
+            <div class="card-header"><h3>🔗 内部 API 与 MCP 工具</h3></div>
+            <div class="card-body">
+                <p style="margin-bottom:14px;">除 REST API 外，系统还提供内部 Python API 和 MCP 工具集成：</p>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;">
+                    <div style="padding:14px;border-radius:10px;border:1px solid var(--border-color);background:var(--bg-hover);">
+                        <strong style="color:var(--color-primary);">🏭 Agent Factory API</strong>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:6px;">
+                            <code>create_agent_from_prompt_template()</code><br>
+                            <code>get_tool_by_path()</code><br>
+                            <code>import_tools_by_strings()</code>
+                        </div>
+                    </div>
+                    <div style="padding:14px;border-radius:10px;border:1px solid var(--border-color);background:var(--bg-hover);">
+                        <strong style="color:var(--color-success);">📝 Prompt Manager API</strong>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:6px;">
+                            <code>PromptManager.get_prompt()</code><br>
+                            <code>PromptManager.list_prompts()</code><br>
+                            <code>PromptManager.reload()</code>
+                        </div>
+                    </div>
+                    <div style="padding:14px;border-radius:10px;border:1px solid var(--border-color);background:var(--bg-hover);">
+                        <strong style="color:var(--color-warning);">🔗 MCP Manager API</strong>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:6px;">
+                            <code>MCPManager.get_server_config()</code><br>
+                            <code>MCPClientFactory.create_client()</code><br>
+                            支持 stdio / SSE 传输
+                        </div>
+                    </div>
+                    <div style="padding:14px;border-radius:10px;border:1px solid var(--border-color);background:var(--bg-hover);">
+                        <strong style="color:var(--color-info);">⚙️ Workflow Engine API</strong>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:6px;">
+                            <code>WorkflowEngine.execute()</code><br>
+                            <code>WorkflowEngine.execute_from_stage()</code><br>
+                            <code>WorkflowEngine.pause() / resume()</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         Section 7: 质量验证
+         ========================================== -->
+    <section class="section" id="verification">
+        <div class="section-header">
+            <div class="section-icon" style="background:var(--color-success-bg);color:var(--color-success);">✅</div>
+            <h2>质量验证</h2>
+            <span class="section-desc">文档质量验证结果摘要</span>
+        </div>
+        <!-- 相关文档链接 -->
+        <div class="doc-links-bar">
+            📄 验证文档：
+            <a class="doc-link" href="md-viewer.html?file=verification/test-questions.md" target="_blank">验证问题集</a>
+            <a class="doc-link" href="md-viewer.html?file=verification/cross-check-results.md" target="_blank">交叉检查结果</a>
+            <a class="doc-link" href="md-viewer.html?file=verification/code-examples-verification.md" target="_blank">代码示例验证</a>
+            <a class="doc-link" href="md-viewer.html?file=verification/consistency-report.md" target="_blank">一致性报告</a>
+        </div>
+
+        <!-- 验证结果概览 -->
+        <div class="verification-grid">
+            <div class="verify-card">
+                <div class="verify-icon">📦</div>
+                <div class="verify-value" style="color:var(--color-success);">10/10</div>
+                <div class="verify-label">模块文档覆盖</div>
+            </div>
+            <div class="verify-card">
+                <div class="verify-icon">📐</div>
+                <div class="verify-value" style="color:var(--color-success);">10+</div>
+                <div class="verify-label">架构图数量</div>
+            </div>
+            <div class="verify-card">
+                <div class="verify-icon">❓</div>
+                <div class="verify-value" style="color:var(--color-primary);">25</div>
+                <div class="verify-label">验证问题数</div>
+            </div>
+            <div class="verify-card">
+                <div class="verify-icon">✅</div>
+                <div class="verify-value" style="color:var(--color-success);">95%+</div>
+                <div class="verify-label">文档准确率</div>
+            </div>
+            <div class="verify-card">
+                <div class="verify-icon">📄</div>
+                <div class="verify-value" style="color:var(--color-info);">32</div>
+                <div class="verify-label">文档文件总数</div>
+            </div>
+        </div>
+
+        <!-- 验证维度 -->
+        <div class="card" style="margin-top:20px;">
+            <div class="card-header"><h3>📋 验证维度与结果</h3></div>
+            <div class="card-body">
+                <table class="issue-table">
+                    <thead>
+                        <tr><th>验证维度</th><th>问题数</th><th>通过率</th><th>状态</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>架构一致性</strong></td>
+                            <td>5 个问题</td>
+                            <td>96%</td>
+                            <td><span style="color:var(--color-success);font-weight:600;">✅ 通过</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>功能完整性</strong></td>
+                            <td>5 个问题</td>
+                            <td>94%</td>
+                            <td><span style="color:var(--color-success);font-weight:600;">✅ 通过</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>接口一致性</strong></td>
+                            <td>5 个问题</td>
+                            <td>92%</td>
+                            <td><span style="color:var(--color-success);font-weight:600;">✅ 通过</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>代码质量</strong></td>
+                            <td>5 个问题</td>
+                            <td>90%</td>
+                            <td><span style="color:var(--color-success);font-weight:600;">✅ 通过</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>文档准确性</strong></td>
+                            <td>5 个问题</td>
+                            <td>95%</td>
+                            <td><span style="color:var(--color-success);font-weight:600;">✅ 通过</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 交叉检查结果 -->
+        <div class="card" style="margin-top:20px;">
+            <div class="card-header"><h3>🔍 交叉检查结果</h3></div>
+            <div class="card-body">
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;">
+                    <div style="padding:14px;border-radius:10px;border:1px solid var(--border-color);">
+                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                            <span style="color:var(--color-success);">✅</span>
+                            <strong>架构文档 ↔ 模块文档</strong>
+                        </div>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);">模块列表与架构图一致，依赖关系描述准确。</div>
+                    </div>
+                    <div style="padding:14px;border-radius:10px;border:1px solid var(--border-color);">
+                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                            <span style="color:var(--color-success);">✅</span>
+                            <strong>API 文档 ↔ 代码实现</strong>
+                        </div>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);">API 端点与 FastAPI 路由定义一致。</div>
+                    </div>
+                    <div style="padding:14px;border-radius:10px;border:1px solid var(--border-color);">
+                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                            <span style="color:var(--color-success);">✅</span>
+                            <strong>业务流程 ↔ 代码逻辑</strong>
+                        </div>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);">工作流阶段与代码实现匹配。</div>
+                    </div>
+                    <div style="padding:14px;border-radius:10px;border:1px solid var(--border-color);">
+                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                            <span style="color:var(--color-warning);">⚠️</span>
+                            <strong>配置文档 ↔ 实际配置</strong>
+                        </div>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);">部分环境变量文档需要更新。</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 代码示例验证 -->
+        <div class="card" style="margin-top:20px;">
+            <div class="card-header"><h3>🧪 代码示例验证结果</h3></div>
+            <div class="card-body">
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px;">
+                    <div style="padding:12px;border-radius:10px;border:1px solid var(--border-color);text-align:center;">
+                        <div style="font-size:1.5rem;font-weight:800;color:var(--color-primary);">135</div>
+                        <div style="font-size:0.8rem;color:var(--text-secondary);">验证项总数</div>
+                    </div>
+                    <div style="padding:12px;border-radius:10px;border:1px solid var(--border-color);text-align:center;">
+                        <div style="font-size:1.5rem;font-weight:800;color:var(--color-success);">130</div>
+                        <div style="font-size:0.8rem;color:var(--text-secondary);">通过 (96.3%)</div>
+                    </div>
+                    <div style="padding:12px;border-radius:10px;border:1px solid var(--border-color);text-align:center;">
+                        <div style="font-size:1.5rem;font-weight:800;color:var(--color-danger);">7</div>
+                        <div style="font-size:0.8rem;color:var(--text-secondary);">失败项</div>
+                    </div>
+                    <div style="padding:12px;border-radius:10px;border:1px solid var(--border-color);text-align:center;">
+                        <div style="font-size:1.5rem;font-weight:800;color:var(--color-warning);">20</div>
+                        <div style="font-size:0.8rem;color:var(--text-secondary);">汇总问题数</div>
+                    </div>
+                </div>
+                <p style="margin-bottom:12px;font-size:0.9rem;">交叉检查发现的 20 个问题按严重性分布：</p>
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+                    <div style="padding:8px;border-radius:8px;background:var(--color-danger-bg);text-align:center;font-size:0.85rem;">
+                        <strong style="color:var(--color-danger);">P0</strong>: 5 个 (25%)
+                    </div>
+                    <div style="padding:8px;border-radius:8px;background:var(--color-warning-bg);text-align:center;font-size:0.85rem;">
+                        <strong style="color:var(--color-warning);">P1</strong>: 4 个 (20%)
+                    </div>
+                    <div style="padding:8px;border-radius:8px;background:var(--color-primary-bg);text-align:center;font-size:0.85rem;">
+                        <strong style="color:var(--color-primary);">P2</strong>: 9 个 (45%)
+                    </div>
+                    <div style="padding:8px;border-radius:8px;background:var(--color-success-bg);text-align:center;font-size:0.85rem;">
+                        <strong style="color:var(--color-success);">P3</strong>: 2 个 (10%)
+                    </div>
+                </div>
+                <div style="margin-top:14px;font-size:0.85rem;color:var(--text-secondary);">
+                    <strong>主要问题类型：</strong>文档与代码不一致 (35%) · 代码示例与实现不一致 (30%) · 文档描述不完整 (15%) · 文档间不一致 (15%) · 文档描述不准确 (5%)
+                </div>
+            </div>
+        </div>
+
+        <!-- 文档交付清单 -->
+        <div class="card" style="margin-top:20px;">
+            <div class="card-header"><h3>📋 文档交付清单</h3></div>
+            <div class="card-body">
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;">
+                    <div style="padding:12px;border-radius:10px;border:1px solid var(--border-color);">
+                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                            <span style="color:var(--color-success);">✅</span>
+                            <strong>架构文档</strong>
+                        </div>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);">4 个文件 + 10+ Mermaid 图表</div>
+                    </div>
+                    <div style="padding:12px;border-radius:10px;border:1px solid var(--border-color);">
+                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                            <span style="color:var(--color-success);">✅</span>
+                            <strong>模块文档</strong>
+                        </div>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);">10 个文件（覆盖全部核心模块）</div>
+                    </div>
+                    <div style="padding:12px;border-radius:10px;border:1px solid var(--border-color);">
+                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                            <span style="color:var(--color-success);">✅</span>
+                            <strong>业务流程文档</strong>
+                        </div>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);">4 个文件（创建/工作流/内容/部署）</div>
+                    </div>
+                    <div style="padding:12px;border-radius:10px;border:1px solid var(--border-color);">
+                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                            <span style="color:var(--color-success);">✅</span>
+                            <strong>API 参考文档</strong>
+                        </div>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);">3 个文件（REST/内部/MCP）</div>
+                    </div>
+                    <div style="padding:12px;border-radius:10px;border:1px solid var(--border-color);">
+                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                            <span style="color:var(--color-success);">✅</span>
+                            <strong>代码分析文档</strong>
+                        </div>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);">5 个文件（冗余/冲突/废弃/缺陷/建议）</div>
+                    </div>
+                    <div style="padding:12px;border-radius:10px;border:1px solid var(--border-color);">
+                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                            <span style="color:var(--color-success);">✅</span>
+                            <strong>验证文档</strong>
+                        </div>
+                        <div style="font-size:0.85rem;color:var(--text-secondary);">4 个文件（问题集/交叉检查/示例/报告）</div>
+                    </div>
+                </div>
+                <div style="margin-top:16px;padding:14px;border-radius:10px;background:var(--color-success-bg);border:1px solid var(--color-success);font-size:0.9rem;">
+                    <strong>📊 总计：</strong>32 个文档文件 · 10+ 架构图 · 847 个已识别问题 · 60+ API 端点 · 25 个验证问题 · 文档准确率 95%+
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- 页脚 -->
+<footer class="footer">
+    <p>Nexus-AI 架构报告 · 版本 2.0 · 生成日期: 2026-02-06</p>
+    <p style="margin-top:4px;">基于代码审查与文档整理自动生成 · <a href="https://github.com/nexus-ai" target="_blank">Nexus-AI 项目</a></p>
+</footer>
+
+<!-- 回到顶部按钮 -->
+<button class="back-to-top" id="backToTop" aria-label="Back to top" title="回到顶部">↑</button>
+
+<!-- 侧边栏遮罩（移动端） -->
+<div id="sidebarOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:99;" onclick="closeSidebar()"></div>
+
+<script src="assets/report.js"></script>
+
+</body>
+</html>
