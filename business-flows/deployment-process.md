@@ -156,32 +156,36 @@ aws configure
 #### 步骤2: 初始化基础设施
 
 ```bash
-# 初始化DynamoDB表、SQS队列和S3存储桶
+# 使用 nexus-cli 初始化 DynamoDB 表、SQS 队列和 S3 存储桶
 source venv/bin/activate
-python scripts/init_infrastructure.py
+./nexus-cli init
 
 # 可选: 仅初始化特定资源
-python scripts/init_infrastructure.py --tables-only   # 仅DynamoDB表
-python scripts/init_infrastructure.py --queues-only   # 仅SQS队列
-python scripts/init_infrastructure.py --s3-only       # 仅S3存储桶
+./nexus-cli init --tables-only   # 仅 DynamoDB 表
+./nexus-cli init --queues-only   # 仅 SQS 队列
+./nexus-cli init --buckets-only  # 仅 S3 存储桶
 ```
 
-**初始化脚本创建的资源**:
+**初始化创建的资源**:
 
 | 资源类型 | 名称 | 用途 |
 |----------|------|------|
 | DynamoDB表 | `nexus_projects` | 项目基本信息 |
 | DynamoDB表 | `nexus_stages` | 工作流阶段状态 |
 | DynamoDB表 | `nexus_agents` | Agent配置和版本 |
+| DynamoDB表 | `nexus_invocations` | Agent调用记录 |
 | DynamoDB表 | `nexus_sessions` | 会话信息 |
-| DynamoDB表 | `nexus_messages` | 会话消息 |
+| DynamoDB表 | `nexus_messages` | 会话消息记录 |
 | DynamoDB表 | `nexus_tasks` | 异步任务状态 |
 | DynamoDB表 | `nexus_tools` | 工具注册信息 |
-| DynamoDB表 | `nexus_invocations` | Agent调用记录 |
 | DynamoDB表 | `nexus_artifacts` | Agent版本和S3同步 |
 | SQS队列 | `nexus-build-queue` | 构建任务队列 |
 | SQS队列 | `nexus-deploy-queue` | 部署任务队列 |
-| S3存储桶 | `nexus-ai-artifacts` | 制品和文件存储 |
+| SQS队列 | `nexus-notification-queue` | 通知队列 |
+| SQS队列 | `nexus-build-dlq` | 构建死信队列 |
+| SQS队列 | `nexus-deploy-dlq` | 部署死信队列 |
+| S3存储桶 | `nexus-ai-artifacts-*` | 制品和文件存储 |
+| S3存储桶 | `nexus-ai-session-*` | 会话存储 |
 
 #### 步骤3: 启动服务
 
@@ -403,7 +407,7 @@ graph TB
         
         subgraph "AWS托管服务"
             ECR[ECR<br/>镜像仓库]
-            DynamoDB[(DynamoDB<br/>5张表)]
+            DynamoDB[(DynamoDB<br/>9张表)]
             SQS[SQS<br/>通知队列]
             EFS[(EFS<br/>共享存储)]
             CloudWatch[CloudWatch<br/>日志监控]
@@ -440,7 +444,7 @@ Nexus-AI的Terraform配置按功能模块组织:
 | 配置文件 | 资源类型 | 说明 |
 |----------|----------|------|
 | `01-networking.tf` | VPC、子网、安全组、NAT | 网络基础设施 |
-| `02-storage-dynamodb.tf` | DynamoDB表 | 数据存储（5张表） |
+| `02-storage-dynamodb.tf` | DynamoDB表 | 数据存储（9张表） |
 | `02-storage-efs.tf` | EFS文件系统 | 共享存储 |
 | `03-messaging-sqs.tf` | SQS队列 | 异步消息队列 |
 | `04-compute-ecr.tf` | ECR仓库 | Docker镜像仓库 |
@@ -890,7 +894,7 @@ curl http://localhost:8000/health
 
 # 常见原因:
 # 1. AWS凭证未配置 → aws configure
-# 2. DynamoDB表不存在 → python scripts/init_infrastructure.py
+# 2. DynamoDB表不存在 → ./nexus-cli init --tables-only
 # 3. 端口被占用 → lsof -i :8000
 ```
 
@@ -906,7 +910,7 @@ aws sqs get-queue-attributes \
 docker-compose logs worker-build
 
 # 常见原因:
-# 1. SQS队列不存在 → python scripts/init_infrastructure.py --queues-only
+# 1. SQS队列不存在 → ./nexus-cli init --queues-only
 # 2. AWS权限不足 → 检查IAM策略
 # 3. 队列URL配置错误 → 检查环境变量
 ```

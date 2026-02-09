@@ -158,9 +158,13 @@ graph TB
 - **DynamoDB表**: 
   - nexus_projects
   - nexus_stages
-  - nexus_tasks
   - nexus_agents
-  - nexus_agent_instances
+  - nexus_invocations
+  - nexus_sessions
+  - nexus_messages
+  - nexus_tasks
+  - nexus_tools
+  - nexus_artifacts
 - **S3桶**: 
   - nexus-ai-artifacts-2026
   - nexus-ai-session-2026
@@ -171,6 +175,9 @@ graph TB
 - **SQS队列**:
   - nexus-build-queue
   - nexus-deploy-queue
+  - nexus-notification-queue
+  - nexus-build-dlq
+  - nexus-deploy-dlq
 
 ## 4. 部署流程
 

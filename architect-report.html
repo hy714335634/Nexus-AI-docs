@@ -316,14 +316,18 @@ graph TB
             <div class="card-body">
                 <table class="issue-table">
                     <thead>
-                        <tr><th>表名</th><th>PK</th><th>SK</th><th>用途</th></tr>
+                        <tr><th>表名</th><th>PK</th><th>SK</th><th>GSI</th><th>用途</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td><code>nexus_projects</code></td><td>project_id</td><td>metadata</td><td>项目基本信息</td></tr>
-                        <tr><td><code>nexus_agents</code></td><td>agent_id</td><td>version</td><td>Agent 配置和版本</td></tr>
-                        <tr><td><code>nexus_stages</code></td><td>project_id</td><td>stage_name</td><td>工作流阶段状态</td></tr>
-                        <tr><td><code>nexus_tasks</code></td><td>task_id</td><td>timestamp</td><td>异步任务状态</td></tr>
-                        <tr><td><code>nexus_agent_instances</code></td><td>instance_id</td><td>agent_id</td><td>Agent 实例信息</td></tr>
+                        <tr><td><code>nexus_projects</code></td><td>project_id</td><td>—</td><td>—</td><td>项目基本信息</td></tr>
+                        <tr><td><code>nexus_stages</code></td><td>project_id</td><td>stage_name</td><td>—</td><td>工作流阶段状态</td></tr>
+                        <tr><td><code>nexus_agents</code></td><td>agent_id</td><td>—</td><td>—</td><td>Agent 配置和版本</td></tr>
+                        <tr><td><code>nexus_invocations</code></td><td>invocation_id</td><td>—</td><td>AgentIndex (agent_id)</td><td>Agent 调用记录</td></tr>
+                        <tr><td><code>nexus_sessions</code></td><td>session_id</td><td>—</td><td>AgentIndex (agent_id)</td><td>会话信息</td></tr>
+                        <tr><td><code>nexus_messages</code></td><td>session_id</td><td>message_id</td><td>—</td><td>会话消息记录</td></tr>
+                        <tr><td><code>nexus_tasks</code></td><td>task_id</td><td>—</td><td>—</td><td>异步任务状态</td></tr>
+                        <tr><td><code>nexus_tools</code></td><td>tool_id</td><td>—</td><td>—</td><td>工具注册信息</td></tr>
+                        <tr><td><code>nexus_artifacts</code></td><td>agent_name</td><td>version_uuid</td><td>WorkspaceIndex (workspace_uuid + created_at)</td><td>Agent 版本和 S3 同步</td></tr>
                     </tbody>
                 </table>
             </div>

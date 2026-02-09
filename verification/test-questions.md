@@ -659,8 +659,8 @@
 - 实际配置文件包含 `nexus_ai`、`workflow`、`aws`、`strands`、`agentcore`、`bedrock`、`logging`、`dynamodb`、`sqs`、`multimodal_parser` 共10个主要配置节
 - `strands` 节包含 `template`、`generated`、`system` 三个子节
 - `bedrock` 节包含三个模型 ID: `model_id`（Sonnet）、`lite_model_id`（Haiku）、`pro_model_id`（Opus）
-- `dynamodb.tables` 包含 5 张表: projects、stages、tasks、agents、agent_instances
-- `sqs.queues` 包含 2 个队列: build、deploy
+- `dynamodb.tables` 配置文件中定义了 4 张核心表: projects、stages、tasks、agents（其余 5 张表 invocations、sessions、messages、tools、artifacts 在代码中通过 `infrastructure_manager.py` 定义）
+- `sqs.queues` 包含 3 个队列: build、deploy、notification（另有 2 个死信队列 build-dlq、deploy-dlq 在代码中定义）
 
 **关联文档**: `docs/update_content/modules/08-configuration-management.md`
 
@@ -670,32 +670,36 @@
 
 ### 问题 Q-D02: DynamoDB 表结构与文档描述一致性验证
 
-**问题**: 文档中描述的 DynamoDB 表结构（PK/SK 设计）是否与 `config/default_config.yaml` 和 `api/v2/database/dynamodb.py` 中的实际实现一致？
+**问题**: 文档中描述的 DynamoDB 表结构（PK/SK 设计）是否与 `nexus_utils/cli/managers/infrastructure_manager.py` 和 `api/v2/config.py` 中的实际实现一致？
 
 **涉及文件**:
-- `config/default_config.yaml` — `dynamodb.tables` 配置
-- `api/v2/database/dynamodb.py` — DynamoDB 客户端实现
-- `api/v2/scripts/init_resources.py` — 表初始化脚本
+- `config/default_config.yaml` — `dynamodb.tables` 配置（定义 4 张核心表）
+- `nexus_utils/cli/managers/infrastructure_manager.py` — 基础设施初始化（定义全部 9 张表）
+- `api/v2/config.py` — 表名常量和队列定义
 
 **验证方法**:
-1. 从 `config/default_config.yaml` 提取 5 张表的名称
-2. 检查 `dynamodb.py` 中是否有对应的表操作方法
-3. 检查 `init_resources.py` 中表创建逻辑，确认 PK/SK 定义
+1. 从 `infrastructure_manager.py` 的 `get_table_definitions()` 方法提取全部 9 张表的定义
+2. 检查 `api/v2/config.py` 中的表名常量是否与之一致
+3. 使用 `./nexus-cli init` 命令验证基础设施初始化
 4. 与文档中的表结构对比：
 
-| 表名 | PK | SK | 用途 |
-|------|----|----|------|
-| `nexus_projects` | project_id | metadata | 项目基本信息 |
-| `nexus_agents` | agent_id | version | Agent 配置和版本 |
-| `nexus_stages` | project_id | stage_name | 工作流阶段状态 |
-| `nexus_tasks` | task_id | timestamp | 异步任务状态 |
-| `nexus_agent_instances` | instance_id | agent_id | Agent 实例信息 |
+| 表名 | PK | SK | GSI | 用途 |
+|------|----|----|-----|------|
+| `nexus_projects` | project_id | — | — | 项目基本信息 |
+| `nexus_stages` | project_id | stage_name | — | 工作流阶段状态 |
+| `nexus_agents` | agent_id | — | — | Agent 配置和版本 |
+| `nexus_invocations` | invocation_id | — | AgentIndex (agent_id) | Agent 调用记录 |
+| `nexus_sessions` | session_id | — | AgentIndex (agent_id) | 会话信息 |
+| `nexus_messages` | session_id | message_id | — | 会话消息记录 |
+| `nexus_tasks` | task_id | — | — | 异步任务状态 |
+| `nexus_tools` | tool_id | — | — | 工具注册信息 |
+| `nexus_artifacts` | agent_name | version_uuid | WorkspaceIndex (workspace_uuid + created_at) | Agent 版本和 S3 同步 |
 
 **预期结果**:
-- 配置文件中定义了 5 张表，表名前缀为 `nexus_`
-- `dynamodb.py` 中有对应的 CRUD 操作方法
-- PK/SK 设计与文档描述一致
-- 表名可通过环境变量覆盖（如 `NEXUS_DYNAMODB_PROJECTS_TABLE`）
+- 系统共定义 9 张表，表名前缀为 `nexus_`
+- 基础设施通过 `./nexus-cli init` 初始化（`init_infrastructure.py` 已废弃）
+- `invocations` 和 `sessions` 表有 AgentIndex GSI
+- `artifacts` 表有 WorkspaceIndex GSI
 
 **关联文档**: `docs/update_content/modules/06-api-system.md`, `docs/update_content/architecture/data-flow.md`
 

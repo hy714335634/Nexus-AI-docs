@@ -214,16 +214,16 @@ result = agent("查询AWS EC2 t3.medium实例的价格")  # ✅ 使用 __call__
 - `api/v2/scripts/init_resources.py` — 表初始化脚本
 
 **问题描述**:  
-文档中描述 DynamoDB 仅有 4 张表（projects、agents、stages、tasks），但实际配置文件和初始化脚本中定义了 **8 张表**，遗漏了 `agent_instances`、`sessions`、`messages`、`workflow_reports` 等表。
+文档中描述 DynamoDB 仅有 4 张表（projects、agents、stages、tasks），但实际配置文件和初始化脚本中定义了 **9 张表**（projects、stages、agents、invocations、sessions、messages、tasks、tools、artifacts）。
 
 **影响范围**:
 - 用户对数据存储架构理解不完整
 - 基础设施规划可能遗漏表的创建
 
 **修正建议**:
-1. 补充所有 8 张表的完整清单和 PK/SK 设计
+1. 补充所有 9 张表的完整清单和 PK/SK/GSI 设计
 2. 更新数据流文档中的存储层描述
-3. 更新部署文档中的基础设施初始化说明
+3. 更新部署文档中的基础设施初始化说明（当前使用 `./nexus-cli init`）
 
 ---
 
